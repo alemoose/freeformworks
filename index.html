@@ -1,0 +1,2538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Freeform Works. Custom websites for small businesses</title>
+<meta name="description" content="An independent studio that builds custom websites for photographers, florists and videographers. Tuscaloosa, Alabama." />
+<meta name="theme-color" content="#FCFBF9" />
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="icon" href="assets/favicon-16.png" sizes="16x16" type="image/png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    /* Light */
+    --paper:     #FCFBF9;
+    --paper-2:   #F2EFE7;
+    --ink:       #0F0F10;
+    --gray:      #9A9A9E;
+    --gray-deep: #56565A;
+    --rule:      rgba(15, 15, 16, 0.10);
+    --rule-soft: rgba(15, 15, 16, 0.06);
+
+    /* Accent. Oxblood */
+    --ox:        #7C2031;
+    --ox-deep:   #5A1623;
+    --ox-tint:   #A85063;
+
+    /* Dark. Warm charcoal */
+    --d-paper:    #0E0E10;
+    --d-paper-2:  #18181B;
+    --d-paper-3:  #222226;
+    --d-ink:      #F1ECE2;
+    --d-gray:     #6F6B66;
+    --d-gray-2:   #44423E;
+    --d-rule:     rgba(241, 236, 226, 0.10);
+
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    --container: 1320px;
+    --pad-x: clamp(24px, 5vw, 80px);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection { background: var(--ox); color: var(--paper); }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  /* ─── Layout ─────────────────────────────────────────── */
+  .wrap {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding-left: var(--pad-x);
+    padding-right: var(--pad-x);
+  }
+
+  section { padding: clamp(96px, 14vw, 180px) 0; position: relative; }
+
+  /* Dark sections */
+  .dark { background: var(--d-paper); color: var(--d-ink); }
+  .dark a { color: inherit; }
+
+  /* ─── Type ───────────────────────────────────────────── */
+  .label {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ox);
+    margin: 0;
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .label::before {
+    content: "";
+    width: 24px; height: 1px;
+    background: var(--ox);
+    display: inline-block;
+  }
+  .dark .label { color: var(--ox-tint); }
+  .dark .label::before { background: var(--ox-tint); }
+
+  /* The signature device. Big sans sentence, key phrases solid, rest gray */
+  .stmt {
+    font-weight: 500;
+    font-size: clamp(36px, 5.6vw, 84px);
+    line-height: 1.04;
+    letter-spacing: -0.022em;
+    color: var(--gray);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .stmt .ink { color: var(--ink); }
+  .stmt .ox  { color: var(--ox); }
+  .dark .stmt { color: var(--d-gray); }
+  .dark .stmt .ink { color: var(--d-ink); }
+  .dark .stmt .ox  { color: var(--ox-tint); }
+
+  .h-sm {
+    font-weight: 500;
+    font-size: clamp(28px, 3.4vw, 44px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0;
+  }
+  .dark .h-sm { color: var(--d-ink); }
+
+  .body {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--gray-deep);
+    max-width: 60ch;
+  }
+  .dark .body { color: var(--d-gray); }
+
+  /* ─── Nav ───────────────────────────────────────────── */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in oklab, var(--paper) 92%, transparent);
+    backdrop-filter: saturate(140%) blur(10px);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
+    border-bottom: 1px solid var(--rule-soft);
+    transition: background 200ms ease, border-color 200ms ease, color 200ms ease;
+  }
+  .nav.is-dark {
+    background: color-mix(in oklab, var(--d-paper) 88%, transparent);
+    border-bottom-color: var(--d-rule);
+    color: var(--d-ink);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 88px;
+  }
+  .brand img {
+    height: 110px; width: auto; margin: -22px 0;
+    transition: filter 200ms ease;
+  }
+  .nav.is-dark .brand img {
+    /* lockup PNG ships black-on-transparent. Flip to cream on dark */
+    filter: invert(1) sepia(0.12) saturate(0.5) brightness(1.05);
+  }
+  .nav-links {
+    display: flex; gap: 32px;
+    font-size: 14.5px;
+    font-weight: 400;
+    color: var(--gray-deep);
+  }
+  .nav-links a { transition: color 160ms ease; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav.is-dark .nav-links { color: var(--d-gray); }
+  .nav.is-dark .nav-links a:hover { color: var(--d-ink); }
+
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 10px 16px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 999px;
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: background 160ms ease, color 160ms ease;
+  }
+  .nav.is-dark .nav-cta {
+    background: var(--d-ink);
+    color: var(--d-paper);
+  }
+  .nav-cta:hover { background: var(--ox); color: var(--paper); }
+
+  @media (max-width: 760px) {
+    .nav-links { display: none; }
+  }
+
+  /* ─── Buttons ───────────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 22px;
+    border-radius: 999px;
+    font-size: 14.5px;
+    font-weight: 500;
+    line-height: 1;
+    transition: background 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
+  }
+  .btn .arr { transition: transform 200ms ease; }
+  .btn:hover .arr { transform: translate(2px, -2px); }
+
+  .btn-primary {
+    background: var(--ink); color: var(--paper);
+  }
+  .btn-primary:hover { background: var(--ox); }
+
+  .btn-ghost {
+    background: transparent; color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--ink);
+  }
+  .btn-ghost:hover { background: var(--ink); color: var(--paper); }
+
+  .dark .btn-primary { background: var(--d-ink); color: var(--d-paper); }
+  .dark .btn-primary:hover { background: var(--ox); color: var(--d-ink); }
+  .dark .btn-ghost { color: var(--d-ink); box-shadow: inset 0 0 0 1px var(--d-ink); }
+  .dark .btn-ghost:hover { background: var(--d-ink); color: var(--d-paper); }
+
+  /* ─── Hero ──────────────────────────────────────────── */
+  .hero {
+    padding-top: clamp(36px, 4.5vw, 56px);
+    padding-bottom: clamp(32px, 4vw, 48px);
+  }
+  .hero .label { margin-bottom: 28px; }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: clamp(40px, 6vw, 80px);
+    align-items: center;
+  }
+  @media (max-width: 960px) {
+    .hero-grid { grid-template-columns: 1fr; gap: clamp(40px, 6vw, 56px); }
+  }
+  .hero-stmt { font-size: clamp(34px, 4.6vw, 64px); }
+  .hero-art { margin: 0; margin-right: calc(var(--pad-x) * -1); }
+  @media (max-width: 960px) {
+    .hero-art { margin-left: calc(var(--pad-x) * -1); margin-right: calc(var(--pad-x) * -1); }
+  }
+  .hero-art img { width: 100%; height: auto; display: block; }
+  .hero-ctas {
+    display: flex; gap: 12px; flex-wrap: wrap;
+    margin-top: clamp(40px, 5vw, 56px);
+  }
+  /* ─── Work ──────────────────────────────────────────── */
+  #work {
+    padding-top: clamp(40px, 5vw, 56px);
+    padding-bottom: clamp(48px, 6vw, 64px);
+  }
+  .work-head {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: end;
+    margin-bottom: clamp(48px, 6vw, 80px);
+  }
+  @media (max-width: 860px) { .work-head { grid-template-columns: 1fr; } }
+
+  /* Browser frame */
+  .browser {
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px -28px rgba(15,15,16,0.18);
+  }
+  .browser-bar {
+    border-bottom: 1px solid var(--rule);
+    background: color-mix(in oklab, var(--paper-2) 55%, var(--paper));
+  }
+  .browser-bar--with-tabs {
+    padding: 10px 12px 0;
+  }
+  .browser-omnibox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px 12px;
+  }
+  .browser-dots {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+    padding: 0 4px 10px;
+  }
+  .browser-dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: rgba(15,15,16,0.14);
+  }
+  .browser-top {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    min-width: 0;
+  }
+  .browser-tabs {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 0;
+  }
+  .browser-tabs::-webkit-scrollbar { display: none; }
+  button.browser-tab {
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  .browser-tab {
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    max-width: min(220px, 42vw);
+    min-width: 0;
+    padding: 7px 10px 8px;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: 9px 9px 0 0;
+    background: color-mix(in oklab, var(--paper) 35%, transparent);
+    color: var(--gray-deep);
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+  }
+  .browser-tab:hover:not(.is-static) {
+    color: var(--ink);
+    background: color-mix(in oklab, var(--paper) 65%, transparent);
+  }
+  .browser-tab.is-active {
+    color: var(--ink);
+    background: var(--paper);
+    border-color: var(--rule);
+    z-index: 1;
+    padding-bottom: 9px;
+    margin-bottom: -1px;
+  }
+  .browser-tab.is-static { cursor: default; pointer-events: none; }
+  .browser-favicon {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    font-size: 7.5px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--fav-bg, #7a7a80);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+  }
+  .browser-tab-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+  .browser-tab-close {
+    pointer-events: none;
+    width: 15px;
+    height: 15px;
+    margin-left: 1px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    line-height: 1;
+    color: var(--gray);
+    opacity: 0;
+    transition: opacity 140ms ease, background 140ms ease, color 140ms ease;
+  }
+  .browser-tab.is-active .browser-tab-close,
+  .browser-tab:hover .browser-tab-close { opacity: 0.55; }
+  .browser-tab-close:hover {
+    opacity: 1 !important;
+    background: rgba(15,15,16,0.08);
+    color: var(--ink);
+  }
+  .browser-url {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--gray-deep);
+    padding: 5px 14px;
+    background: var(--paper);
+    border: 1px solid var(--rule-soft);
+    border-radius: 999px;
+  }
+  .browser-url a { color: inherit; }
+  .browser-url a:hover { color: var(--ox); }
+
+  .browser-shot {
+    aspect-ratio: 2880 / 1558;
+    background: #0f0f10;
+    position: relative;
+    overflow: hidden;
+  }
+  .browser-shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  /* Case meta row */
+  .case-meta {
+    margin-top: clamp(48px, 6vw, 64px);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  @media (max-width: 760px) { .case-meta { grid-template-columns: repeat(2, 1fr); } }
+  .case-meta > div { padding: 22px 22px 22px 0; }
+  .case-meta > div + div {
+    border-left: 1px solid var(--rule-soft);
+    padding-left: 22px;
+  }
+  .case-meta .k {
+    font-size: 12.5px; font-weight: 500;
+    color: var(--gray); margin-bottom: 8px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .case-meta .v { font-size: 16px; }
+  .case-meta a.v {
+    color: var(--ox);
+    border-bottom: 1px solid var(--ox);
+    padding-bottom: 1px;
+  }
+
+  /* Stats inline strip. Small four numbers */
+  .stats-strip {
+    margin-top: clamp(40px, 5vw, 56px);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 760px) { .stats-strip { grid-template-columns: repeat(2, 1fr); } }
+  .stats-strip .v {
+    font-size: clamp(34px, 4vw, 52px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .stats-strip .v .unit { color: var(--gray); font-weight: 400; }
+  .stats-strip .k {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--gray-deep);
+  }
+
+  /* Testimonial */
+  .quote-card {
+    margin-top: clamp(48px, 6vw, 72px);
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+  .quote-avatar {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--paper-2);
+    background-image: repeating-linear-gradient(135deg, rgba(15,15,16,0.05) 0 4px, transparent 4px 8px);
+    border: 1px solid var(--rule);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 500; color: var(--gray);
+  }
+  .quote-body {
+    font-size: clamp(22px, 2.4vw, 32px);
+    line-height: 1.32;
+    letter-spacing: -0.012em;
+    color: var(--gray-deep);
+    max-width: 30ch;
+  }
+  .quote-body strong { color: var(--ink); font-weight: 500; }
+  .quote-cite {
+    margin-top: 18px;
+    font-size: 14px;
+    color: var(--gray);
+  }
+  .quote-cite .who { color: var(--ink); font-weight: 500; }
+
+  .work-footer {
+    margin-top: clamp(36px, 4vw, 48px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+  }
+  .work-footer .note { color: var(--gray); }
+
+  /* ─── Build (tabs) ──────────────────────────────────── */
+  .build-head {
+    margin-bottom: clamp(48px, 6vw, 72px);
+    max-width: 60ch;
+  }
+  .build-head .label { margin-bottom: 20px; }
+  .build-head h2 {
+    font-size: clamp(28px, 3.4vw, 44px);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  /* Tabbed browser shell */
+  .tabshell {
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px -28px rgba(15,15,16,0.18);
+  }
+  .tabshell .browser-top {
+    padding: 10px 12px 0;
+    border-bottom: none;
+    background: color-mix(in oklab, var(--paper-2) 55%, var(--paper));
+  }
+  .tabchrome {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 16px 12px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+    position: relative;
+  }
+  .taburl {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--gray-deep);
+    padding: 5px 14px;
+    background: var(--paper);
+    border: 1px solid var(--rule-soft);
+    border-radius: 999px;
+    max-width: 60%;
+    transition: opacity 200ms ease;
+    white-space: nowrap;
+  }
+  .incl-trigger {
+    margin-left: auto;
+  }
+  .tabcanvas {
+    aspect-ratio: 16 / 11;
+    background: var(--paper);
+    position: relative;
+    overflow: hidden;
+    container-type: inline-size;
+  }
+  .pane {
+    --pad: clamp(18px, 2.6cqw, 38px);
+    position: absolute; inset: 0;
+    padding: var(--pad);
+    display: flex; flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 280ms ease, visibility 0s linear 280ms;
+    overflow: hidden;
+  }
+  .pane.is-active {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 280ms ease, visibility 0s linear 0s;
+  }
+
+  /* shared mockup vocabulary */
+  .mk-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: clamp(12px, 1.4cqw, 20px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .mk-brand {
+    font-size: clamp(14px, 1.5cqw, 22px);
+    font-weight: 600;
+    letter-spacing: -0.012em;
+    color: var(--ink);
+  }
+  .mk-brand .dot { color: var(--ox); }
+  .mk-nav {
+    display: flex; gap: clamp(10px, 1.4cqw, 22px);
+    font-size: clamp(9px, 0.85cqw, 12px);
+    color: var(--gray-deep);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .mk-tile {
+    background:
+      repeating-linear-gradient(135deg, rgba(15,15,16,0.045) 0 8px, transparent 8px 16px),
+      var(--paper-2);
+    border: 1px solid var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+  .mk-tile.dark {
+    background:
+      repeating-linear-gradient(135deg, rgba(241,236,226,0.06) 0 8px, transparent 8px 16px),
+      var(--d-paper-2);
+    border-color: var(--d-rule);
+  }
+  .mk-tile .lbl {
+    position: absolute; bottom: 6px; left: 8px;
+    font-size: clamp(8px, 0.7cqw, 10px);
+    color: var(--gray);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .mk-eyebrow {
+    font-size: clamp(9px, 0.85cqw, 11px);
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ox);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .mk-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: clamp(7px, 0.95cqw, 12px) clamp(12px, 1.5cqw, 20px);
+    background: var(--ink); color: var(--paper);
+    border-radius: 999px;
+    font-size: clamp(10px, 0.95cqw, 13px);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    line-height: 1;
+  }
+  .mk-cta.ox { background: var(--ox); color: var(--paper); }
+  .mk-cta.ghost {
+    background: transparent; color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--ink);
+  }
+  .mono {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  /* ── Restaurants ── */
+  .pn-rest .mk-hero {
+    display: grid; grid-template-columns: 1.3fr 1fr;
+    gap: clamp(14px, 2cqw, 28px);
+    margin: clamp(14px, 1.8cqw, 24px) 0 clamp(14px, 1.8cqw, 24px);
+    align-items: stretch;
+  }
+  .pn-rest .mk-hero h2 {
+    font-size: clamp(18px, 3.2cqw, 44px);
+    line-height: 1.02;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    margin: 0 0 clamp(6px, 0.9cqw, 12px);
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  .pn-rest .mk-hero h2 .ox { color: var(--ox); }
+  .pn-rest .mk-hero p {
+    font-size: clamp(10px, 0.95cqw, 13px);
+    line-height: 1.45;
+    color: var(--gray-deep);
+    margin: 0 0 clamp(10px, 1.4cqw, 18px);
+    max-width: 32ch;
+  }
+  .pn-rest .dd-row {
+    margin-top: clamp(8px, 1cqw, 12px);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .pn-rest .dd-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: clamp(5px, 0.7cqw, 8px) clamp(8px, 1.1cqw, 12px);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    font-size: clamp(8px, 0.75cqw, 10px);
+    color: var(--gray-deep);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--paper);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .pn-rest .dd-badge::before {
+    content: "";
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--ox);
+  }
+  .pn-rest .reserve-card {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: var(--paper);
+    padding: clamp(12px, 1.6cqw, 18px) clamp(14px, 1.8cqw, 20px);
+    display: flex; flex-direction: column;
+    gap: clamp(2px, 0.4cqw, 6px);
+  }
+  .pn-rest .reserve-card .eb {
+    font-size: clamp(8px, 0.75cqw, 10px);
+    color: var(--gray);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    padding-bottom: clamp(6px, 0.8cqw, 10px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .pn-rest .reserve-card .row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: clamp(5px, 0.7cqw, 8px) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .pn-rest .reserve-card .lbl {
+    font-size: clamp(8px, 0.7cqw, 10px);
+    color: var(--gray);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .pn-rest .reserve-card .val {
+    font-size: clamp(10px, 0.95cqw, 13px);
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .pn-rest .reserve-card .mk-cta {
+    justify-content: center;
+    margin-top: clamp(8px, 1cqw, 12px);
+  }
+  .pn-rest .menu {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: clamp(8px, 1.2cqw, 14px);
+  }
+  .pn-rest .dish { display: flex; flex-direction: column; gap: clamp(4px, 0.55cqw, 7px); }
+  .pn-rest .dish-img { aspect-ratio: 4 / 3; }
+  .pn-rest .dish-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: clamp(10px, 0.95cqw, 13px);
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .pn-rest .dish-row .px { color: var(--gray-deep); font-weight: 400; }
+  .pn-rest .dish-desc {
+    font-size: clamp(8px, 0.75cqw, 10px);
+    color: var(--gray);
+    letter-spacing: 0.02em;
+    line-height: 1.3;
+  }
+
+  /* ── Barbershops ── */
+  .pn-barb .mk-body {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: clamp(16px, 2.2cqw, 34px);
+    margin-top: clamp(14px, 1.8cqw, 24px);
+    flex: 1; min-height: 0;
+  }
+  .pn-barb h2 {
+    font-size: clamp(20px, 3cqw, 38px);
+    font-weight: 500;
+    letter-spacing: -0.022em;
+    line-height: 1.04;
+    margin: 0 0 clamp(6px, 0.9cqw, 10px);
+    color: var(--ink);
+  }
+  .pn-barb .sub {
+    font-size: clamp(10px, 0.95cqw, 13px);
+    color: var(--gray-deep);
+    margin: 0;
+    max-width: 32ch;
+  }
+  .pn-barb .booking {
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: clamp(10px, 1.4cqw, 18px);
+    background: var(--paper);
+    display: flex; flex-direction: column; gap: clamp(8px, 1.1cqw, 14px);
+  }
+  .pn-barb .booking .eb {
+    font-size: clamp(8px, 0.75cqw, 10px);
+    color: var(--gray);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .pn-barb .cal {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    gap: clamp(2px, 0.3cqw, 4px);
+  }
+  .pn-barb .cal .dn {
+    font-size: clamp(7px, 0.6cqw, 9px);
+    color: var(--gray);
+    text-align: center;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .pn-barb .cal .d {
+    aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+    font-size: clamp(9px, 0.85cqw, 12px);
+    color: var(--gray-deep);
+    border-radius: 5px;
+  }
+  .pn-barb .cal .d.dim { color: var(--gray); opacity: 0.45; }
+  .pn-barb .cal .d.act {
+    background: var(--ink); color: var(--paper);
+    font-weight: 500;
+  }
+  .pn-barb .cal .d.dot { position: relative; }
+  .pn-barb .cal .d.dot::after {
+    content: ""; width: 3px; height: 3px; border-radius: 50%;
+    background: var(--ox);
+    position: absolute; bottom: 3px;
+  }
+  .pn-barb .slots {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: clamp(4px, 0.6cqw, 7px);
+  }
+  .pn-barb .slot {
+    padding: clamp(5px, 0.75cqw, 9px) 0;
+    text-align: center;
+    border: 1px solid var(--rule);
+    border-radius: 5px;
+    font-size: clamp(9px, 0.85cqw, 12px);
+    color: var(--gray-deep);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.02em;
+  }
+  .pn-barb .slot.act {
+    background: var(--ink); color: var(--paper); border-color: var(--ink);
+  }
+  .pn-barb .slot.off { color: var(--gray); opacity: 0.45; text-decoration: line-through; }
+  .pn-barb .services {
+    display: flex; flex-direction: column;
+    border-top: 1px solid var(--rule);
+  }
+  .pn-barb .service {
+    display: grid; grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: clamp(10px, 1.2cqw, 18px);
+    padding: clamp(8px, 1.1cqw, 14px) 0;
+    border-bottom: 1px solid var(--rule);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .pn-barb .service .n {
+    font-size: clamp(10px, 0.95cqw, 13px);
+    color: var(--ink);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .pn-barb .service .dot-row {
+    align-self: end;
+    border-bottom: 1px dotted var(--rule);
+    height: 7px;
+  }
+  .pn-barb .service .p {
+    font-size: clamp(10px, 0.95cqw, 13px);
+    color: var(--gray-deep);
+  }
+  .pn-barb .reserve-row {
+    margin-top: auto;
+    padding-top: clamp(10px, 1.4cqw, 18px);
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 14px;
+  }
+  .pn-barb .deposit {
+    font-size: clamp(9px, 0.85cqw, 11px);
+    color: var(--gray);
+    letter-spacing: 0.04em;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  /* ── Photographers (dark) ── */
+  .pn-photo {
+    background: var(--d-paper);
+    color: var(--d-ink);
+  }
+  .pn-photo .mk-bar {
+    border-color: var(--d-rule);
+  }
+  .pn-photo .mk-brand { color: var(--d-ink); font-weight: 500; letter-spacing: 0.04em; }
+  .pn-photo .mk-nav { color: var(--d-gray); }
+  .pn-photo .login {
+    font-size: clamp(8px, 0.75cqw, 10px);
+    color: var(--ox-tint);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .pn-photo .mk-hero {
+    margin: clamp(14px, 2cqw, 28px) 0 clamp(12px, 1.6cqw, 20px);
+  }
+  .pn-photo .mk-hero h2 {
+    font-size: clamp(24px, 4.2cqw, 60px);
+    line-height: 0.94;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    margin: 0;
+    color: var(--d-ink);
+    text-wrap: balance;
+  }
+  .pn-photo .mk-hero h2 .gr { color: var(--d-gray); }
+  .pn-photo .mk-hero .meta {
+    margin-top: clamp(6px, 0.9cqw, 12px);
+    font-size: clamp(9px, 0.85cqw, 11px);
+    color: var(--d-gray);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .pn-photo .tiles {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(8px, 1cqw, 12px);
+  }
+  .pn-photo .tiles .mk-tile {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+  }
+  .pn-photo .packages {
+    margin-top: auto;
+    padding-top: clamp(12px, 1.4cqw, 20px);
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: clamp(8px, 1.1cqw, 14px);
+    border-top: 1px solid var(--d-rule);
+  }
+  .pn-photo .pkg {
+    display: flex; flex-direction: column; gap: clamp(3px, 0.4cqw, 6px);
+  }
+  .pn-photo .pkg .n {
+    font-size: clamp(9px, 0.85cqw, 11px);
+    color: var(--d-gray);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .pn-photo .pkg .v {
+    font-size: clamp(16px, 2.2cqw, 30px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--d-ink);
+    line-height: 1;
+  }
+  .pn-photo .pkg .v .unit { color: var(--d-gray); font-weight: 400; font-size: 0.6em; }
+  .pn-photo .pkg .d {
+    font-size: clamp(9px, 0.82cqw, 11px);
+    color: var(--d-gray);
+    line-height: 1.35;
+  }
+  .pn-photo .pkg.fea .v { color: var(--ox-tint); }
+
+  /* ── Florists ── */
+  /* ── Florists ── */
+  .pn-flor .mk-hero {
+    display: flex; align-items: end; justify-content: space-between;
+    margin: clamp(22px, 3cqw, 36px) 0 clamp(18px, 2.2cqw, 28px);
+    gap: 16px;
+  }
+  .pn-flor .mk-hero h2 {
+    font-size: clamp(26px, 4.6cqw, 64px);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1;
+    margin: clamp(6px, 0.8cqw, 10px) 0 0;
+    color: var(--ink);
+  }
+  .pn-flor .mk-hero h2 .it {
+    font-style: italic; font-weight: 400; color: var(--ox);
+  }
+  .pn-flor .wedding {
+    font-size: clamp(10px, 0.9cqw, 12px);
+    color: var(--ox);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    border-bottom: 1px solid var(--ox);
+    padding-bottom: 2px;
+  }
+  .pn-flor .arr-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: clamp(14px, 1.8cqw, 24px);
+    flex: 1;
+    min-height: 0;
+  }
+  .pn-flor .arr {
+    display: flex; flex-direction: column;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .pn-flor .arr-img { aspect-ratio: 4 / 5; flex: 1; min-height: 0; border: none; border-radius: 0; }
+  .pn-flor .arr-info {
+    padding: clamp(10px, 1.3cqw, 16px);
+    display: flex; flex-direction: column; gap: clamp(4px, 0.5cqw, 6px);
+  }
+  .pn-flor .arr-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 8px;
+  }
+  .pn-flor .arr-name {
+    font-size: clamp(12px, 1.15cqw, 16px);
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .pn-flor .arr-px {
+    font-size: clamp(11px, 1cqw, 14px);
+    color: var(--gray-deep);
+  }
+  .pn-flor .arr-actions {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: clamp(4px, 0.5cqw, 6px);
+  }
+  .pn-flor .arr-stem {
+    font-size: clamp(9px, 0.8cqw, 11px);
+    color: var(--gray);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .pn-flor .add {
+    width: clamp(24px, 2.4cqw, 32px);
+    height: clamp(24px, 2.4cqw, 32px);
+    border-radius: 50%;
+    background: var(--ink); color: var(--paper);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: clamp(14px, 1.4cqw, 18px); font-weight: 400;
+    line-height: 1;
+  }
+  .pn-flor .ftr {
+    margin-top: clamp(14px, 1.6cqw, 22px);
+    padding-top: clamp(12px, 1.4cqw, 18px);
+    border-top: 1px solid var(--rule);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: clamp(10px, 0.9cqw, 12px);
+    color: var(--gray);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  /* ── Lawn care ── */
+  .pn-lawn .mk-body {
+    display: grid; grid-template-columns: 1.2fr 1fr;
+    gap: clamp(18px, 2.4cqw, 32px);
+    margin-top: clamp(20px, 2.4cqw, 30px);
+    flex: 1; min-height: 0;
+  }
+  .pn-lawn h2 {
+    font-size: clamp(20px, 2.8cqw, 36px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.04;
+    margin: 0 0 clamp(8px, 1cqw, 12px);
+    color: var(--ink);
+  }
+  .pn-lawn .sub {
+    font-size: clamp(11px, 1cqw, 13px);
+    color: var(--gray-deep);
+    margin: 0 0 clamp(10px, 1.2cqw, 14px);
+    max-width: 34ch;
+  }
+  .pn-lawn .map {
+    position: relative;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    background: var(--paper-2);
+    overflow: hidden;
+    flex: 1;
+    min-height: 0;
+    background-image:
+      linear-gradient(to right, var(--rule-soft) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--rule-soft) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .pn-lawn .county {
+    position: absolute;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: var(--paper);
+    padding: clamp(6px, 0.8cqw, 10px) clamp(8px, 1cqw, 12px);
+    font-size: clamp(8px, 0.75cqw, 10px);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-deep);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    line-height: 1.2;
+  }
+  .pn-lawn .county.serviced {
+    border-color: var(--ox);
+    color: var(--ox);
+    background: color-mix(in oklab, var(--ox) 6%, var(--paper));
+  }
+  .pn-lawn .county.serviced::before {
+    content: "●";
+    margin-right: 5px;
+    color: var(--ox);
+  }
+  .pn-lawn .map-legend {
+    position: absolute; right: 10px; bottom: 10px;
+    font-size: clamp(8px, 0.7cqw, 10px);
+    color: var(--gray);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    background: var(--paper);
+    padding: 4px 8px;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+  }
+  .pn-lawn .right { display: flex; flex-direction: column; gap: clamp(12px, 1.6cqw, 20px); min-height: 0; }
+  .pn-lawn .ba {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: clamp(6px, 0.8cqw, 10px);
+  }
+  .pn-lawn .ba .mk-tile { aspect-ratio: 4 / 3; }
+  .pn-lawn .ba .cap {
+    margin-top: 4px;
+    font-size: clamp(8px, 0.7cqw, 10px);
+    color: var(--gray);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .pn-lawn .form {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: clamp(10px, 1.4cqw, 16px);
+    display: flex; flex-direction: column;
+    gap: clamp(8px, 1cqw, 12px);
+    background: var(--paper);
+  }
+  .pn-lawn .form .eb {
+    font-size: clamp(9px, 0.8cqw, 11px);
+    color: var(--gray);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    margin-bottom: 2px;
+  }
+  .pn-lawn .form .row {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: clamp(5px, 0.7cqw, 8px);
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 8px;
+  }
+  .pn-lawn .form .lbl {
+    font-size: clamp(9px, 0.8cqw, 11px);
+    color: var(--gray);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .pn-lawn .form .val {
+    font-size: clamp(10px, 0.95cqw, 13px);
+    color: var(--ink);
+  }
+  .pn-lawn .form .val.placeholder { color: var(--gray); }
+  .pn-lawn .form .submit {
+    align-self: stretch;
+    margin-top: 4px;
+  }
+
+  /* ── Retail ── */
+  .pn-retail .mk-body {
+    display: grid; grid-template-columns: 1.6fr 1fr;
+    gap: clamp(18px, 2.2cqw, 28px);
+    margin-top: clamp(20px, 2.4cqw, 30px);
+    flex: 1; min-height: 0;
+  }
+  .pn-retail .grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: clamp(10px, 1.4cqw, 16px);
+    align-content: start;
+  }
+  .pn-retail .prod {
+    display: flex; flex-direction: column; gap: clamp(5px, 0.7cqw, 8px);
+  }
+  .pn-retail .prod-img { aspect-ratio: 1; }
+  .pn-retail .prod-name {
+    font-size: clamp(10px, 0.95cqw, 13px);
+    color: var(--ink);
+    font-weight: 500;
+    letter-spacing: -0.005em;
+  }
+  .pn-retail .prod-px {
+    font-size: clamp(10px, 0.9cqw, 12px);
+    color: var(--gray-deep);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .pn-retail .prod.sel .prod-img {
+    box-shadow: 0 0 0 1.5px var(--ox);
+    border-color: transparent;
+  }
+  .pn-retail .detail {
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: clamp(12px, 1.6cqw, 20px);
+    display: flex; flex-direction: column;
+    gap: clamp(8px, 1cqw, 12px);
+    background: var(--paper);
+  }
+  .pn-retail .detail-img { aspect-ratio: 4 / 3; }
+  .pn-retail .det-name {
+    font-size: clamp(13px, 1.3cqw, 18px);
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .pn-retail .det-px {
+    font-size: clamp(12px, 1.15cqw, 16px);
+    color: var(--ox);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    margin: 0;
+  }
+  .pn-retail .opt-row {
+    display: flex; gap: clamp(4px, 0.5cqw, 6px); flex-wrap: wrap;
+  }
+  .pn-retail .opt {
+    padding: clamp(5px, 0.7cqw, 7px) clamp(8px, 1cqw, 12px);
+    border: 1px solid var(--rule);
+    border-radius: 5px;
+    font-size: clamp(9px, 0.85cqw, 11px);
+    color: var(--gray-deep);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.04em;
+  }
+  .pn-retail .opt.sel {
+    background: var(--ink); color: var(--paper); border-color: var(--ink);
+  }
+  .pn-retail .swatch {
+    width: clamp(16px, 1.6cqw, 22px);
+    height: clamp(16px, 1.6cqw, 22px);
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+  }
+  .pn-retail .swatch.sel { box-shadow: 0 0 0 1.5px var(--ox); border-color: transparent; }
+  .pn-retail .det-key {
+    font-size: clamp(8px, 0.7cqw, 10px);
+    color: var(--gray);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    margin-bottom: 2px;
+  }
+  .pn-retail .toggle {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .pn-retail .toggle button {
+    padding: clamp(7px, 0.95cqw, 10px) 0;
+    background: var(--paper);
+    border: none;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: clamp(9px, 0.85cqw, 11px);
+    color: var(--gray-deep);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .pn-retail .toggle button.sel {
+    background: var(--ink); color: var(--paper);
+  }
+  .pn-retail .add-cart {
+    margin-top: auto;
+  }
+
+  .incl-trigger {
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--ox);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ox);
+    padding: 4px 0 2px;
+    white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: color 160ms ease, border-color 160ms ease;
+  }
+  .incl-trigger:hover { color: var(--ox-deep); border-color: var(--ox-deep); }
+  .incl-trigger .arr { transition: transform 200ms ease; display: inline-block; }
+  .incl-trigger:hover .arr { transform: translate(2px, -2px); }
+
+  .incl-overlay {
+    position: absolute;
+    inset: calc(-1 * var(--pad));
+    background: rgba(15, 15, 16, 0.32);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 220ms ease, visibility 0s linear 220ms;
+    z-index: 2;
+    cursor: pointer;
+  }
+  .pane.is-open .incl-overlay {
+    opacity: 1; visibility: visible;
+    transition: opacity 220ms ease, visibility 0s linear 0s;
+  }
+
+  .incl-panel {
+    position: absolute;
+    top: calc(-1 * var(--pad));
+    right: calc(-1 * var(--pad));
+    width: calc(36% + var(--pad));
+    height: auto;
+    max-height: calc(100% + 2 * var(--pad));
+    box-sizing: border-box;
+    background: var(--paper);
+    border-left: 1px solid var(--rule);
+    z-index: 3;
+    transform: translateX(101%);
+    transition: transform 340ms cubic-bezier(.2, 0, .15, 1);
+    padding: clamp(22px, 2.8cqw, 36px);
+    display: flex; flex-direction: column;
+    gap: clamp(16px, 2cqw, 24px);
+    overflow-y: auto;
+  }
+  .pane.is-open .incl-panel { transform: translateX(0); }
+
+  .incl-head { display: flex; flex-direction: column; padding-top: clamp(10px, 1.4cqw, 18px); }
+  .incl-title {
+    font-size: clamp(20px, 2.6cqw, 32px);
+    font-weight: 500;
+    letter-spacing: -0.022em;
+    line-height: 1.05;
+    color: var(--ink);
+    margin: 0;
+    text-align: center;
+  }
+  .incl-list {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: flex; flex-direction: column;
+    border-top: 1px solid var(--rule);
+  }
+  .incl-list li {
+    font-size: clamp(11px, 1.05cqw, 14px);
+    line-height: 1.45;
+    color: var(--gray-deep);
+    padding: clamp(9px, 1.2cqw, 15px) 0;
+    border-bottom: 1px solid var(--rule);
+    letter-spacing: -0.005em;
+  }
+  .incl-list li strong {
+    color: var(--ink);
+    font-weight: 500;
+    letter-spacing: -0.012em;
+  }
+  .incl-cta {
+    color: var(--ox);
+    border-bottom: 1px solid var(--ox);
+    padding-bottom: 3px;
+    font-size: clamp(11px, 1cqw, 13px);
+    font-weight: 500;
+    align-self: flex-start;
+    letter-spacing: -0.005em;
+    display: inline-flex; gap: 4px;
+  }
+
+  /* Dark photographer pane override */
+  .pn-photo .incl-overlay { background: rgba(0,0,0,0.55); }
+  .pn-photo .incl-panel {
+    background: var(--d-paper-2);
+    border-left-color: var(--d-rule);
+    color: var(--d-ink);
+  }
+  .pn-photo .incl-title { color: var(--d-ink); }
+  .pn-photo .incl-list { border-top-color: var(--d-rule); }
+  .pn-photo .incl-list li { color: var(--d-gray); border-bottom-color: var(--d-rule); }
+  .pn-photo .incl-list li strong { color: var(--d-ink); }
+  .pn-photo .incl-cta { color: var(--ox-tint); border-bottom-color: var(--ox-tint); }
+
+  /* Build CTA */
+  .build-cta {
+    margin-top: clamp(40px, 5vw, 56px);
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .build-cta .lede {
+    font-size: clamp(20px, 2vw, 26px);
+    font-weight: 500;
+    letter-spacing: -0.012em;
+    color: var(--ink);
+    margin: 0;
+  }
+  .build-cta a {
+    color: var(--ox);
+    border-bottom: 1px solid var(--ox);
+    padding-bottom: 2px;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  /* ─── Principles ────────────────────────────────────── */
+  .principles {
+    padding: clamp(140px, 18vw, 220px) 0;
+    border-top: 1px solid var(--d-rule);
+  }
+  .principles .label { margin-bottom: 64px; }
+  .principle {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 36px;
+    align-items: baseline;
+    padding: clamp(40px, 5vw, 60px) 0;
+    border-bottom: 1px solid var(--d-rule);
+    cursor: default;
+  }
+  .principle:last-child { border-bottom: none; }
+  .principle .num {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--d-gray);
+    letter-spacing: 0.02em;
+    padding-top: 22px;
+    transition: color 240ms ease;
+  }
+  .principle .text {
+    font-size: clamp(32px, 4.4vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    color: var(--d-gray-2);
+    transition: color 320ms ease;
+    text-wrap: balance;
+  }
+  .principle.is-active .num { color: var(--ox-tint); }
+  .principle.is-active .text { color: var(--d-ink); }
+  .principle.is-active .text .ox { color: var(--ox-tint); }
+  .principle .placeholder-note {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--d-gray);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  @media (max-width: 760px) {
+    .principle { grid-template-columns: 56px 1fr; gap: 18px; }
+    .principle .num { padding-top: 12px; }
+  }
+
+  /* ─── Benefits ──────────────────────────────────────── */
+  .benefits {
+    padding: clamp(140px, 18vw, 200px) 0;
+    border-top: 1px solid var(--d-rule);
+  }
+  .benefits .label { margin-bottom: 32px; }
+  .benefits-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: end;
+    margin-bottom: clamp(64px, 8vw, 96px);
+  }
+  @media (max-width: 860px) { .benefits-intro { grid-template-columns: 1fr; } }
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--d-rule);
+    border: 1px solid var(--d-rule);
+  }
+  @media (max-width: 860px) { .benefits-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .benefits-grid { grid-template-columns: 1fr; } }
+  .benefit {
+    background: var(--d-paper);
+    padding: clamp(28px, 4vw, 44px);
+    display: flex; flex-direction: column; gap: 14px;
+    min-height: 240px;
+  }
+  .benefit .n {
+    font-size: 13px;
+    color: var(--ox-tint);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .benefit h3 {
+    font-size: clamp(22px, 2vw, 28px);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin: 0;
+    color: var(--d-ink);
+  }
+  .benefit p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--d-gray);
+    margin: 0;
+  }
+
+  /* ─── Process ───────────────────────────────────────── */
+  .process {
+    padding: clamp(140px, 18vw, 200px) 0;
+    border-top: 1px solid var(--d-rule);
+  }
+  .process .label { margin-bottom: 32px; }
+  .process-head {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: end;
+    margin-bottom: clamp(56px, 8vw, 80px);
+  }
+  @media (max-width: 860px) { .process-head { grid-template-columns: 1fr; } }
+  .steps {
+    display: grid; gap: 0;
+    border-top: 1px solid var(--d-rule);
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 80px 1.2fr 1.6fr 140px;
+    gap: 28px;
+    align-items: baseline;
+    padding: clamp(28px, 4vw, 40px) 0;
+    border-bottom: 1px solid var(--d-rule);
+  }
+  @media (max-width: 860px) {
+    .step {
+      grid-template-columns: 60px 1fr;
+      gap: 14px 18px;
+      row-gap: 8px;
+    }
+    .step .step-blurb { grid-column: 2 / -1; }
+    .step .step-time  { grid-column: 2 / -1; color: var(--d-gray); }
+  }
+  .step .step-num {
+    font-size: 16px; color: var(--d-gray); font-weight: 500;
+  }
+  .step .step-title {
+    font-size: clamp(22px, 2.4vw, 32px);
+    line-height: 1.15;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--d-ink);
+  }
+  .step .step-blurb {
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: var(--d-gray);
+    max-width: 52ch;
+  }
+  .step .step-time {
+    font-size: 13px;
+    color: var(--ox-tint);
+    text-align: right;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* ─── Contact ───────────────────────────────────────── */
+  .contact {
+    padding: clamp(140px, 18vw, 220px) 0 clamp(80px, 10vw, 120px);
+    border-top: 1px solid var(--d-rule);
+  }
+  .contact .label { margin-bottom: 40px; }
+  .contact-stmt { margin-bottom: clamp(48px, 6vw, 80px); }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(24px, 3vw, 40px);
+    align-items: start;
+    padding-top: clamp(40px, 5vw, 64px);
+    border-top: 1px solid var(--d-rule);
+  }
+  @media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; } }
+  .contact-grid .email {
+    font-size: clamp(28px, 3.6vw, 52px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--d-ink);
+    line-height: 1.05;
+    min-width: 0;
+  }
+  @media (min-width: 861px) {
+    .contact-grid .email { white-space: nowrap; }
+  }
+  .contact-grid .email a {
+    border-bottom: 1px solid var(--d-rule);
+    padding-bottom: 6px;
+    transition: color 160ms ease, border-color 160ms ease;
+  }
+  .contact-grid .email a:hover { color: var(--ox-tint); border-color: var(--ox-tint); }
+  .contact-side {
+    display: flex; flex-direction: column; gap: 16px;
+    justify-self: end;
+    flex-shrink: 0;
+  }
+  .contact-side .meta {
+    font-size: 13px;
+    color: var(--d-gray);
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+
+  /* ─── Footer ────────────────────────────────────────── */
+  .foot {
+    padding: 40px 0 64px;
+    border-top: 1px solid var(--d-rule);
+    color: var(--d-gray);
+    font-size: 13px;
+  }
+  .foot-inner {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .foot-mark {
+    display: flex; align-items: center;
+  }
+  .foot-mark img {
+    height: 64px; width: auto; margin: -12px 0;
+    filter: invert(1) sepia(0.12) saturate(0.5) brightness(1.05);
+  }
+
+  /* ─── Sticky pill ───────────────────────────────────── */
+  .pill {
+    position: fixed; left: 50%; bottom: 22px;
+    transform: translateX(-50%);
+    z-index: 70;
+    display: inline-flex; align-items: center;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 999px;
+    padding: 6px 6px 6px 22px;
+    box-shadow: 0 16px 40px rgba(15,15,16,0.22);
+    gap: 14px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: opacity 220ms ease, transform 220ms ease, visibility 220ms;
+  }
+  .pill.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(14px);
+  }
+  .pill-pricing {
+    color: var(--paper);
+    opacity: 0.78;
+    transition: opacity 160ms ease;
+  }
+  .pill-pricing:hover { opacity: 1; }
+  .pill-sep {
+    width: 1px; height: 18px;
+    background: rgba(255,255,255,0.18);
+  }
+  .pill-cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 8px 16px 8px 8px;
+    border-radius: 999px;
+    transition: background 160ms ease, color 160ms ease;
+  }
+  .pill-cta:hover { background: var(--ox); color: var(--paper); }
+  .pill-avatar {
+    width: 26px; height: 26px; border-radius: 50%;
+    background:
+      radial-gradient(120% 100% at 40% 30%, var(--ox-tint), var(--ox) 60%, var(--ox-deep)),
+      var(--ox);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--paper);
+    font-size: 11px; font-weight: 600;
+    border: 1.5px solid var(--paper);
+  }
+  @media (max-width: 560px) {
+    .pill { font-size: 13px; padding: 4px 4px 4px 18px; }
+    .pill-pricing { display: none; }
+    .pill-sep { display: none; }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- ─── Nav ─────────────────────────────────────────────── -->
+<nav class="nav" id="nav" data-screen-label="Nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand" aria-label="Freeform Works">
+      <img src="assets/fw-lockup.png" alt="Freeform Works" />
+    </a>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#build">What I build</a>
+      <a href="#principles">Principles</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="nav-cta">
+      <span>Let's chat</span>
+      <span>↗</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ─── Hero ────────────────────────────────────────────── -->
+<section class="hero" id="top" data-screen-label="01 Hero">
+  <div class="wrap">
+    <p class="label">An independent studio · Tuscaloosa, AL</p>
+
+    <div class="hero-grid">
+      <div>
+        <h1 class="stmt hero-stmt">
+          <span class="ink">Freeform Works</span> builds
+          <span class="ink">custom websites</span> for small businesses.
+          <span class="ox">Real code, no templates.</span>
+        </h1>
+
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-primary">
+            <span>Book a 15-min call</span>
+            <span class="arr">↗</span>
+          </a>
+          <a href="#work" class="btn btn-ghost">
+            <span>See the work</span>
+            <span class="arr">↓</span>
+          </a>
+        </div>
+      </div>
+
+      <figure class="hero-art" aria-hidden="true">
+        <img src="assets/hero-monitor.png" alt="" loading="eager" />
+      </figure>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── Work ────────────────────────────────────────────── -->
+<section id="work" data-screen-label="02 Work">
+  <div class="wrap">
+    <div class="work-head">
+      <p class="label">Selected work · 01</p>
+      <p class="body" style="justify-self: end; text-align: left; margin: 0;">
+        One project in evidence. The brief was a small, fast, editorial
+        portfolio that loaded instantly and read like the photographer's eye.
+      </p>
+    </div>
+
+    <h2 class="stmt" style="font-size: clamp(32px, 4.4vw, 64px); margin-bottom: clamp(40px, 5vw, 64px);">
+      <span class="ink">Lemoose Productions</span>. A portrait portfolio that loads in
+      <span class="ink">under half a second</span> and feels considered, not templated.
+    </h2>
+
+    <a class="browser" href="https://lemooseproductions.com" target="_blank" rel="noopener noreferrer" aria-label="Visit lemooseproductions.com">
+      <div class="browser-bar browser-bar--with-tabs" aria-hidden="true">
+        <div class="browser-top">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <div class="browser-tabs">
+            <span class="browser-tab is-active is-static">
+              <span class="browser-favicon" style="--fav-bg:#1c1c1f">LP</span>
+              <span class="browser-tab-label">Lemoose Productions</span>
+              <span class="browser-tab-close" aria-hidden="true">×</span>
+            </span>
+          </div>
+        </div>
+        <div class="browser-omnibox">
+          <div class="browser-url">lemooseproductions.com</div>
+        </div>
+      </div>
+      <div class="browser-shot">
+        <img src="assets/lemooseproductions-hero.png" alt="Lemoose Productions homepage — dark moody hero with halftone wordmark over an automotive close-up">
+      </div>
+    </a>
+
+    <div class="case-meta">
+      <div>
+        <div class="k">Client</div>
+        <div class="v">Lemoose Productions</div>
+      </div>
+      <div>
+        <div class="k">Sector</div>
+        <div class="v">Portrait photography</div>
+      </div>
+      <div>
+        <div class="k">Year</div>
+        <div class="v">2026</div>
+      </div>
+      <div>
+        <div class="k">Role</div>
+        <div class="v">Design &amp; build</div>
+      </div>
+      <div>
+        <div class="k">URL</div>
+        <a class="v" href="https://lemooseproductions.com" target="_blank" rel="noopener noreferrer">lemooseproductions.com&nbsp;↗</a>
+      </div>
+    </div>
+
+    <div class="stats-strip">
+      <div>
+        <div class="v">0.4<span class="unit">&nbsp;s</span></div>
+        <div class="k">Largest contentful paint</div>
+      </div>
+      <div>
+        <div class="v">99<span class="unit">&nbsp;/&nbsp;100</span></div>
+        <div class="k">Lighthouse</div>
+      </div>
+      <div>
+        <div class="v">1.2<span class="unit">&nbsp;MB</span></div>
+        <div class="k">Page weight</div>
+      </div>
+      <div>
+        <div class="v">9<span class="unit">&nbsp;days</span></div>
+        <div class="k">Build time</div>
+      </div>
+    </div>
+
+    <figure class="quote-card">
+      <div class="quote-avatar" aria-hidden="true">DM</div>
+      <div>
+        <blockquote class="quote-body" style="margin: 0;">
+          &ldquo;The bar was set <strong>higher than I asked for</strong>. The site
+          loaded faster than the one I left, and it actually looked like <strong>my work</strong>.&rdquo;
+        </blockquote>
+        <figcaption class="quote-cite">
+          <span class="who">D. Moose</span> &nbsp;·&nbsp; Lemoose Productions
+        </figcaption>
+      </div>
+    </figure>
+    <p class="work-footer">
+      <span class="note">More case studies arrive as projects ship.</span>
+      <a href="#contact" style="color: var(--ox); border-bottom: 1px solid var(--ox); padding-bottom: 2px;">Become the second &nbsp;↗</a>
+    </p>
+  </div>
+</section>
+
+<!-- ─── What I Build ────────────────────────────────────── -->
+<section id="build" data-screen-label="03 What I Build">
+  <div class="wrap">
+    <div class="build-head">
+      <p class="label">What I build · 02</p>
+      <h2>Six common builds. Each one is a starting point, not a fixed package.</h2>
+    </div>
+
+    <div class="tabshell" id="build-tabs">
+      <div class="browser-top">
+        <div class="browser-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="browser-tabs" role="tablist" aria-label="Build types">
+          <button class="browser-tab tabbtn is-active" role="tab" data-tab="rest" data-url="harrysramen.com">
+            <span class="browser-favicon" style="--fav-bg:#c23b3b" aria-hidden="true">HR</span>
+            <span class="browser-tab-label">Restaurants</span>
+            <span class="browser-tab-close" aria-hidden="true">×</span>
+          </button>
+          <button class="browser-tab tabbtn" role="tab" data-tab="barb" data-url="fadesbypaul.com">
+            <span class="browser-favicon" style="--fav-bg:#2c3e6b" aria-hidden="true">FP</span>
+            <span class="browser-tab-label">Barbershops &amp; Salons</span>
+            <span class="browser-tab-close" aria-hidden="true">×</span>
+          </button>
+          <button class="browser-tab tabbtn" role="tab" data-tab="photo" data-url="hollisreid.studio">
+            <span class="browser-favicon" style="--fav-bg:#1a1a1c" aria-hidden="true">HL</span>
+            <span class="browser-tab-label">Photographers</span>
+            <span class="browser-tab-close" aria-hidden="true">×</span>
+          </button>
+          <button class="browser-tab tabbtn" role="tab" data-tab="flor" data-url="bluestemfloral.com">
+            <span class="browser-favicon" style="--fav-bg:#3d6b4f" aria-hidden="true">BF</span>
+            <span class="browser-tab-label">Florists</span>
+            <span class="browser-tab-close" aria-hidden="true">×</span>
+          </button>
+          <button class="browser-tab tabbtn" role="tab" data-tab="lawn" data-url="redoakgrounds.com">
+            <span class="browser-favicon" style="--fav-bg:#6b4423" aria-hidden="true">RO</span>
+            <span class="browser-tab-label">Lawn care</span>
+            <span class="browser-tab-close" aria-hidden="true">×</span>
+          </button>
+          <button class="browser-tab tabbtn" role="tab" data-tab="retail" data-url="northrivergeneral.com">
+            <span class="browser-favicon" style="--fav-bg:#2a5c5c" aria-hidden="true">NG</span>
+            <span class="browser-tab-label">Retail</span>
+            <span class="browser-tab-close" aria-hidden="true">×</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="tabchrome">
+        <div class="taburl" id="build-url">harrysramen.com</div>
+        <button class="incl-trigger" id="incl-trigger" aria-expanded="false">What's included <span class="arr" aria-hidden="true">↗</span></button>
+      </div>
+
+      <div class="tabcanvas">
+
+        <!-- ─ Restaurants ─ -->
+        <div class="pane pn-rest is-active" data-panel="rest" role="tabpanel">
+          <div class="mk-bar">
+            <div class="mk-brand">Harry's<span class="dot">·</span>Ramen</div>
+            <div class="mk-nav"><span>Menu</span><span>Order</span><span>Reserve</span><span>Find us</span></div>
+          </div>
+
+          <div class="mk-hero">
+            <div>
+              <h2>House-pulled noodles. <span class="ox">Tonkotsu in six hours.</span></h2>
+              <p>A small ramen counter on University Boulevard. Open Wednesday through Sunday, four o'clock until the broth is gone.</p>
+              <a class="mk-cta ox">Order now <span>↗</span></a>
+              <div class="dd-row">
+                <span class="dd-badge">DoorDash · 25 min</span>
+              </div>
+            </div>
+            <div class="reserve-card">
+              <div class="eb">Reservation</div>
+              <div class="row"><span class="lbl">Date</span><span class="val">Fri, May 22</span></div>
+              <div class="row"><span class="lbl">Time</span><span class="val">7:30 PM</span></div>
+              <div class="row"><span class="lbl">Party</span><span class="val">2 guests</span></div>
+              <a class="mk-cta">Reserve <span>↗</span></a>
+            </div>
+          </div>
+
+          <div class="menu">
+            <div class="dish">
+              <div class="mk-tile dish-img"></div>
+              <div class="dish-row"><span>Tonkotsu</span><span class="px">$14</span></div>
+              <div class="dish-desc">Pork bone, soft egg, scallion.</div>
+            </div>
+            <div class="dish">
+              <div class="mk-tile dish-img"></div>
+              <div class="dish-row"><span>Spicy Miso</span><span class="px">$15</span></div>
+              <div class="dish-desc">Three-week white miso, chili oil.</div>
+            </div>
+            <div class="dish">
+              <div class="mk-tile dish-img"></div>
+              <div class="dish-row"><span>Shoyu</span><span class="px">$13</span></div>
+              <div class="dish-desc">Chicken stock, soy, menma.</div>
+            </div>
+            <div class="dish">
+              <div class="mk-tile dish-img"></div>
+              <div class="dish-row"><span>Tsukemen</span><span class="px">$16</span></div>
+              <div class="dish-desc">Cold noodles, hot dipping broth.</div>
+            </div>
+          </div>
+
+          <div class="incl-overlay" data-close aria-hidden="true"></div>
+          <aside class="incl-panel" aria-label="What's included for restaurants">
+            <div class="incl-head">
+              <h3 class="incl-title">For Restaurants</h3>
+            </div>
+            <ul class="incl-list">
+              <li><strong>Direct ordering through DoorDash, Uber Eats, or Grubhub</strong> at 0% commission, replacing the 15-30% they take on app orders.</li>
+              <li><strong>A menu you own</strong> instead of scattered across places.singleplatform.com, Linktree, and the apps.</li>
+              <li><strong>Reservation system</strong> built-in or via OpenTable embed.</li>
+              <li><strong>Hours, location, and contact</strong> kept consistent across Google, Facebook, and the site.</li>
+              <li><strong>Press and reviews consolidated</strong> from Yelp, Tripadvisor, Google, and any feature mentions.</li>
+              <li><strong>Fast on mobile</strong> because that's where most orders start.</li>
+            </ul>
+            <a class="incl-cta" href="#contact">Start a project <span aria-hidden="true">↗</span></a>
+          </aside>
+        </div>
+
+        <!-- ─ Barbershops ─ -->
+        <div class="pane pn-barb" data-panel="barb" role="tabpanel">
+          <div class="mk-bar">
+            <div class="mk-brand">Fades by Paul</div>
+            <div class="mk-nav"><span>Book</span><span>Services</span><span>About</span><span>Hours</span></div>
+          </div>
+
+          <div style="margin-top: clamp(16px, 2cqw, 24px);">
+            <h2>Cuts for working men. <br/>Downtown Tuscaloosa.</h2>
+            <p class="sub">Open Tuesday through Saturday. Walk-ins welcome, online booking preferred.</p>
+          </div>
+
+          <div class="mk-body">
+            <div class="booking">
+              <div class="eb">Pick a date</div>
+              <div class="cal">
+                <div class="dn">M</div><div class="dn">T</div><div class="dn">W</div><div class="dn">T</div><div class="dn">F</div><div class="dn">S</div><div class="dn">S</div>
+                <div class="d dim">28</div><div class="d dim">29</div><div class="d dim">30</div><div class="d">1</div><div class="d dot">2</div><div class="d">3</div><div class="d">4</div>
+                <div class="d">5</div><div class="d dot">6</div><div class="d">7</div><div class="d dot">8</div><div class="d">9</div><div class="d act">10</div><div class="d">11</div>
+                <div class="d">12</div><div class="d dot">13</div><div class="d">14</div><div class="d">15</div><div class="d dot">16</div><div class="d">17</div><div class="d">18</div>
+              </div>
+
+              <div class="eb" style="margin-top: 4px;">Times for Sat, May 10</div>
+              <div class="slots">
+                <div class="slot off">9:00</div>
+                <div class="slot">9:45</div>
+                <div class="slot">10:30</div>
+                <div class="slot act">11:15</div>
+                <div class="slot">1:00</div>
+                <div class="slot">1:45</div>
+                <div class="slot off">2:30</div>
+                <div class="slot">3:15</div>
+                <div class="slot">4:00</div>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column;">
+              <div class="eb" style="font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: clamp(9px, 0.8cqw, 11px); color: var(--gray); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: clamp(6px, 0.8cqw, 10px);">Services</div>
+              <div class="services">
+                <div class="service"><span class="n">Haircut</span><span class="dot-row"></span><span class="p">$25</span></div>
+                <div class="service"><span class="n">Beard trim</span><span class="dot-row"></span><span class="p">$15</span></div>
+                <div class="service"><span class="n">Fade</span><span class="dot-row"></span><span class="p">$30</span></div>
+                <div class="service"><span class="n">Hot towel</span><span class="dot-row"></span><span class="p">$10</span></div>
+                <div class="service"><span class="n">Father + son</span><span class="dot-row"></span><span class="p">$40</span></div>
+              </div>
+
+              <div class="reserve-row">
+                <span class="deposit">Deposit · $10 · held until visit</span>
+                <a class="mk-cta">Reserve <span>↗</span></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="incl-overlay" data-close aria-hidden="true"></div>
+          <aside class="incl-panel" aria-label="What's included for barbershops and salons">
+            <div class="incl-head">
+              <h3 class="incl-title">For Barbershops &amp; Salons</h3>
+            </div>
+            <ul class="incl-list">
+              <li><strong>Booking embedded on your own domain</strong> through GlossGenius, Square Appointments, or Vagaro, not a marketplace platform that shows competitors next to you every time someone rebooks.</li>
+              <li><strong>Deposit collection at booking</strong> to cut no-shows and stop chasing payment.</li>
+              <li><strong>Automated text and email confirmations and reminders</strong> instead of manual follow-up.</li>
+              <li><strong>Stylist-specific scheduling</strong> so clients book the right person, not just an open slot.</li>
+              <li><strong>A real home base that buries aggregator pages</strong> like wannabiz and com-place currently ranking above you in Google.</li>
+              <li><strong>Service menu with pricing</strong> that doubles as portfolio space.</li>
+            </ul>
+            <a class="incl-cta" href="#contact">Start a project <span aria-hidden="true">↗</span></a>
+          </aside>
+        </div>
+
+        <!-- ─ Photographers (dark editorial) ─ -->
+        <div class="pane pn-photo" data-panel="photo" role="tabpanel">
+          <div class="mk-bar">
+            <div class="mk-brand">HOLLIS REID</div>
+            <div class="mk-nav" style="align-items: center;">
+              <span>Work</span><span>Studio</span><span>Contact</span>
+              <span class="login">Client login ↗</span>
+            </div>
+          </div>
+
+          <div class="mk-hero">
+            <h2>Quiet rooms,<br/><span class="gr">long looks.</span></h2>
+            <div class="meta">Selected portraits · 2024-2026</div>
+          </div>
+
+          <div class="tiles">
+            <div class="mk-tile dark"><span class="lbl">01 · cover</span></div>
+            <div class="mk-tile dark"><span class="lbl">02</span></div>
+            <div class="mk-tile dark"><span class="lbl">03</span></div>
+            <div class="mk-tile dark"><span class="lbl">04</span></div>
+          </div>
+
+          <div class="packages">
+            <div class="pkg">
+              <span class="n">Portrait session</span>
+              <span class="v">$250</span>
+              <span class="d">Studio session, 12 retouched portraits, online gallery.</span>
+            </div>
+            <div class="pkg">
+              <span class="n">Editorial shoot</span>
+              <span class="v">$400</span>
+              <span class="d">Half-day on location, high-res digital files, two-week turnaround.</span>
+            </div>
+            <div class="pkg fea">
+              <span class="n">Full day</span>
+              <span class="v">$1,200</span>
+              <span class="d">All-day coverage, full edit, half-hour planning call.</span>
+            </div>
+          </div>
+
+          <div class="incl-overlay" data-close aria-hidden="true"></div>
+          <aside class="incl-panel" aria-label="What's included for photographers">
+            <div class="incl-head">
+              <h3 class="incl-title">For Photographers</h3>
+            </div>
+            <ul class="incl-list">
+              <li><strong>Editorial portfolio</strong> with category filtering.</li>
+              <li><strong>Password-protected client galleries.</strong></li>
+              <li><strong>Online proofing</strong> and selection tools.</li>
+              <li><strong>Package and pricing pages.</strong></li>
+              <li><strong>Inquiry and booking forms</strong> with date selection.</li>
+              <li><strong>Print order integration.</strong></li>
+            </ul>
+            <a class="incl-cta" href="#contact">Start a project <span aria-hidden="true">↗</span></a>
+          </aside>
+        </div>
+
+        <!-- ─ Florists ─ -->
+        <div class="pane pn-flor" data-panel="flor" role="tabpanel">
+          <div class="mk-bar">
+            <div class="mk-brand">Bluestem Floral</div>
+            <div class="mk-nav"><span>Shop</span><span>Weddings</span><span>Subscriptions</span><span>Studio</span></div>
+          </div>
+
+          <div class="mk-hero">
+            <div>
+              <span class="mk-eyebrow">Spring '26 · The Spring Edit</span>
+              <h2>Tulips, lilac &amp; <span class="it">wild-cut greens</span></h2>
+            </div>
+            <a class="wedding">Wedding inquiries ↗</a>
+          </div>
+
+          <div class="arr-grid">
+            <div class="arr">
+              <div class="mk-tile arr-img"></div>
+              <div class="arr-info">
+                <div class="arr-row"><span class="arr-name">Aster &amp; Lilac</span><span class="arr-px">$85</span></div>
+                <div class="arr-actions">
+                  <span class="arr-stem">22 stems · vase included</span>
+                  <span class="add">+</span>
+                </div>
+              </div>
+            </div>
+            <div class="arr">
+              <div class="mk-tile arr-img"></div>
+              <div class="arr-info">
+                <div class="arr-row"><span class="arr-name">The Magnolia</span><span class="arr-px">$120</span></div>
+                <div class="arr-actions">
+                  <span class="arr-stem">large · seasonal</span>
+                  <span class="add">+</span>
+                </div>
+              </div>
+            </div>
+            <div class="arr">
+              <div class="mk-tile arr-img"></div>
+              <div class="arr-info">
+                <div class="arr-row"><span class="arr-name">Wildwood</span><span class="arr-px">$65</span></div>
+                <div class="arr-actions">
+                  <span class="arr-stem">hand-tied bunch</span>
+                  <span class="add">+</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ftr">
+            <span>Delivery · Tuscaloosa &amp; Northport</span>
+            <span>Subscribe for seasonal drops ↗</span>
+          </div>
+
+          <div class="incl-overlay" data-close aria-hidden="true"></div>
+          <aside class="incl-panel" aria-label="What's included for florists">
+            <div class="incl-head">
+              <h3 class="incl-title">For Florists</h3>
+            </div>
+            <ul class="incl-list">
+              <li><strong>Seasonal catalog</strong> with inventory.</li>
+              <li><strong>E-commerce checkout</strong> for arrangements.</li>
+              <li><strong>Wedding and event inquiry intake.</strong></li>
+              <li><strong>Subscription and recurring orders.</strong></li>
+              <li><strong>Delivery zone management.</strong></li>
+              <li><strong>Care instruction cards.</strong></li>
+            </ul>
+            <a class="incl-cta" href="#contact">Start a project <span aria-hidden="true">↗</span></a>
+          </aside>
+        </div>
+
+        <!-- ─ Lawn care ─ -->
+        <div class="pane pn-lawn" data-panel="lawn" role="tabpanel">
+          <div class="mk-bar">
+            <div class="mk-brand">Red Oak Grounds</div>
+            <div class="mk-nav"><span>Services</span><span>Coverage</span><span>Gallery</span><span>Quote</span></div>
+          </div>
+
+          <div style="margin-top: clamp(14px, 1.8cqw, 22px);">
+            <h2>Lawn care &amp; grounds work, West Alabama.</h2>
+            <p class="sub">Family-owned, eight trucks, three crews. Weekly maintenance through full-property restoration.</p>
+          </div>
+
+          <div class="mk-body">
+            <div class="map">
+              <div class="county"            style="top: 8%;  left: 14%;">Fayette</div>
+              <div class="county"            style="top: 10%; left: 52%;">Walker</div>
+              <div class="county serviced"   style="top: 32%; left: 8%;">Pickens</div>
+              <div class="county serviced"   style="top: 36%; left: 38%;">Tuscaloosa</div>
+              <div class="county"            style="top: 38%; left: 72%;">Jefferson</div>
+              <div class="county serviced"   style="top: 60%; left: 16%;">Greene</div>
+              <div class="county serviced"   style="top: 62%; left: 44%;">Hale</div>
+              <div class="county"            style="top: 64%; left: 74%;">Bibb</div>
+              <div class="map-legend">● Service area</div>
+            </div>
+
+            <div class="right">
+              <div class="ba">
+                <div>
+                  <div class="mk-tile"><span class="lbl">Before</span></div>
+                </div>
+                <div>
+                  <div class="mk-tile"><span class="lbl">After</span></div>
+                </div>
+              </div>
+
+              <div class="form">
+                <div class="eb">Quote request</div>
+                <div class="row"><span class="lbl">Name</span><span class="val">Will Carter</span></div>
+                <div class="row"><span class="lbl">Address</span><span class="val">1820 8th St, Tuscaloosa</span></div>
+                <div class="row"><span class="lbl">Service needed</span><span class="val">Mowing + edging, weekly</span></div>
+                <a class="mk-cta submit">Send request <span>↗</span></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="incl-overlay" data-close aria-hidden="true"></div>
+          <aside class="incl-panel" aria-label="What's included for lawn care and contractors">
+            <div class="incl-head">
+              <h3 class="incl-title">For Lawn Care &amp; Contractors</h3>
+            </div>
+            <ul class="incl-list">
+              <li><strong>Service area map</strong> with covered counties.</li>
+              <li><strong>Quote request forms</strong> with photo upload.</li>
+              <li><strong>Before-and-after portfolio.</strong></li>
+              <li><strong>Service menu</strong> with starting prices.</li>
+              <li><strong>Recurring and seasonal scheduling.</strong></li>
+              <li><strong>Customer review display.</strong></li>
+            </ul>
+            <a class="incl-cta" href="#contact">Start a project <span aria-hidden="true">↗</span></a>
+          </aside>
+        </div>
+
+        <!-- ─ Retail ─ -->
+        <div class="pane pn-retail" data-panel="retail" role="tabpanel">
+          <div class="mk-bar">
+            <div class="mk-brand">Northriver General</div>
+            <div class="mk-nav"><span>Shop</span><span>Workshop</span><span>Stockists</span><span>Cart · 1</span></div>
+          </div>
+
+          <div class="mk-body">
+            <div class="grid">
+              <div class="prod">
+                <div class="mk-tile prod-img"></div>
+                <div class="prod-name">Field shirt</div>
+                <div class="prod-px">$78</div>
+              </div>
+              <div class="prod sel">
+                <div class="mk-tile prod-img"></div>
+                <div class="prod-name">Waxed canvas tote</div>
+                <div class="prod-px">$94</div>
+              </div>
+              <div class="prod">
+                <div class="mk-tile prod-img"></div>
+                <div class="prod-name">Enamel mug</div>
+                <div class="prod-px">$22</div>
+              </div>
+              <div class="prod">
+                <div class="mk-tile prod-img"></div>
+                <div class="prod-name">Wool blanket</div>
+                <div class="prod-px">$148</div>
+              </div>
+              <div class="prod">
+                <div class="mk-tile prod-img"></div>
+                <div class="prod-name">Work apron</div>
+                <div class="prod-px">$64</div>
+              </div>
+              <div class="prod">
+                <div class="mk-tile prod-img"></div>
+                <div class="prod-name">Knife roll</div>
+                <div class="prod-px">$112</div>
+              </div>
+            </div>
+
+            <div class="detail">
+              <div class="mk-tile detail-img"></div>
+              <p class="det-name">Waxed canvas tote</p>
+              <p class="det-px">$94.00</p>
+
+              <div>
+                <div class="det-key">Size</div>
+                <div class="opt-row">
+                  <span class="opt">S</span>
+                  <span class="opt sel">M</span>
+                  <span class="opt">L</span>
+                </div>
+              </div>
+
+              <div>
+                <div class="det-key">Color</div>
+                <div class="opt-row" style="align-items: center;">
+                  <span class="swatch sel" style="background: #2A2A2C;"></span>
+                  <span class="swatch" style="background: #8C7656;"></span>
+                  <span class="swatch" style="background: #B7B1A5;"></span>
+                </div>
+              </div>
+
+              <div class="toggle">
+                <button class="sel">Add to cart</button>
+                <button>Pickup in store</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="incl-overlay" data-close aria-hidden="true"></div>
+          <aside class="incl-panel" aria-label="What's included for retail and boutiques">
+            <div class="incl-head">
+              <h3 class="incl-title">For Retail &amp; Boutiques</h3>
+            </div>
+            <ul class="incl-list">
+              <li><strong>Product catalog</strong> with variants.</li>
+              <li><strong>Shopping cart and checkout.</strong></li>
+              <li><strong>In-store pickup option.</strong></li>
+              <li><strong>Inventory display</strong> with in-stock and sold-out states.</li>
+              <li><strong>Size, color, and material selectors.</strong></li>
+              <li><strong>Stockist or wholesale section.</strong></li>
+            </ul>
+            <a class="incl-cta" href="#contact">Start a project <span aria-hidden="true">↗</span></a>
+          </aside>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="build-cta">
+      <p class="lede">Don't see your business? Tell me what you'd want.</p>
+      <a href="#contact">Start the conversation &nbsp;↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Principles (dark) ──────────────────────────────── -->
+<section id="principles" class="dark principles" data-screen-label="04 Principles">
+  <div class="wrap">
+    <p class="label">Principles · 03</p>
+
+    <p class="stmt" style="font-size: clamp(28px, 3.4vw, 44px); margin-bottom: clamp(72px, 10vw, 120px); max-width: 36ch;">
+      <span class="ink">Five things</span> Freeform Works keeps coming back to.
+      <span class="ox">A working draft, not a manifesto.</span>
+    </p>
+
+    <div id="principle-list">
+      <div class="principle" data-i="1">
+        <div class="num">[ 01 ]</div>
+        <p class="text"><span class="ox">The work</span> is the marketing. Everything else is overhead.</p>
+      </div>
+      <div class="principle" data-i="2">
+        <div class="num">[ 02 ]</div>
+        <p class="text">A page that loads in half a second wins arguments a beautiful one can't.</p>
+      </div>
+      <div class="principle" data-i="3">
+        <div class="num">[ 03 ]</div>
+        <p class="text">Templates are how studios end up looking like their competitors. Refuse them.</p>
+      </div>
+      <div class="principle" data-i="4">
+        <div class="num">[ 04 ]</div>
+        <p class="text">Maintenance is a craft, not a fee. Quiet edits beat loud redesigns.</p>
+      </div>
+      <div class="principle" data-i="5">
+        <div class="num">[ 05 ]</div>
+        <p class="text">AI accelerates the boring parts. The taste is still the work.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Contact (dark) ─────────────────────────────────── -->
+<section id="contact" class="dark contact" data-screen-label="05 Contact">
+  <div class="wrap">
+    <p class="label">Contact · 04</p>
+
+    <h2 class="stmt contact-stmt">
+      <span class="ink">Tell me about the studio you're building</span>, even if the
+      brief is still a couple of sentences.
+      <span class="ox">I reply within one working day.</span>
+    </h2>
+
+    <div class="contact-grid">
+      <p class="email" style="margin: 0;">
+        <a href="mailto:hello@freeformworks.com">hello@freeformworks.com</a>
+      </p>
+      <div class="contact-side">
+        <span class="meta">Or, more directly</span>
+        <a href="#" class="btn btn-primary" style="align-self: flex-start;">
+          <span>Book a 15-min call</span>
+          <span class="arr">↗</span>
+        </a>
+        <span class="meta">Calendly &nbsp;·&nbsp; 15 min &nbsp;·&nbsp; free</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer (dark) ──────────────────────────────────── -->
+<footer class="dark foot">
+  <div class="wrap foot-inner">
+    <div class="foot-mark">
+      <img src="assets/fw-lockup.png" alt="Freeform Works" />
+    </div>
+    <div>Tuscaloosa, AL &nbsp;·&nbsp; &copy; 2026</div>
+    <div><a href="#top" style="color: var(--d-ink); border-bottom: 1px solid var(--d-rule); padding-bottom: 2px;">Back to top ↑</a></div>
+  </div>
+</footer>
+
+<!-- ─── Sticky pill ────────────────────────────────────── -->
+<div class="pill" role="navigation" aria-label="Quick contact">
+  <a href="#build" class="pill-pricing">What I build</a>
+  <span class="pill-sep" aria-hidden="true"></span>
+  <a href="#contact" class="pill-cta">
+    <span class="pill-avatar" aria-hidden="true">AG</span>
+    <span>Let's chat</span>
+    <span>↗</span>
+  </a>
+</div>
+
+<script>
+  // Sync nav theme with whichever section is currently under the bar.
+  (function () {
+    const nav = document.getElementById('nav');
+    const sections = Array.from(document.querySelectorAll('section, footer'));
+    const navHeight = 88;
+
+    function syncNavTheme() {
+      const probe = navHeight + 2;
+      // Find the section whose box intersects the line just under the nav.
+      let current = null;
+      for (const sec of sections) {
+        const r = sec.getBoundingClientRect();
+        if (r.top <= probe && r.bottom > probe) { current = sec; break; }
+      }
+      const isDark = current && current.classList.contains('dark');
+      nav.classList.toggle('is-dark', !!isDark);
+      document.querySelector('meta[name="theme-color"]')
+        ?.setAttribute('content', isDark ? '#0E0E10' : '#FCFBF9');
+    }
+
+    window.addEventListener('scroll', syncNavTheme, { passive: true });
+    window.addEventListener('resize', syncNavTheme);
+    syncNavTheme();
+  })();
+
+  // Principles. Highlight the one closest to viewport center.
+  (function () {
+    const list = document.getElementById('principle-list');
+    if (!list) return;
+    const items = Array.from(list.querySelectorAll('.principle'));
+
+    function highlight() {
+      const center = window.innerHeight * 0.42;
+      let best = null;
+      let bestDist = Infinity;
+      for (const el of items) {
+        const r = el.getBoundingClientRect();
+        const mid = r.top + r.height / 2;
+        const dist = Math.abs(mid - center);
+        if (dist < bestDist) { bestDist = dist; best = el; }
+      }
+      items.forEach(el => el.classList.toggle('is-active', el === best));
+    }
+
+    // Only run highlight while the principles section is in view.
+    const section = document.getElementById('principles');
+    let active = false;
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        active = e.isIntersecting;
+        if (active) highlight();
+        else items.forEach(el => el.classList.remove('is-active'));
+      }
+    }, { threshold: 0 });
+    io.observe(section);
+
+    window.addEventListener('scroll', () => { if (active) highlight(); }, { passive: true });
+    window.addEventListener('resize', () => { if (active) highlight(); });
+  })();
+
+  // What I build — tab switcher
+  (function () {
+    const root = document.getElementById('build-tabs');
+    if (!root) return;
+    const tabs   = Array.from(root.querySelectorAll('.tabbtn'));
+    const panes  = Array.from(root.querySelectorAll('.pane'));
+    const urlEl  = document.getElementById('build-url');
+    const trigger = document.getElementById('incl-trigger');
+
+    function closeIncl() {
+      panes.forEach(p => p.classList.remove('is-open'));
+      if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    }
+
+    function activate(key) {
+      tabs.forEach(t => t.classList.toggle('is-active', t.dataset.tab === key));
+      panes.forEach(p => {
+        p.classList.toggle('is-active', p.dataset.panel === key);
+      });
+      closeIncl();
+      const tab = tabs.find(t => t.dataset.tab === key);
+      if (tab && urlEl) {
+        urlEl.style.opacity = '0';
+        setTimeout(() => {
+          urlEl.textContent = tab.dataset.url;
+          urlEl.style.opacity = '1';
+        }, 140);
+      }
+    }
+
+    tabs.forEach(t => t.addEventListener('click', () => activate(t.dataset.tab)));
+
+    // What's included trigger
+    if (trigger) {
+      trigger.addEventListener('click', () => {
+        const active = panes.find(p => p.classList.contains('is-active'));
+        if (!active) return;
+        const open = active.classList.toggle('is-open');
+        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    }
+
+    // Click on overlay closes
+    root.addEventListener('click', (e) => {
+      if (e.target && e.target.matches('.incl-overlay')) closeIncl();
+    });
+
+    // ESC closes
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeIncl();
+    });
+  })();
+
+  // Hide sticky pill when contact CTAs or footer are in view.
+  (function () {
+    const pill = document.querySelector('.pill');
+    const targets = [
+      document.querySelector('.contact-grid'),
+      document.querySelector('footer.foot'),
+    ].filter(Boolean);
+    if (!pill || !targets.length) return;
+
+    const visible = new Map();
+    const sync = () => {
+      const hide = [...visible.values()].some(Boolean);
+      pill.classList.toggle('is-hidden', hide);
+      pill.setAttribute('aria-hidden', hide ? 'true' : 'false');
+    };
+
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) visible.set(e.target, e.isIntersecting);
+      sync();
+    }, { threshold: 0.15, rootMargin: '0px 0px -12% 0px' });
+
+    targets.forEach((t) => io.observe(t));
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Freeform Works. Custom websites for small businesses</title>
+<meta name="description" content="An independent studio that builds custom websites for photographers, florists and videographers. Tuscaloosa, Alabama." />
+<meta name="theme-color" content="#FCFBF9" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    /* Light */
+    --paper:     #FCFBF9;
+    --paper-2:   #F2EFE7;
+    --ink:       #0F0F10;
+    --gray:      #9A9A9E;
+    --gray-deep: #56565A;
+    --rule:      rgba(15, 15, 16, 0.10);
+    --rule-soft: rgba(15, 15, 16, 0.06);
+
+    /* Accent. Oxblood */
+    --ox:        #7C2031;
+    --ox-deep:   #5A1623;
+    --ox-tint:   #A85063;
+
+    /* Dark. Warm charcoal */
+    --d-paper:    #0E0E10;
+    --d-paper-2:  #18181B;
+    --d-paper-3:  #222226;
+    --d-ink:      #F1ECE2;
+    --d-gray:     #6F6B66;
+    --d-gray-2:   #44423E;
+    --d-rule:     rgba(241, 236, 226, 0.10);
+
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    --container: 1320px;
+    --pad-x: clamp(24px, 5vw, 80px);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection { background: var(--ox); color: var(--paper); }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  /* ─── Layout ─────────────────────────────────────────── */
+  .wrap {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding-left: var(--pad-x);
+    padding-right: var(--pad-x);
+  }
+
+  section { padding: clamp(96px, 14vw, 180px) 0; position: relative; }
+
+  /* Dark sections */
+  .dark { background: var(--d-paper); color: var(--d-ink); }
+  .dark a { color: inherit; }
+
+  /* ─── Type ───────────────────────────────────────────── */
+  .label {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ox);
+    margin: 0;
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .label::before {
+    content: "";
+    width: 24px; height: 1px;
+    background: var(--ox);
+    display: inline-block;
+  }
+  .dark .label { color: var(--ox-tint); }
+  .dark .label::before { background: var(--ox-tint); }
+
+  /* The signature device. Big sans sentence, key phrases solid, rest gray */
+  .stmt {
+    font-weight: 500;
+    font-size: clamp(36px, 5.6vw, 84px);
+    line-height: 1.04;
+    letter-spacing: -0.022em;
+    color: var(--gray);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .stmt .ink { color: var(--ink); }
+  .stmt .ox  { color: var(--ox); }
+  .dark .stmt { color: var(--d-gray); }
+  .dark .stmt .ink { color: var(--d-ink); }
+  .dark .stmt .ox  { color: var(--ox-tint); }
+
+  .h-sm {
+    font-weight: 500;
+    font-size: clamp(28px, 3.4vw, 44px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0;
+  }
+  .dark .h-sm { color: var(--d-ink); }
+
+  .body {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--gray-deep);
+    max-width: 60ch;
+  }
+  .dark .body { color: var(--d-gray); }
+
+  /* ─── Nav ───────────────────────────────────────────── */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in oklab, var(--paper) 92%, transparent);
+    backdrop-filter: saturate(140%) blur(10px);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
+    border-bottom: 1px solid var(--rule-soft);
+    transition: background 200ms ease, border-color 200ms ease, color 200ms ease;
+  }
+  .nav.is-dark {
+    background: color-mix(in oklab, var(--d-paper) 88%, transparent);
+    border-bottom-color: var(--d-rule);
+    color: var(--d-ink);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 88px;
+  }
+  .brand img {
+    height: 110px; width: auto; margin: -22px 0;
+    transition: filter 200ms ease;
+  }
+  .nav.is-dark .brand img {
+    /* lockup PNG ships black-on-transparent. Flip to cream on dark */
+    filter: invert(1) sepia(0.12) saturate(0.5) brightness(1.05);
+  }
+  .nav-links {
+    display: flex; gap: 32px;
+    font-size: 14.5px;
+    font-weight: 400;
+    color: var(--gray-deep);
+  }
+  .nav-links a { transition: color 160ms ease; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav.is-dark .nav-links { color: var(--d-gray); }
+  .nav.is-dark .nav-links a:hover { color: var(--d-ink); }
+
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 10px 16px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 999px;
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: background 160ms ease, color 160ms ease;
+  }
+  .nav.is-dark .nav-cta {
+    background: var(--d-ink);
+    color: var(--d-paper);
+  }
+  .nav-cta:hover { background: var(--ox); color: var(--paper); }
+
+  @media (max-width: 760px) {
+    .nav-links { display: none; }
+  }
+
+  /* ─── Buttons ───────────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 22px;
+    border-radius: 999px;
+    font-size: 14.5px;
+    font-weight: 500;
+    line-height: 1;
+    transition: background 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
+  }
+  .btn .arr { transition: transform 200ms ease; }
+  .btn:hover .arr { transform: translate(2px, -2px); }
+
+  .btn-primary {
+    background: var(--ink); color: var(--paper);
+  }
+  .btn-primary:hover { background: var(--ox); }
+
+  .btn-ghost {
+    background: transparent; color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--ink);
+  }
+  .btn-ghost:hover { background: var(--ink); color: var(--paper); }
+
+  .dark .btn-primary { background: var(--d-ink); color: var(--d-paper); }
+  .dark .btn-primary:hover { background: var(--ox); color: var(--d-ink); }
+  .dark .btn-ghost { color: var(--d-ink); box-shadow: inset 0 0 0 1px var(--d-ink); }
+  .dark .btn-ghost:hover { background: var(--d-ink); color: var(--d-paper); }
+
+  /* ─── Hero ──────────────────────────────────────────── */
+  .hero { padding-top: clamp(72px, 10vw, 120px); padding-bottom: clamp(140px, 18vw, 220px); }
+  .hero .label { margin-bottom: 40px; }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: clamp(40px, 6vw, 80px);
+    align-items: center;
+  }
+  @media (max-width: 960px) {
+    .hero-grid { grid-template-columns: 1fr; gap: clamp(40px, 6vw, 56px); }
+  }
+  .hero-stmt { font-size: clamp(34px, 4.6vw, 64px); }
+  .hero-art { margin: 0; margin-right: calc(var(--pad-x) * -1); }
+  @media (max-width: 960px) {
+    .hero-art { margin-left: calc(var(--pad-x) * -1); margin-right: calc(var(--pad-x) * -1); }
+  }
+  .hero-art img { width: 100%; height: auto; display: block; }
+  .hero-ctas {
+    display: flex; gap: 12px; flex-wrap: wrap;
+    margin-top: clamp(40px, 5vw, 56px);
+  }
+  .hero-meta {
+    margin-top: clamp(72px, 10vw, 120px);
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 760px) { .hero-meta { grid-template-columns: repeat(2, 1fr); } }
+  .hero-meta .k {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--gray);
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .hero-meta .v {
+    font-size: 16px;
+    color: var(--ink);
+  }
+
+  /* ─── Work ──────────────────────────────────────────── */
+  .work-head {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: end;
+    margin-bottom: clamp(48px, 6vw, 80px);
+  }
+  @media (max-width: 860px) { .work-head { grid-template-columns: 1fr; } }
+
+  /* Browser frame */
+  .browser {
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px -28px rgba(15,15,16,0.18);
+  }
+  .browser-bar {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--rule);
+    background: color-mix(in oklab, var(--paper-2) 70%, var(--paper));
+  }
+  .browser-dots { display: flex; gap: 6px; }
+  .browser-dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: rgba(15,15,16,0.14);
+  }
+  .browser-url {
+    flex: 1;
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--gray-deep);
+    padding: 4px 12px;
+    background: var(--paper);
+    border-radius: 999px;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+  .browser-url a { color: inherit; }
+  .browser-url a:hover { color: var(--ox); }
+
+  .browser-shot {
+    aspect-ratio: 16 / 10;
+    background:
+      linear-gradient(180deg, rgba(15,15,16,0.02), rgba(15,15,16,0)),
+      repeating-linear-gradient(135deg, transparent 0 14px, rgba(15,15,16,0.04) 14px 15px),
+      var(--paper);
+    position: relative;
+  }
+  .browser-shot::after {
+    content: "lemoose.com · hero. Replace with real screenshot";
+    position: absolute; bottom: 18px; left: 22px;
+    font-size: 11px;
+    color: var(--gray);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* Case meta row */
+  .case-meta {
+    margin-top: clamp(48px, 6vw, 64px);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  @media (max-width: 760px) { .case-meta { grid-template-columns: repeat(2, 1fr); } }
+  .case-meta > div { padding: 22px 22px 22px 0; }
+  .case-meta > div + div {
+    border-left: 1px solid var(--rule-soft);
+    padding-left: 22px;
+  }
+  .case-meta .k {
+    font-size: 12.5px; font-weight: 500;
+    color: var(--gray); margin-bottom: 8px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .case-meta .v { font-size: 16px; }
+  .case-meta a.v {
+    color: var(--ox);
+    border-bottom: 1px solid var(--ox);
+    padding-bottom: 1px;
+  }
+
+  /* Stats inline strip. Small four numbers */
+  .stats-strip {
+    margin-top: clamp(40px, 5vw, 56px);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 760px) { .stats-strip { grid-template-columns: repeat(2, 1fr); } }
+  .stats-strip .v {
+    font-size: clamp(34px, 4vw, 52px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .stats-strip .v .unit { color: var(--gray); font-weight: 400; }
+  .stats-strip .k {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--gray-deep);
+  }
+
+  /* Testimonial */
+  .quote-card {
+    margin-top: clamp(96px, 12vw, 140px);
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+  .quote-avatar {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--paper-2);
+    background-image: repeating-linear-gradient(135deg, rgba(15,15,16,0.05) 0 4px, transparent 4px 8px);
+    border: 1px solid var(--rule);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 500; color: var(--gray);
+  }
+  .quote-body {
+    font-size: clamp(22px, 2.4vw, 32px);
+    line-height: 1.32;
+    letter-spacing: -0.012em;
+    color: var(--gray-deep);
+    max-width: 30ch;
+  }
+  .quote-body strong { color: var(--ink); font-weight: 500; }
+  .quote-cite {
+    margin-top: 18px;
+    font-size: 14px;
+    color: var(--gray);
+  }
+  .quote-cite .who { color: var(--ink); font-weight: 500; }
+
+  /* ─── Mission ───────────────────────────────────────── */
+  .mission-head {
+    margin-bottom: clamp(56px, 8vw, 96px);
+  }
+  .mission-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: clamp(48px, 6vw, 96px);
+    align-items: end;
+  }
+  @media (max-width: 860px) { .mission-grid { grid-template-columns: 1fr; } }
+
+  .mission-copy .stmt + .stmt { margin-top: 28px; }
+  .mission-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 40px; }
+
+  .portrait {
+    aspect-ratio: 4 / 5;
+    border-radius: 12px;
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgba(241,236,226,0.06), transparent 60%),
+      repeating-linear-gradient(135deg, rgba(241,236,226,0.05) 0 12px, transparent 12px 24px),
+      var(--d-paper-2);
+    border: 1px solid var(--d-rule);
+    position: relative;
+    overflow: hidden;
+  }
+  .portrait::after {
+    content: "portrait. Agustin · replace";
+    position: absolute; bottom: 16px; left: 18px;
+    font-size: 11px;
+    color: var(--d-gray);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* ─── Principles ────────────────────────────────────── */
+  .principles {
+    padding: clamp(140px, 18vw, 220px) 0;
+    border-top: 1px solid var(--d-rule);
+  }
+  .principles .label { margin-bottom: 64px; }
+  .principle {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 36px;
+    align-items: baseline;
+    padding: clamp(40px, 5vw, 60px) 0;
+    border-bottom: 1px solid var(--d-rule);
+    cursor: default;
+  }
+  .principle:last-child { border-bottom: none; }
+  .principle .num {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--d-gray);
+    letter-spacing: 0.02em;
+    padding-top: 22px;
+    transition: color 240ms ease;
+  }
+  .principle .text {
+    font-size: clamp(32px, 4.4vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    color: var(--d-gray-2);
+    transition: color 320ms ease;
+    text-wrap: balance;
+  }
+  .principle.is-active .num { color: var(--ox-tint); }
+  .principle.is-active .text { color: var(--d-ink); }
+  .principle.is-active .text .ox { color: var(--ox-tint); }
+  .principle .placeholder-note {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--d-gray);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  @media (max-width: 760px) {
+    .principle { grid-template-columns: 56px 1fr; gap: 18px; }
+    .principle .num { padding-top: 12px; }
+  }
+
+  /* ─── Benefits ──────────────────────────────────────── */
+  .benefits {
+    padding: clamp(140px, 18vw, 200px) 0;
+    border-top: 1px solid var(--d-rule);
+  }
+  .benefits .label { margin-bottom: 32px; }
+  .benefits-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: end;
+    margin-bottom: clamp(64px, 8vw, 96px);
+  }
+  @media (max-width: 860px) { .benefits-intro { grid-template-columns: 1fr; } }
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--d-rule);
+    border: 1px solid var(--d-rule);
+  }
+  @media (max-width: 860px) { .benefits-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .benefits-grid { grid-template-columns: 1fr; } }
+  .benefit {
+    background: var(--d-paper);
+    padding: clamp(28px, 4vw, 44px);
+    display: flex; flex-direction: column; gap: 14px;
+    min-height: 240px;
+  }
+  .benefit .n {
+    font-size: 13px;
+    color: var(--ox-tint);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .benefit h3 {
+    font-size: clamp(22px, 2vw, 28px);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin: 0;
+    color: var(--d-ink);
+  }
+  .benefit p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--d-gray);
+    margin: 0;
+  }
+
+  /* ─── Process ───────────────────────────────────────── */
+  .process {
+    padding: clamp(140px, 18vw, 200px) 0;
+    border-top: 1px solid var(--d-rule);
+  }
+  .process .label { margin-bottom: 32px; }
+  .process-head {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: end;
+    margin-bottom: clamp(56px, 8vw, 80px);
+  }
+  @media (max-width: 860px) { .process-head { grid-template-columns: 1fr; } }
+  .steps {
+    display: grid; gap: 0;
+    border-top: 1px solid var(--d-rule);
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 80px 1.2fr 1.6fr 140px;
+    gap: 28px;
+    align-items: baseline;
+    padding: clamp(28px, 4vw, 40px) 0;
+    border-bottom: 1px solid var(--d-rule);
+  }
+  @media (max-width: 860px) {
+    .step {
+      grid-template-columns: 60px 1fr;
+      gap: 14px 18px;
+      row-gap: 8px;
+    }
+    .step .step-blurb { grid-column: 2 / -1; }
+    .step .step-time  { grid-column: 2 / -1; color: var(--d-gray); }
+  }
+  .step .step-num {
+    font-size: 16px; color: var(--d-gray); font-weight: 500;
+  }
+  .step .step-title {
+    font-size: clamp(22px, 2.4vw, 32px);
+    line-height: 1.15;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--d-ink);
+  }
+  .step .step-blurb {
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: var(--d-gray);
+    max-width: 52ch;
+  }
+  .step .step-time {
+    font-size: 13px;
+    color: var(--ox-tint);
+    text-align: right;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* ─── Contact ───────────────────────────────────────── */
+  .contact {
+    padding: clamp(140px, 18vw, 220px) 0 clamp(80px, 10vw, 120px);
+    border-top: 1px solid var(--d-rule);
+  }
+  .contact .label { margin-bottom: 40px; }
+  .contact-stmt { margin-bottom: clamp(48px, 6vw, 80px); }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+    padding-top: clamp(40px, 5vw, 64px);
+    border-top: 1px solid var(--d-rule);
+  }
+  @media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; } }
+  .contact-grid .email {
+    font-size: clamp(28px, 3.6vw, 52px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--d-ink);
+    line-height: 1.05;
+    word-break: break-word;
+  }
+  .contact-grid .email a {
+    border-bottom: 1px solid var(--d-rule);
+    padding-bottom: 6px;
+    transition: color 160ms ease, border-color 160ms ease;
+  }
+  .contact-grid .email a:hover { color: var(--ox-tint); border-color: var(--ox-tint); }
+  .contact-side {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .contact-side .meta {
+    font-size: 13px;
+    color: var(--d-gray);
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+
+  /* ─── Footer ────────────────────────────────────────── */
+  .foot {
+    padding: 40px 0 64px;
+    border-top: 1px solid var(--d-rule);
+    color: var(--d-gray);
+    font-size: 13px;
+  }
+  .foot-inner {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .foot-mark {
+    display: flex; align-items: center;
+  }
+  .foot-mark img {
+    height: 64px; width: auto; margin: -12px 0;
+    filter: invert(1) sepia(0.12) saturate(0.5) brightness(1.05);
+  }
+
+  /* ─── Sticky pill ───────────────────────────────────── */
+  .pill {
+    position: fixed; left: 50%; bottom: 22px;
+    transform: translateX(-50%);
+    z-index: 70;
+    display: inline-flex; align-items: center;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 999px;
+    padding: 6px 6px 6px 22px;
+    box-shadow: 0 16px 40px rgba(15,15,16,0.22);
+    gap: 14px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .pill-pricing {
+    color: var(--paper);
+    opacity: 0.78;
+    transition: opacity 160ms ease;
+  }
+  .pill-pricing:hover { opacity: 1; }
+  .pill-sep {
+    width: 1px; height: 18px;
+    background: rgba(255,255,255,0.18);
+  }
+  .pill-cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 8px 16px 8px 8px;
+    border-radius: 999px;
+    transition: background 160ms ease, color 160ms ease;
+  }
+  .pill-cta:hover { background: var(--ox); color: var(--paper); }
+  .pill-avatar {
+    width: 26px; height: 26px; border-radius: 50%;
+    background:
+      radial-gradient(120% 100% at 40% 30%, var(--ox-tint), var(--ox) 60%, var(--ox-deep)),
+      var(--ox);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--paper);
+    font-size: 11px; font-weight: 600;
+    border: 1.5px solid var(--paper);
+  }
+  @media (max-width: 560px) {
+    .pill { font-size: 13px; padding: 4px 4px 4px 18px; }
+    .pill-pricing { display: none; }
+    .pill-sep { display: none; }
+  }
+
+  /* ===== PRINT ===== */
+  @media print {
+    @page { size: Letter portrait; margin: 14mm 12mm; }
+
+    /* Force every color through to the printer/PDF, including dark sections */
+    *, *::before, *::after {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+      transition: none !important;
+      animation: none !important;
+    }
+
+    html, body {
+      background: var(--paper) !important;
+      font-size: 12pt;
+    }
+
+    /* Strip browser chrome we don't want in a PDF */
+    .nav, .pill, .booker { display: none !important; }
+
+    /* Sections: tighten the absurd web padding, page-break between */
+    section {
+      padding: 24pt 0 32pt !important;
+      break-inside: auto;
+    }
+    section + section,
+    section + footer,
+    section { break-before: page; }
+    .hero { break-before: avoid; padding-top: 0 !important; }
+    footer { break-before: page; padding: 24pt 0 !important; }
+
+    /* Wrap padding */
+    .wrap { padding-left: 0 !important; padding-right: 0 !important; max-width: none !important; }
+    body { padding: 0; }
+
+    /* Dark sections print their dark background */
+    .dark {
+      background: var(--d-paper) !important;
+      color: var(--d-ink) !important;
+    }
+
+    /* Type: cap the absurd hero sizes so a single sentence doesn't span pages */
+    .stmt          { font-size: 26pt !important; line-height: 1.1 !important; }
+    .hero-stmt     { font-size: 24pt !important; }
+    .h-sm          { font-size: 18pt !important; }
+    .body          { font-size: 11pt !important; }
+    .label         { font-size: 9pt !important; letter-spacing: 0.10em !important; }
+
+    /* Buttons render as ghost outlines in print (no fills that blow ink) */
+    .btn, .nav-cta, .stats .visit {
+      background: transparent !important;
+      color: var(--ink) !important;
+      box-shadow: inset 0 0 0 1pt var(--ink) !important;
+      padding: 6pt 10pt !important;
+      font-size: 9pt !important;
+    }
+    .dark .btn, .dark .nav-cta {
+      color: var(--d-ink) !important;
+      box-shadow: inset 0 0 0 1pt var(--d-ink) !important;
+    }
+    .hero-ctas { margin-top: 16pt !important; gap: 8pt !important; }
+
+    /* Hero */
+    .hero { padding-bottom: 24pt !important; }
+    .hero-grid {
+      display: grid !important;
+      grid-template-columns: 1.1fr 1fr !important;
+      gap: 18pt !important;
+      align-items: center !important;
+    }
+    .hero-art { margin: 0 !important; }
+    .hero-art img { width: 100% !important; height: auto !important; }
+    .hero-meta {
+      grid-template-columns: repeat(4, 1fr) !important;
+      margin-top: 24pt !important; padding-top: 14pt !important;
+      gap: 12pt !important;
+    }
+    .hero-meta .k { font-size: 8pt !important; }
+    .hero-meta .v { font-size: 10pt !important; }
+
+    /* Work */
+    .work-head { grid-template-columns: 1fr 1fr !important; gap: 18pt !important; margin-bottom: 18pt !important; }
+    .browser { break-inside: avoid; box-shadow: none !important; border-radius: 6pt; }
+    .browser-shot { aspect-ratio: 16 / 9; }
+    .case-meta {
+      grid-template-columns: repeat(5, 1fr) !important;
+      margin-top: 18pt !important;
+    }
+    .case-meta > div { padding: 10pt 10pt 10pt 0 !important; }
+    .case-meta > div + div { padding-left: 10pt !important; }
+    .case-meta .k { font-size: 8pt !important; }
+    .case-meta .v { font-size: 10pt !important; }
+    .stats-strip {
+      grid-template-columns: repeat(4, 1fr) !important;
+      margin-top: 18pt !important; gap: 10pt !important;
+      break-inside: avoid;
+    }
+    .stats-strip .v { font-size: 26pt !important; }
+    .stats-strip .k { font-size: 9pt !important; }
+    .quote-card { break-inside: avoid; margin-top: 24pt !important; gap: 14pt !important; grid-template-columns: 48pt 1fr !important; }
+    .quote-avatar { width: 48pt !important; height: 48pt !important; font-size: 14pt !important; }
+    .quote-body { font-size: 16pt !important; }
+
+    /* Mission */
+    .mission-grid { grid-template-columns: 1.4fr 1fr !important; gap: 24pt !important; }
+    .portrait { max-height: 380pt; }
+
+    /* Principles - force all rows into their 'active' state so the printed
+       page reads everything, not the JS-selected one. */
+    .principle { break-inside: avoid; padding: 14pt 0 !important; }
+    .principle .num { color: var(--ox-tint) !important; padding-top: 8pt !important; font-size: 11pt !important; }
+    .principle .text { color: var(--d-ink) !important; font-size: 20pt !important; }
+    .principle .text .ox { color: var(--ox-tint) !important; }
+
+    /* Benefits */
+    .benefits-grid {
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 1px !important;
+      break-inside: auto;
+    }
+    .benefit { padding: 14pt !important; min-height: 0 !important; break-inside: avoid; }
+    .benefit h3 { font-size: 13pt !important; }
+    .benefit p  { font-size: 10pt !important; }
+
+    /* Process */
+    .step {
+      grid-template-columns: 40pt 1.2fr 1.6fr 90pt !important;
+      gap: 14pt !important;
+      padding: 12pt 0 !important;
+      break-inside: avoid;
+    }
+    .step .step-title { font-size: 14pt !important; }
+    .step .step-blurb { font-size: 10pt !important; }
+    .step .step-time  { font-size: 9pt !important; }
+
+    /* Contact */
+    .contact-grid { grid-template-columns: 1.4fr 1fr !important; gap: 24pt !important; padding-top: 18pt !important; }
+    .contact-grid .email { font-size: 26pt !important; }
+
+    /* Footer */
+    .foot { padding: 18pt 0 !important; }
+    .foot-mark img { height: 36pt !important; margin: -8pt 0 !important; }
+    .foot-inner { gap: 14pt !important; }
+
+    /* Lockup invert filter stays on dark footer; nav is hidden so its rule
+       doesn't matter. */
+    .foot-mark img {
+      filter: invert(1) sepia(0.12) saturate(0.5) brightness(1.05) !important;
+    }
+
+    /* Image-loaded fallbacks: avoid stranded headers */
+    h1, h2, h3 { break-after: avoid; }
+    .label     { break-after: avoid; }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- ─── Nav ─────────────────────────────────────────────── -->
+<nav class="nav" id="nav" data-screen-label="Nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand" aria-label="Freeform Works">
+      <img src="assets/fw-lockup.png" alt="Freeform Works" />
+    </a>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#mission">Mission</a>
+      <a href="#principles">Principles</a>
+      <a href="#process">Process</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="nav-cta">
+      <span>Let's chat</span>
+      <span>↗</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ─── Hero ────────────────────────────────────────────── -->
+<section class="hero" id="top" data-screen-label="01 Hero">
+  <div class="wrap">
+    <p class="label">An independent studio · Tuscaloosa, AL</p>
+
+    <div class="hero-grid">
+      <div>
+        <h1 class="stmt hero-stmt">
+          <span class="ink">Freeform Works</span> is an independent studio that builds
+          <span class="ink">custom websites</span> for small businesses.
+          <span class="ox">Real code, no templates.</span>
+        </h1>
+
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-primary">
+            <span>Book a 15-min call</span>
+            <span class="arr">↗</span>
+          </a>
+          <a href="#work" class="btn btn-ghost">
+            <span>See the work</span>
+            <span class="arr">↓</span>
+          </a>
+        </div>
+      </div>
+
+      <figure class="hero-art" aria-hidden="true">
+        <img src="assets/hero-monitor.png" alt="" loading="eager" />
+      </figure>
+    </div>
+
+    <div class="hero-meta">
+      <div>
+        <div class="k">Based</div>
+        <div class="v">Tuscaloosa, Alabama</div>
+      </div>
+      <div>
+        <div class="k">Practice</div>
+        <div class="v">Solo · selective intake</div>
+      </div>
+      <div>
+        <div class="k">Working with</div>
+        <div class="v">Event-services studios</div>
+      </div>
+      <div>
+        <div class="k">Now booking</div>
+        <div class="v">Summer 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Work ────────────────────────────────────────────── -->
+<section id="work" data-screen-label="02 Work">
+  <div class="wrap">
+    <div class="work-head">
+      <p class="label">Selected work · 01</p>
+      <p class="body" style="justify-self: end; text-align: left; margin: 0;">
+        One project in evidence. The brief was a small, fast, editorial
+        portfolio that loaded instantly and read like the photographer's eye.
+      </p>
+    </div>
+
+    <h2 class="stmt" style="font-size: clamp(32px, 4.4vw, 64px); margin-bottom: clamp(40px, 5vw, 64px);">
+      <span class="ink">Lemoose Productions</span>. A portrait portfolio that loads in
+      <span class="ink">under half a second</span> and feels considered, not templated.
+    </h2>
+
+    <a class="browser" href="https://lemoose.com" aria-label="Visit lemoose.com">
+      <div class="browser-bar" aria-hidden="true">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">lemoose.com</div>
+        <div style="width: 56px;"></div>
+      </div>
+      <div class="browser-shot"></div>
+    </a>
+
+    <div class="case-meta">
+      <div>
+        <div class="k">Client</div>
+        <div class="v">Lemoose Productions</div>
+      </div>
+      <div>
+        <div class="k">Sector</div>
+        <div class="v">Portrait photography</div>
+      </div>
+      <div>
+        <div class="k">Year</div>
+        <div class="v">2026</div>
+      </div>
+      <div>
+        <div class="k">Role</div>
+        <div class="v">Design &amp; build</div>
+      </div>
+      <div>
+        <div class="k">URL</div>
+        <a class="v" href="https://lemoose.com">lemoose.com&nbsp;↗</a>
+      </div>
+    </div>
+
+    <div class="stats-strip">
+      <div>
+        <div class="v">0.4<span class="unit">&nbsp;s</span></div>
+        <div class="k">Largest contentful paint</div>
+      </div>
+      <div>
+        <div class="v">98<span class="unit">&nbsp;/&nbsp;100</span></div>
+        <div class="k">Lighthouse</div>
+      </div>
+      <div>
+        <div class="v">84<span class="unit">&nbsp;KB</span></div>
+        <div class="k">Page weight</div>
+      </div>
+      <div>
+        <div class="v">9<span class="unit">&nbsp;days</span></div>
+        <div class="k">Build time</div>
+      </div>
+    </div>
+
+    <figure class="quote-card" style="margin: 0;">
+      <div class="quote-avatar" aria-hidden="true">DM</div>
+      <div>
+        <blockquote class="quote-body" style="margin: 0;">
+          &ldquo;The bar was set <strong>higher than I asked for</strong>. The site
+          loaded faster than the one I left, and it actually looked like <strong>my work</strong>.&rdquo;
+        </blockquote>
+        <figcaption class="quote-cite">
+          <span class="who">D. Moose</span> &nbsp;·&nbsp; Lemoose Productions
+        </figcaption>
+      </div>
+    </figure>
+    <p class="quote-cite" style="margin-top: clamp(80px, 10vw, 120px); display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; border-top: 1px solid var(--rule); padding-top: 28px;">
+      <span style="color: var(--gray);">More case studies arrive as projects ship.</span>
+      <a href="#contact" style="color: var(--ox); border-bottom: 1px solid var(--ox); padding-bottom: 2px;">Become the second &nbsp;↗</a>
+    </p>
+  </div>
+</section>
+
+<!-- ─── Mission (dark) ──────────────────────────────────── -->
+<section id="mission" class="dark" data-screen-label="03 Mission">
+  <div class="wrap">
+    <div class="mission-head">
+      <p class="label">Mission · 02</p>
+    </div>
+
+    <div class="mission-grid">
+      <div class="mission-copy">
+        <p class="stmt">
+          <span class="ink">Most event-services studios</span> are running their work
+          on the same template as their competitor down the street.
+        </p>
+        <p class="stmt">
+          <span class="ink">Freeform Works exists</span> to put serious craft within reach of
+          studios that don't have an in-house design team.
+          <span class="ox">At a pace that fits a working season.</span>
+        </p>
+
+        <div class="mission-ctas">
+          <a href="#contact" class="btn btn-primary">
+            <span>Start a project</span>
+            <span class="arr">↗</span>
+          </a>
+          <a href="#principles" class="btn btn-ghost">
+            <span>Read the principles</span>
+            <span class="arr">↓</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="portrait" aria-label="Portrait of Agustin"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Principles (dark) ──────────────────────────────── -->
+<section id="principles" class="dark principles" data-screen-label="04 Principles">
+  <div class="wrap">
+    <p class="label">Principles · 03</p>
+
+    <p class="stmt" style="font-size: clamp(28px, 3.4vw, 44px); margin-bottom: clamp(72px, 10vw, 120px); max-width: 36ch;">
+      <span class="ink">Seven things</span> Freeform Works keeps coming back to.
+      <span class="ox">A working draft, not a manifesto.</span>
+    </p>
+
+    <div id="principle-list">
+      <div class="principle" data-i="1">
+        <div class="num">[ 01 ]</div>
+        <p class="text"><span class="ox">The work</span> is the marketing. Everything else is overhead.</p>
+      </div>
+      <div class="principle" data-i="2">
+        <div class="num">[ 02 ]</div>
+        <p class="text">Build for the season the client is actually in. Not the one your portfolio wants.</p>
+      </div>
+      <div class="principle" data-i="3">
+        <div class="num">[ 03 ]</div>
+        <p class="text">A page that loads in half a second wins arguments a beautiful one can't.</p>
+      </div>
+      <div class="principle" data-i="4">
+        <div class="num">[ 04 ]</div>
+        <p class="text">Templates are how studios end up looking like their competitors. Refuse them.</p>
+      </div>
+      <div class="principle" data-i="5">
+        <div class="num">[ 05 ]</div>
+        <p class="text">Maintenance is a craft, not a fee. Quiet edits beat loud redesigns.</p>
+      </div>
+      <div class="principle" data-i="6">
+        <div class="num">[ 06 ]</div>
+        <p class="text">AI accelerates the boring parts. The taste is still the work.</p>
+      </div>
+      <div class="principle" data-i="7">
+        <div class="num">[ 07 ]</div>
+        <p class="text">Ship the version a client can run with. Then keep showing up.</p>
+        <p class="placeholder-note">Draft copy. Agustin to finalise / re-order / add 8th.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Benefits (dark) ────────────────────────────────── -->
+<section id="benefits" class="dark benefits" data-screen-label="05 Benefits">
+  <div class="wrap">
+    <div class="benefits-intro">
+      <div>
+        <p class="label">Working together · 04</p>
+        <h2 class="stmt" style="font-size: clamp(28px, 3.4vw, 44px); margin-top: 18px;">
+          <span class="ink">What you get</span> when you hire Freeform Works.
+        </h2>
+      </div>
+      <p class="body">
+        Not a deck, not a sales pipeline, not a junior account manager. A single
+        designer-builder, working in your season, with a portfolio you'll actually
+        send to your peers.
+      </p>
+    </div>
+
+    <div class="benefits-grid">
+      <div class="benefit">
+        <div class="n">01</div>
+        <h3>One person on the file</h3>
+        <p>No account-manager handoff. The person designing the site is the person writing the code and the person picking up the phone at 4 pm.</p>
+      </div>
+      <div class="benefit">
+        <div class="n">02</div>
+        <h3>Real custom code</h3>
+        <p>Hand-written HTML, CSS, and a thin layer of JavaScript. No Squarespace, no Wix, no drag-and-drop dependency you can't escape.</p>
+      </div>
+      <div class="benefit">
+        <div class="n">03</div>
+        <h3>Performance you can sell</h3>
+        <p>Sub-half-second loads and 95+ Lighthouse by default. Sites that feel faster than the ones your clients are leaving.</p>
+      </div>
+      <div class="benefit">
+        <div class="n">04</div>
+        <h3>An AI-accelerated pace</h3>
+        <p>Two to three weeks to ship, not three months. The boring parts get automated; the taste stays human.</p>
+      </div>
+      <div class="benefit">
+        <div class="n">05</div>
+        <h3>Maintenance, quietly</h3>
+        <p>Optional monthly care. Copy edits, new galleries, small features. Priced per scope. Cancel anytime, the site is yours.</p>
+      </div>
+      <div class="benefit">
+        <div class="n">06</div>
+        <h3>A portfolio you'll send</h3>
+        <p>Editorial register, not template-shaped. The kind of work you'd actually link from your bio without the small apology.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Process (dark) ─────────────────────────────────── -->
+<section id="process" class="dark process" data-screen-label="06 Process">
+  <div class="wrap">
+    <div class="process-head">
+      <div>
+        <p class="label">Process · 05</p>
+        <h2 class="stmt" style="font-size: clamp(28px, 3.4vw, 44px); margin-top: 18px;">
+          <span class="ink">Four steps</span>, two to three weeks, one designer.
+        </h2>
+      </div>
+      <p class="body">
+        Most projects move through the same shape. Pricing and timeline are
+        agreed before step 01. No surprise invoices, no scope creep budget.
+      </p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-title">Brief &amp; intake</div>
+        <p class="step-blurb">A 30-minute call. We agree on scope, season, and the one thing the site has to do better than the one you have now.</p>
+        <div class="step-time">Day 0</div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-title">Design pass</div>
+        <p class="step-blurb">Two to three directions in a shared review. We pick one and refine; no live mood boards, no slack threads.</p>
+        <div class="step-time">Days 1–4</div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-title">Build &amp; QA</div>
+        <p class="step-blurb">Hand-written code, performance-checked. You see staging links daily; you can break them and it's fine.</p>
+        <div class="step-time">Days 5–14</div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-title">Handover</div>
+        <p class="step-blurb">Launch, a 15-min walkthrough, and an inbox you can keep using. Optional monthly care starts on day 30.</p>
+        <div class="step-time">Day 15</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Contact (dark) ─────────────────────────────────── -->
+<section id="contact" class="dark contact" data-screen-label="07 Contact">
+  <div class="wrap">
+    <p class="label">Contact · 06</p>
+
+    <h2 class="stmt contact-stmt">
+      <span class="ink">Tell me about the studio you're building</span>, even if the
+      brief is still a couple of sentences.
+      <span class="ox">I reply within one working day.</span>
+    </h2>
+
+    <div class="contact-grid">
+      <p class="email" style="margin: 0;">
+        <a href="mailto:hello@freeformworks.com">hello@freeformworks.com</a>
+      </p>
+      <div class="contact-side">
+        <span class="meta">Or, more directly</span>
+        <a href="#" class="btn btn-primary" style="align-self: flex-start;">
+          <span>Book a 15-min call</span>
+          <span class="arr">↗</span>
+        </a>
+        <span class="meta">Calendly &nbsp;·&nbsp; 15 min &nbsp;·&nbsp; free</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer (dark) ──────────────────────────────────── -->
+<footer class="dark foot">
+  <div class="wrap foot-inner">
+    <div class="foot-mark">
+      <img src="assets/fw-lockup.png" alt="Freeform Works" />
+    </div>
+    <div>Tuscaloosa, AL &nbsp;·&nbsp; &copy; 2026</div>
+    <div><a href="#top" style="color: var(--d-ink); border-bottom: 1px solid var(--d-rule); padding-bottom: 2px;">Back to top ↑</a></div>
+  </div>
+</footer>
+
+<!-- ─── Sticky pill ────────────────────────────────────── -->
+<div class="pill" role="navigation" aria-label="Quick contact">
+  <a href="#process" class="pill-pricing">Pricing</a>
+  <span class="pill-sep" aria-hidden="true"></span>
+  <a href="#contact" class="pill-cta">
+    <span class="pill-avatar" aria-hidden="true">AG</span>
+    <span>Let's chat</span>
+    <span>↗</span>
+  </a>
+</div>
+
+<script>
+  // Sync nav theme with whichever section is currently under the bar.
+  (function () {
+    const nav = document.getElementById('nav');
+    const sections = Array.from(document.querySelectorAll('section, footer'));
+    const navHeight = 88;
+
+    function syncNavTheme() {
+      const probe = navHeight + 2;
+      // Find the section whose box intersects the line just under the nav.
+      let current = null;
+      for (const sec of sections) {
+        const r = sec.getBoundingClientRect();
+        if (r.top <= probe && r.bottom > probe) { current = sec; break; }
+      }
+      const isDark = current && current.classList.contains('dark');
+      nav.classList.toggle('is-dark', !!isDark);
+      document.querySelector('meta[name="theme-color"]')
+        ?.setAttribute('content', isDark ? '#0E0E10' : '#FCFBF9');
+    }
+
+    window.addEventListener('scroll', syncNavTheme, { passive: true });
+    window.addEventListener('resize', syncNavTheme);
+    syncNavTheme();
+  })();
+
+  // Principles. Highlight the one closest to viewport center.
+  (function () {
+    const list = document.getElementById('principle-list');
+    if (!list) return;
+    const items = Array.from(list.querySelectorAll('.principle'));
+
+    function highlight() {
+      const center = window.innerHeight * 0.42;
+      let best = null;
+      let bestDist = Infinity;
+      for (const el of items) {
+        const r = el.getBoundingClientRect();
+        const mid = r.top + r.height / 2;
+        const dist = Math.abs(mid - center);
+        if (dist < bestDist) { bestDist = dist; best = el; }
+      }
+      items.forEach(el => el.classList.toggle('is-active', el === best));
+    }
+
+    // Only run highlight while the principles section is in view.
+    const section = document.getElementById('principles');
+    let active = false;
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        active = e.isIntersecting;
+        if (active) highlight();
+        else items.forEach(el => el.classList.remove('is-active'));
+      }
+    }, { threshold: 0 });
+    io.observe(section);
+
+    window.addEventListener('scroll', () => { if (active) highlight(); }, { passive: true });
+    window.addEventListener('resize', () => { if (active) highlight(); });
+  })();
+</script>
+
+<script>
+  // Auto-print: wait for fonts + images + a beat, then open the print dialog.
+  (async function () {
+    try { if (document.fonts && document.fonts.ready) { await document.fonts.ready; } } catch (e) {}
+    const imgs = Array.from(document.images);
+    await Promise.all(imgs.map(img => img.complete
+      ? Promise.resolve()
+      : new Promise(res => { img.addEventListener('load', res, { once: true }); img.addEventListener('error', res, { once: true }); })
+    ));
+    setTimeout(() => window.print(), 500);
+  })();
+</script>
+
+</body>
+</html>

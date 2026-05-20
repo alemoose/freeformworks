@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Freeform Works — Custom websites for event services</title>
+<meta name="description" content="A small, considered practice making custom websites for portrait photographers, wedding florists and videographers. Tuscaloosa, AL." />
+<meta name="theme-color" content="#1A1612" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --paper:     #1A1612;
+    --paper-2:   #221C16;
+    --ink:       #E8DDC8;
+    --muted:     rgba(232, 221, 200, 0.58);
+    --rule:      rgba(232, 221, 200, 0.16);
+    --rule-soft: rgba(232, 221, 200, 0.08);
+    --amber:     #C49A55;
+    --amber-ink: #D4B070;
+
+    --serif: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+    --sans:  "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono:  "JetBrains Mono", ui-monospace, monospace;
+
+    --container: 1280px;
+    --pad-x: clamp(24px, 5vw, 80px);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection { background: var(--amber); color: var(--paper); }
+
+  /* Invert the black lockup PNG so the cream letterforms read on warm dark */
+  .brand .mark, .foot-mark img { filter: invert(1) sepia(0.18) saturate(0.6) brightness(1.04); }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ─── Layout ─────────────────────────────────────────── */
+  .wrap {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding-left: var(--pad-x);
+    padding-right: var(--pad-x);
+  }
+
+  section { padding: clamp(96px, 14vw, 160px) 0; }
+  section + section { border-top: 1px solid var(--rule); }
+
+  /* ─── Typography ────────────────────────────────────── */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+  }
+  .eyebrow .num {
+    color: var(--amber-ink);
+    margin-right: 14px;
+  }
+
+  .display {
+    font-family: var(--serif);
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+    margin: 0;
+  }
+
+  .h-hero    { font-size: clamp(48px, 8.4vw, 132px); line-height: 1.0; }
+  .h-section { font-size: clamp(40px, 6vw, 84px); }
+  .h-case    { font-size: clamp(36px, 5vw, 72px); }
+
+  .lede {
+    font-size: clamp(18px, 1.6vw, 22px);
+    line-height: 1.55;
+    color: var(--ink);
+    max-width: 56ch;
+  }
+
+  .body { font-size: 16.5px; line-height: 1.6; color: var(--ink); }
+  .muted { color: var(--muted); }
+
+  em { font-style: italic; }
+
+  /* ─── Nav ───────────────────────────────────────────── */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in oklab, var(--paper) 88%, transparent);
+    backdrop-filter: saturate(140%) blur(8px);
+    -webkit-backdrop-filter: saturate(140%) blur(8px);
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 92px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .brand .mark { height: 120px; width: auto; object-fit: contain; display: block; margin: -28px 0; }
+  .nav-links {
+    display: flex; gap: 36px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .nav-links a { transition: color 160ms ease; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    border: 1px solid var(--ink);
+    transition: background 160ms ease, color 160ms ease;
+  }
+  .nav-cta:hover { background: var(--ink); color: var(--paper); }
+  @media (max-width: 760px) {
+    .nav-links { display: none; }
+  }
+
+  /* ─── Hero ──────────────────────────────────────────── */
+  .hero { padding-top: clamp(72px, 12vw, 140px); padding-bottom: clamp(96px, 14vw, 180px); }
+  .hero-eyebrow { display: flex; gap: 36px; flex-wrap: wrap; margin-bottom: 56px; }
+  .hero-eyebrow .dot {
+    width: 6px; height: 6px; background: var(--amber); border-radius: 50%;
+    display: inline-block; vertical-align: middle; margin-right: 10px;
+  }
+  .hero-line { max-width: 18ch; }
+  .hero-row {
+    display: grid; grid-template-columns: 1.4fr 1fr;
+    gap: clamp(40px, 6vw, 96px);
+    margin-top: clamp(56px, 8vw, 96px);
+    align-items: start;
+  }
+  @media (max-width: 860px) { .hero-row { grid-template-columns: 1fr; } }
+
+  /* CTA — primary */
+  .cta {
+    display: inline-flex; align-items: center; gap: 18px;
+    padding: 18px 24px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+  }
+  .cta .arrow { transition: transform 200ms ease; }
+  .cta:hover { background: var(--amber); color: var(--paper); }
+  .cta:hover .arrow { transform: translate(2px, -2px); }
+
+  .cta-secondary {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 4px;
+    transition: color 160ms ease, border-color 160ms ease;
+  }
+  .cta-secondary:hover { color: var(--amber-ink); border-color: var(--amber-ink); }
+
+  /* ─── Work ──────────────────────────────────────────── */
+  .work-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 56px;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .case {
+    display: grid; gap: clamp(48px, 6vw, 72px);
+  }
+  /* Hairline texture on the case-shot — slightly warmer on dark */
+  .case-shot {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--paper-2);
+    background-image: repeating-linear-gradient(135deg, transparent 0 14px, rgba(232,221,200,0.04) 14px 15px);
+    overflow: hidden;
+  }
+  .case-shot::after {
+    content: attr(data-caption);
+    position: absolute; bottom: 16px; left: 16px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .case-shot::before {
+    content: attr(data-corner);
+    position: absolute; top: 16px; right: 16px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .case-body {
+    display: grid; grid-template-columns: 1.4fr 1fr;
+    gap: clamp(40px, 6vw, 80px);
+    align-items: start;
+  }
+  @media (max-width: 860px) { .case-body { grid-template-columns: 1fr; } }
+
+  .case-meta {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    margin: 32px 0 0;
+  }
+  @media (max-width: 700px) { .case-meta { grid-template-columns: repeat(2, 1fr); } }
+  .case-meta > div {
+    padding: 18px 18px 18px 0;
+  }
+  .case-meta > div + div {
+    border-left: 1px solid var(--rule-soft);
+    padding-left: 20px;
+  }
+  .case-meta .k {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.10em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px;
+  }
+  .case-meta .v { font-size: 15px; }
+  .case-meta a.v { border-bottom: 1px solid var(--ink); padding-bottom: 1px; }
+
+  /* Stats panel */
+  .stats {
+    display: grid; gap: 0;
+    border: 1px solid var(--rule);
+  }
+  .stats > div {
+    padding: 22px 22px;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .stats > div + div { border-top: 1px solid var(--rule-soft); }
+  .stats .k {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.10em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .stats .v {
+    font-family: var(--serif);
+    font-size: 34px;
+    line-height: 1;
+  }
+  .stats .visit {
+    background: var(--amber); color: var(--paper);
+    border-top: 1px solid var(--amber);
+  }
+  .stats .visit .k { color: var(--paper); }
+  .stats .visit:hover { background: var(--amber-ink); }
+  .stats .visit { transition: background 160ms ease; }
+
+  /* Pull quote */
+  .pullquote {
+    margin: 0;
+    padding: clamp(40px, 6vw, 64px) 0 0;
+    border-top: 1px solid var(--rule);
+    margin-top: clamp(48px, 6vw, 72px);
+  }
+  .pullquote .q {
+    font-family: var(--serif);
+    font-size: clamp(28px, 3.6vw, 48px);
+    line-height: 1.15;
+    font-style: italic;
+    max-width: 24ch;
+  }
+  .pullquote .cite {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 24px;
+  }
+
+  /* ─── Services (What I make) ─────────────────────────── */
+  .services {
+    display: grid; gap: 0;
+    margin-top: clamp(48px, 6vw, 80px);
+    border-top: 1px solid var(--rule);
+  }
+  .service {
+    display: grid;
+    grid-template-columns: 56px 1fr 1.4fr;
+    gap: clamp(24px, 4vw, 64px);
+    padding: clamp(36px, 5vw, 56px) 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  @media (max-width: 760px) {
+    .service { grid-template-columns: 56px 1fr; }
+    .service-blurb { grid-column: 2 / -1; }
+  }
+  .service-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    color: var(--muted);
+    padding-top: 14px;
+  }
+  .service-title {
+    font-family: var(--serif);
+    font-size: clamp(28px, 3.4vw, 44px);
+    line-height: 1.05;
+  }
+  .service-blurb {
+    font-size: 16.5px;
+    line-height: 1.6;
+    color: var(--ink);
+    max-width: 48ch;
+  }
+
+  /* ─── About ─────────────────────────────────────────── */
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1.6fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+    margin-top: clamp(48px, 6vw, 64px);
+  }
+  @media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; } }
+  .about-copy {
+    font-family: var(--serif);
+    font-size: clamp(22px, 2.2vw, 30px);
+    line-height: 1.35;
+    max-width: 32ch;
+  }
+  .about-side {
+    border-left: 1px solid var(--rule);
+    padding-left: clamp(20px, 3vw, 40px);
+  }
+  .about-side dl {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 18px 28px;
+    margin: 0;
+    font-size: 15px;
+  }
+  .about-side dt {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.10em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .about-side dd { margin: 0; }
+  .about-side dd a { border-bottom: 1px solid var(--ink); }
+  .about-side dd a:hover { color: var(--amber-ink); border-color: var(--amber-ink); }
+
+  /* ─── Contact ───────────────────────────────────────── */
+  .contact-body {
+    margin-top: clamp(40px, 5vw, 64px);
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: end;
+  }
+  @media (max-width: 860px) { .contact-body { grid-template-columns: 1fr; align-items: start; } }
+  .contact-line {
+    font-family: var(--serif);
+    font-size: clamp(40px, 5.4vw, 80px);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+  }
+  .contact-line a {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 4px;
+    transition: border-color 160ms ease, color 160ms ease;
+  }
+  .contact-line a:hover { color: var(--amber-ink); border-color: var(--amber-ink); }
+  .contact-aside {
+    display: flex; flex-direction: column; gap: 18px;
+    padding-bottom: 14px;
+  }
+  .contact-aside .meta {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.10em; text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ─── Footer ────────────────────────────────────────── */
+  footer {
+    padding: 48px 0;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .foot-inner {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .foot-mark { display: flex; align-items: center; gap: 10px; color: var(--ink); }
+  .foot-mark img { height: 80px; width: auto; object-fit: contain; display: block; margin: -16px 0; }
+
+  /* ─── Sticky "Book a Call" widget ────────────────────── */
+  .booker {
+    position: fixed; bottom: 22px; right: 22px; z-index: 60;
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 12px 18px 12px 14px;
+    background: var(--ink); color: var(--paper);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+    transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+  }
+  .booker:hover { background: var(--amber); color: var(--paper); transform: translateY(-1px); }
+  .booker .dot {
+    width: 7px; height: 7px; background: var(--amber);
+    border-radius: 50%; box-shadow: 0 0 0 4px rgba(194,138,58,0.18);
+  }
+  @media (max-width: 600px) { .booker { display: none; } }
+</style>
+</head>
+
+<body>
+
+<!-- ─── Nav ─────────────────────────────────────────────── -->
+<nav class="nav" data-screen-label="Nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand" aria-label="Freeform Works">
+      <img src="assets/fw-lockup.png" alt="Freeform Works" class="mark" />
+    </a>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#make">What I make</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="nav-cta">Book a call ↗</a>
+  </div>
+</nav>
+
+<!-- ─── Hero ────────────────────────────────────────────── -->
+<section class="hero" id="top" data-screen-label="Hero">
+  <div class="wrap">
+    <div class="hero-eyebrow">
+      <p class="eyebrow"><span class="dot"></span>Web design studio · Tuscaloosa, AL</p>
+      <p class="eyebrow muted">Now booking · Summer 2026</p>
+    </div>
+
+    <h1 class="display h-hero hero-line">
+      A small, considered practice<br/>
+      for the event-services web.
+    </h1>
+
+    <div class="hero-row">
+      <p class="lede">
+        Freeform Works designs and builds custom websites for portrait
+        photographers, wedding florists and videographers. Real custom code,
+        AI-accelerated delivery, and quietly maintained after launch &mdash;
+        no templates, no drag-and-drop.
+      </p>
+      <div style="display:flex; flex-direction:column; gap:18px; align-items:flex-start;">
+        <a href="#contact" class="cta">
+          <span>Book a 15-min call</span>
+          <span class="arrow">↗</span>
+        </a>
+        <a href="#work" class="cta-secondary">
+          <span>See the work</span>
+          <span>↓</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Work ────────────────────────────────────────────── -->
+<section id="work" data-screen-label="Work">
+  <div class="wrap">
+    <div class="work-header">
+      <p class="eyebrow"><span class="num">01</span>Selected work</p>
+      <p class="eyebrow muted">One project, in evidence</p>
+    </div>
+
+    <article class="case">
+      <a class="case-shot"
+         href="https://lemoose.com"
+         data-corner="lemoose.com ↗"
+         data-caption="Editorial portfolio · halftone hero · ivory marquee">
+      </a>
+
+      <div class="case-body">
+        <div>
+          <h2 class="display h-case">Lemoose Productions</h2>
+          <p class="body" style="margin-top: 28px; max-width: 56ch;">
+            An editorial portfolio site for a Tuscaloosa portrait and lifestyle
+            photographer. Halftone hero, ivory marquee capsule, full-bleed
+            imagery, and a frosted-glass nav &mdash; built static for speed and
+            wired for quiet updates.
+          </p>
+
+          <div class="case-meta">
+            <div>
+              <div class="k">Client</div>
+              <div class="v">Lemoose Productions</div>
+            </div>
+            <div>
+              <div class="k">Sector</div>
+              <div class="v">Portrait photography</div>
+            </div>
+            <div>
+              <div class="k">Year</div>
+              <div class="v">2026</div>
+            </div>
+            <div>
+              <div class="k">Role</div>
+              <div class="v">Design &amp; build</div>
+            </div>
+            <div>
+              <div class="k">URL</div>
+              <a class="v" href="https://lemoose.com">lemoose.com ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats" aria-label="Performance">
+          <div>
+            <span class="k">Largest contentful paint</span>
+            <span class="v">0.4 s</span>
+          </div>
+          <div>
+            <span class="k">Lighthouse</span>
+            <span class="v">98 / 100</span>
+          </div>
+          <div>
+            <span class="k">Page weight</span>
+            <span class="v">84 KB</span>
+          </div>
+          <div>
+            <span class="k">Build time</span>
+            <span class="v">9 days</span>
+          </div>
+          <a class="visit" href="https://lemoose.com" style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="k">Visit the site</span>
+            <span style="color: var(--paper);">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <figure class="pullquote">
+        <p class="q display">&ldquo;The bar was set higher than I asked for.&rdquo;</p>
+        <figcaption class="cite">D. Moose &nbsp;·&nbsp; Lemoose Productions</figcaption>
+      </figure>
+    </article>
+  </div>
+</section>
+
+<!-- ─── What I make ─────────────────────────────────────── -->
+<section id="make" data-screen-label="What I make">
+  <div class="wrap">
+    <div class="work-header">
+      <p class="eyebrow"><span class="num">02</span>What I make</p>
+      <p class="eyebrow muted">Three offers, scoped per project</p>
+    </div>
+
+    <div class="services">
+      <div class="service">
+        <div class="service-num">01</div>
+        <div class="service-title display">Custom websites</div>
+        <p class="service-blurb">
+          A site designed and built from scratch for the way your work actually
+          shows. Editorial register, custom code, performance-first.
+          Typical scope: one to two pages, one to three weeks.
+        </p>
+      </div>
+
+      <div class="service">
+        <div class="service-num">02</div>
+        <div class="service-title display">Ongoing care</div>
+        <p class="service-blurb">
+          Quiet, monthly maintenance for sites I build &mdash; copy edits,
+          new galleries, small features, light performance work. Priced
+          per scope, cancel anytime.
+        </p>
+      </div>
+
+      <div class="service">
+        <div class="service-num">03</div>
+        <div class="service-title display">Brand identity</div>
+        <p class="service-blurb">
+          A focused identity pass for the studios I build sites for &mdash;
+          wordmark, type system, a small palette, and the rules to keep it
+          looking like itself. Bundled with a site or stand-alone.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── About ───────────────────────────────────────────── -->
+<section id="about" data-screen-label="About">
+  <div class="wrap">
+    <div class="work-header">
+      <p class="eyebrow"><span class="num">03</span>About</p>
+      <p class="eyebrow muted">One designer, one practice</p>
+    </div>
+
+    <div class="about-grid">
+      <p class="about-copy">
+        I&rsquo;m a designer and developer in Tuscaloosa, Alabama. I run
+        Freeform Works as a small practice making custom websites for
+        event-services studios &mdash; real code over Wix and Squarespace,
+        editorial over template, and the same care I&rsquo;d give my own.
+      </p>
+
+      <div class="about-side">
+        <dl>
+          <dt>Founded</dt>
+          <dd>2026, Tuscaloosa, AL</dd>
+
+          <dt>Practice</dt>
+          <dd>Solo · selective intake</dd>
+
+          <dt>Stack</dt>
+          <dd>Static HTML, hand-written CSS, just enough JavaScript</dd>
+
+          <dt>Working with</dt>
+          <dd>Photographers, florists, videographers</dd>
+
+          <dt>Sibling site</dt>
+          <dd><a href="https://lemoose.com">lemoose.com ↗</a></dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Contact ─────────────────────────────────────────── -->
+<section id="contact" data-screen-label="Contact">
+  <div class="wrap">
+    <div class="work-header">
+      <p class="eyebrow"><span class="num">04</span>Contact</p>
+      <p class="eyebrow muted">Replies within one working day</p>
+    </div>
+
+    <h2 class="display" style="font-size: clamp(40px, 5vw, 72px); line-height: 1.05; max-width: 22ch;">
+      Tell me about the studio you&rsquo;re building.
+    </h2>
+
+    <div class="contact-body">
+      <p class="contact-line">
+        <a href="mailto:hello@freeformworks.com">hello@freeformworks.com</a>
+      </p>
+      <div class="contact-aside">
+        <span class="meta">Or, more directly</span>
+        <a href="#" class="cta">
+          <span>Book a 15-min call</span>
+          <span class="arrow">↗</span>
+        </a>
+        <span class="meta">Calendly &nbsp;·&nbsp; 15 min &nbsp;·&nbsp; free</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ──────────────────────────────────────────── -->
+<footer>
+  <div class="wrap foot-inner">
+    <div class="foot-mark">
+      <img src="assets/fw-lockup.png" alt="Freeform Works" />
+      <span>Tuscaloosa, AL</span>
+    </div>
+    <div>&copy; 2026 &nbsp;·&nbsp; All rights reserved</div>
+    <div><a href="#top" style="border-bottom: 1px solid var(--ink); padding-bottom: 2px;">Back to top ↑</a></div>
+  </div>
+</footer>
+
+<!-- ─── Sticky booker ───────────────────────────────────── -->
+<a href="#contact" class="booker" aria-label="Book a 15-minute call">
+  <span class="dot"></span>
+  <span>Book a 15-min call</span>
+  <span>↗</span>
+</a>
+
+</body>
+</html>

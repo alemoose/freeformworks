@@ -1,0 +1,122 @@
+/* Freeform Works · v1 direction exploration */
+
+:root {
+  font-feature-settings: "kern", "liga", "calt";
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #1d1b18;
+}
+
+/* ─── Placeholder primitives ─────────────────────────────────────────── */
+.placeholder {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  background-color: var(--ph-bg, #e8e3d8);
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0 14px,
+    var(--ph-stripe, rgba(0,0,0,0.04)) 14px 15px
+  );
+  color: var(--ph-fg, rgba(0,0,0,0.55));
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 16px;
+}
+.placeholder[data-corner]::after {
+  content: attr(data-corner);
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ph-fg, rgba(0,0,0,0.55));
+}
+
+/* ─── Shared utilities ───────────────────────────────────────────────── */
+.hairline { height: 1px; background: currentColor; opacity: 0.18; }
+.hairline-thin { height: 1px; background: currentColor; opacity: 0.10; }
+
+.mono {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ─── Direction 01 — Editorial Index ─────────────────────────────────── */
+.d1 {
+  --ink: #15110D;
+  --paper: #F1ECE2;
+  --paper-2: #E8E1D2;
+  --rule: rgba(21, 17, 13, 0.16);
+  --rule-soft: rgba(21, 17, 13, 0.08);
+  --accent: #9C4A2A;
+  --muted: rgba(21, 17, 13, 0.55);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Inter", sans-serif;
+}
+.d1 .display {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+}
+.d1 .display em {
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ─── Direction 02 — Field Notes ─────────────────────────────────────── */
+.d2 {
+  --ink: #1A1815;
+  --paper: #EFEAE0;
+  --paper-2: #E5DFD2;
+  --rule: rgba(26, 24, 21, 0.22);
+  --rule-soft: rgba(26, 24, 21, 0.10);
+  --accent: #2E4A3A;
+  --muted: rgba(26, 24, 21, 0.55);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Inter Tight", "Inter", sans-serif;
+}
+.d2 .display {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.015em;
+}
+
+/* ─── Direction 03 — Marquee ─────────────────────────────────────────── */
+.d3 {
+  --ink: #EFE6D7;
+  --paper: #0E0C0A;
+  --paper-2: #16130F;
+  --rule: rgba(239, 230, 215, 0.18);
+  --rule-soft: rgba(239, 230, 215, 0.08);
+  --accent: #C28A3A;
+  --muted: rgba(239, 230, 215, 0.55);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Inter", sans-serif;
+}
+.d3 .display {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 400;
+  line-height: 0.94;
+  letter-spacing: -0.01em;
+}
+.d3 .display em {
+  font-style: italic;
+}
