@@ -29,6 +29,7 @@ Open http://localhost:3000/book.html
    - `GOOGLE_CLIENT_SECRET`
    - `GOOGLE_REFRESH_TOKEN`
    - optional: `BOOKING_TIMEZONE` (`America/Chicago`)
+   - optional: `BOOKING_NOTIFY_EMAIL` (defaults to `hello@freeformworks.com` — gets a calendar invite on every booking)
 4. Deploy. Point `freeformworks.com` at the Vercel project.
 
 Booking hours are configured in `lib/booking-config.js` (default Mon–Fri 9–5 CT, 15 min).
