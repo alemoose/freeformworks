@@ -45,7 +45,7 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: clip; }
   .page-top {
     display: block;
     height: 0;
@@ -79,8 +79,13 @@
 
   section { padding: clamp(96px, 14vw, 180px) 0; position: relative; }
 
-  /* Dark sections */
-  .dark { background: var(--d-paper); color: var(--d-ink); }
+  /* Dark sections — bleed edge-to-edge (avoids white body showing at sides) */
+  .dark {
+    background: var(--d-paper);
+    color: var(--d-ink);
+    box-shadow: 0 0 0 100vmax var(--d-paper);
+    clip-path: inset(0 -100vmax);
+  }
   .dark a { color: inherit; }
 
   /* ─── Type ───────────────────────────────────────────── */
@@ -522,81 +527,67 @@
     display: none;
     margin-bottom: clamp(40px, 6vw, 56px);
   }
-  .phone-stack-hint {
-    margin: clamp(14px, 3vw, 20px) 0 0;
-    text-align: center;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--gray);
-  }
-  .phone-stack-viewport {
-    overflow: hidden;
-    width: 100%;
-    touch-action: pan-y;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-  .phone-stack-track {
-    --slides: 6;
+  .phone-stack-nav {
     display: flex;
     align-items: center;
-    width: calc(var(--slides) * 100%);
-    will-change: transform;
-    cursor: grab;
+    justify-content: center;
+    gap: clamp(12px, 4vw, 24px);
+    margin-top: clamp(16px, 3vw, 22px);
   }
-  .phone-stack-track.is-dragging {
-    cursor: grabbing;
-    transition: none !important;
+  .phone-stack-viewport {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: min(300px, 78vw);
+  }
+  /* Grid stack: every slide stays laid out so cqw text doesn't reflow on first show */
+  .phone-stack-track {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
   }
   .phone-slide {
-    flex: 0 0 calc(100% / var(--slides));
-    width: calc(100% / var(--slides));
+    grid-area: 1 / 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0 clamp(16px, 5vw, 28px);
+    padding: 0 clamp(8px, 3vw, 16px);
     box-sizing: border-box;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: opacity 280ms ease, visibility 0s linear 280ms;
   }
   .phone-slide.is-active {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    transition: opacity 280ms ease, visibility 0s linear 0s;
+    z-index: 1;
   }
-  .phone-stack-track.is-dragging .phone-slide {
-    opacity: 1;
-    visibility: visible;
+  .phone-stack-arrow {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+  }
+  .phone-stack-arrow:hover:not(:disabled) {
+    border-color: var(--ox);
+    color: var(--ox);
+  }
+  .phone-stack-arrow:disabled {
+    opacity: 0.28;
+    cursor: not-allowed;
   }
   #build-phones .phone-bezel {
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6);
   }
-  .phone-stack-dots {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: clamp(16px, 3vw, 22px);
-  }
-  .phone-stack-dot {
-    width: 6px;
-    height: 6px;
-    padding: 0;
-    border: none;
-    border-radius: 50%;
-    background: var(--rule);
-    cursor: pointer;
-    transition: transform 200ms ease, background 200ms ease;
-  }
-  .phone-stack-dot.is-active {
-    background: var(--ox);
-    transform: scale(1.35);
-  }
-
   a.browser.preview-desktop { display: block; }
   #build .tabshell.preview-desktop { display: block; }
   @media (max-width: 760px) {
@@ -3857,12 +3848,14 @@
       <h2>Six common builds. Each one is a starting point, not a fixed package.</h2>
     </div>
 
-    <div class="build-phones preview-mobile" id="build-phones" aria-label="Mobile builds — swipe to explore">
+    <div class="build-phones preview-mobile" id="build-phones" aria-label="Mobile builds">
       <div class="build-phone-head">
         <p class="build-phone-label" id="build-phone-label" aria-live="polite">Restaurants</p>
         <button type="button" class="build-phone-incl" id="build-phone-incl" aria-expanded="false">What's included <span class="arr" aria-hidden="true">↗</span></button>
       </div>
-      <div class="phone-stack-viewport">
+      <div class="phone-stack-nav">
+        <button type="button" class="phone-stack-arrow phone-stack-arrow--prev" id="phone-stack-prev" aria-label="Previous build" disabled>‹</button>
+        <div class="phone-stack-viewport">
         <div class="phone-stack-track" id="phone-stack-track">
           <article class="phone-slide is-active" data-tab="rest" data-label="Restaurants">
             <div class="phone">
@@ -4326,16 +4319,9 @@
             </div>
           </article>
         </div>
+        </div>
+        <button type="button" class="phone-stack-arrow phone-stack-arrow--next" id="phone-stack-next" aria-label="Next build">›</button>
       </div>
-      <div class="phone-stack-dots" role="tablist" aria-label="Build type">
-        <button type="button" class="phone-stack-dot is-active" role="tab" aria-selected="true" aria-label="Restaurants" data-index="0"></button>
-        <button type="button" class="phone-stack-dot" role="tab" aria-selected="false" aria-label="Barbershops and salons" data-index="1"></button>
-        <button type="button" class="phone-stack-dot" role="tab" aria-selected="false" aria-label="Photographers" data-index="2"></button>
-        <button type="button" class="phone-stack-dot" role="tab" aria-selected="false" aria-label="Florists" data-index="3"></button>
-        <button type="button" class="phone-stack-dot" role="tab" aria-selected="false" aria-label="Lawn care" data-index="4"></button>
-        <button type="button" class="phone-stack-dot" role="tab" aria-selected="false" aria-label="Retail" data-index="5"></button>
-      </div>
-      <p class="phone-stack-hint" aria-hidden="true">Swipe to explore</p>
     </div>
 
     <div class="tabshell preview-desktop" id="build-tabs">
@@ -4964,17 +4950,16 @@
     window.addEventListener('resize', () => { if (active) highlight(); });
   })();
 
-  // What I build — mobile phone stack (swipe)
+  // What I build — mobile phone stack (prev / next)
   (function () {
     const root = document.getElementById('build-phones');
     if (!root) return;
-    const viewport = root.querySelector('.phone-stack-viewport');
-    const track = document.getElementById('phone-stack-track');
     const slides = Array.from(root.querySelectorAll('.phone-slide'));
-    const dots = Array.from(root.querySelectorAll('.phone-stack-dot'));
+    const prevBtn = document.getElementById('phone-stack-prev');
+    const nextBtn = document.getElementById('phone-stack-next');
     const labelEl = document.getElementById('build-phone-label');
     const inclTrigger = document.getElementById('build-phone-incl');
-    if (!viewport || !track || !slides.length) return;
+    if (!slides.length || !prevBtn || !nextBtn) return;
 
     function activeInclScreen() {
       return slides[index] && slides[index].querySelector('.phone-screen-wrap[data-incl]');
@@ -5002,26 +4987,16 @@
       if (overlay) overlay.setAttribute('aria-hidden', 'false');
       if (panel) panel.setAttribute('aria-hidden', 'false');
     }
-    track.style.setProperty('--slides', String(slides.length));
-
     let index = 0;
-    let dragOffset = 0;
-    let dragging = false;
-    let suppressClick = false;
-    let startX = 0;
-    let startY = 0;
-    let axisLock = null;
-    let pointerId = null;
 
     function updateStates() {
       slides.forEach((s, i) => {
-        s.classList.toggle('is-active', i === index);
-      });
-      dots.forEach((d, i) => {
         const on = i === index;
-        d.classList.toggle('is-active', on);
-        d.setAttribute('aria-selected', on ? 'true' : 'false');
+        s.classList.toggle('is-active', on);
+        s.setAttribute('aria-hidden', on ? 'false' : 'true');
       });
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = index === slides.length - 1;
       if (labelEl && slides[index]) {
         labelEl.textContent = slides[index].dataset.label || '';
       }
@@ -5031,79 +5006,13 @@
       }
     }
 
-    function setTransform(animated) {
-      const w = viewport.offsetWidth;
-      const x = -index * w + dragOffset;
-      track.style.transition = animated
-        ? 'transform 420ms cubic-bezier(0.22, 1, 0.36, 1)'
-        : 'none';
-      track.style.transform = `translate3d(${x}px, 0, 0)`;
+    function goTo(i) {
+      index = Math.max(0, Math.min(slides.length - 1, i));
       updateStates();
     }
 
-    function goTo(i, animated) {
-      index = Math.max(0, Math.min(slides.length - 1, i));
-      dragOffset = 0;
-      setTransform(animated !== false);
-    }
-
-    function onPointerDown(e) {
-      if (e.button > 0) return;
-      if (e.target.closest('.phone-shot--site, .phone-incl-overlay, .phone-incl-panel')) return;
-      dragging = true;
-      suppressClick = false;
-      axisLock = null;
-      startX = e.clientX;
-      startY = e.clientY;
-      pointerId = e.pointerId;
-      track.classList.add('is-dragging');
-      track.setPointerCapture(e.pointerId);
-      setTransform(false);
-    }
-
-    function onPointerMove(e) {
-      if (!dragging || e.pointerId !== pointerId) return;
-      const dx = e.clientX - startX;
-      const dy = e.clientY - startY;
-      if (axisLock === null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
-        axisLock = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
-      }
-      if (axisLock !== 'x') return;
-      e.preventDefault();
-      if (Math.abs(dx) > 10) suppressClick = true;
-      const w = viewport.offsetWidth;
-      const atStart = index === 0 && dx > 0;
-      const atEnd = index === slides.length - 1 && dx < 0;
-      dragOffset = (atStart || atEnd) ? dx * 0.35 : dx;
-      const max = w * 0.55;
-      dragOffset = Math.max(-max, Math.min(max, dragOffset));
-      setTransform(false);
-    }
-
-    function onPointerUp(e) {
-      if (!dragging || e.pointerId !== pointerId) return;
-      dragging = false;
-      track.classList.remove('is-dragging');
-      try { track.releasePointerCapture(e.pointerId); } catch (_) {}
-      const w = viewport.offsetWidth;
-      const threshold = w * 0.18;
-      if (dragOffset < -threshold) goTo(index + 1);
-      else if (dragOffset > threshold) goTo(index - 1);
-      else goTo(index);
-      dragOffset = 0;
-    }
-
-    root.addEventListener('click', (e) => {
-      if (!suppressClick) return;
-      const link = e.target.closest('a.phone');
-      if (!link || !root.contains(link)) return;
-      e.preventDefault();
-      suppressClick = false;
-    }, true);
-
-    root.querySelectorAll('.phone-shot--site').forEach((el) => {
-      el.addEventListener('touchstart', (e) => e.stopPropagation(), { passive: true });
-    });
+    prevBtn.addEventListener('click', () => goTo(index - 1));
+    nextBtn.addEventListener('click', () => goTo(index + 1));
 
     if (inclTrigger) {
       inclTrigger.addEventListener('click', (e) => {
@@ -5133,20 +5042,10 @@
       });
     });
 
-    track.addEventListener('pointerdown', onPointerDown);
-    track.addEventListener('pointermove', onPointerMove);
-    track.addEventListener('pointerup', onPointerUp);
-    track.addEventListener('pointercancel', onPointerUp);
-
-    dots.forEach((d) => {
-      d.addEventListener('click', () => goTo(Number(d.dataset.index)));
-    });
-
-    window.addEventListener('resize', () => setTransform(false));
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closePhoneIncl();
     });
-    goTo(0, false);
+    goTo(0);
   })();
 
   // What I build — tab switcher
