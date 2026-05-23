@@ -1,0 +1,12 @@
+{
+  "name": "freeformworks-google-oauth",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "auth": "node get-refresh-token.mjs"
+  },
+  "dependencies": {
+    "googleapis": "^148.0.0",
+    "open": "^10.1.0"
+  }
+}

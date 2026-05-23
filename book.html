@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Book a call · Freeform Works</title>
+<meta name="description" content="Book a free 15-minute discovery call with Freeform Works." />
+<meta name="theme-color" content="#0E0E10" />
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #FCFBF9;
+    --ink: #0F0F10;
+    --ox: #7C2031;
+    --ox-tint: #A85063;
+    --d-paper: #0E0E10;
+    --d-ink: #F1ECE2;
+    --d-gray: #6F6B66;
+    --d-rule: rgba(241, 236, 226, 0.10);
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --pad-x: clamp(24px, 5vw, 80px);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--d-paper);
+    color: var(--d-ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--ox); color: var(--paper); }
+  a { color: inherit; text-decoration: none; }
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: clamp(48px, 8vw, 96px) var(--pad-x) 80px;
+  }
+  .back {
+    font-size: 14px;
+    color: var(--d-gray);
+    border-bottom: 1px solid var(--d-rule);
+    padding-bottom: 2px;
+    display: inline-block;
+    margin-bottom: 48px;
+  }
+  .back:hover { color: var(--ox-tint); }
+  .label {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ox-tint);
+    margin: 0 0 16px;
+  }
+  h1 {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    margin: 0 0 12px;
+  }
+  .sub {
+    color: var(--d-gray);
+    margin: 0 0 40px;
+    max-width: 42ch;
+  }
+  .panel {
+    border-top: 1px solid var(--d-rule);
+    padding-top: 32px;
+  }
+  .step-title {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--d-gray);
+    margin: 0 0 16px;
+  }
+
+  /* ── Calendar ── */
+  .cal {
+    margin-bottom: 32px;
+    max-width: 400px;
+  }
+  .cal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .cal-month {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .cal-nav-btn {
+    appearance: none;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--d-rule);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--d-ink);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    transition: border-color 160ms ease, background 160ms ease;
+  }
+  .cal-nav-btn:hover:not(:disabled) { border-color: var(--ox-tint); }
+  .cal-nav-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+  .cal-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  .cal-weekdays span {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--d-gray);
+    text-align: center;
+    padding: 4px 0;
+  }
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+  .cal-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--d-gray);
+    cursor: default;
+    padding: 0;
+    font-family: inherit;
+  }
+  .cal-day.is-empty { visibility: hidden; }
+  .cal-day.is-muted { opacity: 0.28; }
+  .cal-day.is-open {
+    color: var(--d-ink);
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+  .cal-day.is-open:hover {
+    border-color: var(--ox-tint);
+  }
+  .cal-day.is-today.is-open {
+    box-shadow: inset 0 0 0 1px var(--d-rule);
+  }
+  .cal-day.is-selected {
+    background: var(--d-ink);
+    color: var(--d-paper);
+    border-color: var(--d-ink);
+  }
+  .cal-day.is-selected:hover { border-color: var(--d-ink); }
+
+  /* ── Skeleton (HeroUI-style shimmer) ── */
+  @keyframes skel-shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .skel::after { animation: none; opacity: 0.35; }
+  }
+  .skel {
+    position: relative;
+    overflow: hidden;
+    background: var(--d-rule);
+    border-radius: 8px;
+  }
+  .skel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(241, 236, 226, 0.14) 45%,
+      rgba(241, 236, 226, 0.22) 55%,
+      transparent 100%
+    );
+    animation: skel-shimmer 1.4s ease-in-out infinite;
+  }
+  .cal-skeleton .cal-head { pointer-events: none; }
+  .skel-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+  .skel-title {
+    width: 128px;
+    height: 18px;
+    border-radius: 6px;
+  }
+  .skel-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+  .skel-day {
+    aspect-ratio: 1;
+    border-radius: 999px;
+  }
+  .times-skel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+  .skel-chip {
+    width: 72px;
+    height: 40px;
+    border-radius: 999px;
+  }
+  .skel-chip:nth-child(3n) { width: 84px; }
+  .skel-chip:nth-child(4n) { width: 64px; }
+
+  .times {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+  .chip {
+    appearance: none;
+    border: 1px solid var(--d-rule);
+    background: transparent;
+    color: var(--d-ink);
+    font: inherit;
+    font-size: 14px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+  }
+  .chip:hover { border-color: var(--ox-tint); }
+  .chip.is-selected {
+    background: var(--d-ink);
+    color: var(--d-paper);
+    border-color: var(--d-ink);
+  }
+  .form { display: grid; gap: 16px; }
+  label {
+    display: grid;
+    gap: 8px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--d-gray);
+  }
+  input, textarea, select {
+    font: inherit;
+    font-size: 16px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--d-ink);
+    background: var(--d-paper);
+    border: 1px solid var(--d-rule);
+    border-radius: 8px;
+    padding: 12px 14px;
+    width: 100%;
+  }
+  select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236F6B66' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
+  }
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--ox-tint);
+  }
+  textarea { min-height: 72px; resize: vertical; }
+  .field-other.hidden { display: none; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 22px;
+    border: none;
+    border-radius: 999px;
+    font: inherit;
+    font-size: 14.5px;
+    font-weight: 500;
+    cursor: pointer;
+    background: var(--d-ink);
+    color: var(--d-paper);
+    transition: background 160ms ease;
+    margin-top: 8px;
+    width: fit-content;
+  }
+  .btn:hover:not(:disabled) { background: var(--ox); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .msg { font-size: 14px; color: var(--d-gray); margin: 0; }
+  .msg.is-error { color: #e8a0a8; }
+  .done a {
+    color: var(--ox-tint);
+    border-bottom: 1px solid var(--d-rule);
+    padding-bottom: 2px;
+  }
+  .success-summary {
+    margin: 28px 0 0;
+    padding: 20px 0 0;
+    border-top: 1px solid var(--d-rule);
+    display: grid;
+    gap: 14px;
+  }
+  .success-row {
+    display: grid;
+    grid-template-columns: 108px 1fr;
+    gap: 12px 20px;
+    font-size: 15px;
+    align-items: baseline;
+  }
+  @media (max-width: 480px) {
+    .success-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+  .success-row dt {
+    margin: 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--d-gray);
+  }
+  .success-row dd {
+    margin: 0;
+    color: var(--d-ink);
+    line-height: 1.45;
+  }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <a href="index.html" class="back">← Back</a>
+    <div id="page-head">
+      <p class="label">Book a call</p>
+      <h1>15-minute call</h1>
+    </div>
+
+    <div id="booking" class="panel">
+      <p class="step-title">1 · Pick a day</p>
+      <div class="cal" id="cal" aria-busy="true" aria-label="Choose a date">
+        <div id="cal-skeleton" class="cal-skeleton">
+          <div class="cal-head">
+            <div class="skel skel-btn" aria-hidden="true"></div>
+            <div class="skel skel-title" aria-hidden="true"></div>
+            <div class="skel skel-btn" aria-hidden="true"></div>
+          </div>
+          <div class="cal-weekdays" aria-hidden="true">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
+            <span>Thu</span><span>Fri</span><span>Sat</span>
+          </div>
+          <div class="skel-grid" aria-hidden="true">
+            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
+            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
+            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
+            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
+            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
+            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
+            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
+            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
+            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
+            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
+            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
+            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
+            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
+            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
+            <div class="skel skel-day"></div>
+          </div>
+        </div>
+        <div id="cal-live" class="cal-live hidden">
+          <div class="cal-head">
+            <button type="button" class="cal-nav-btn" id="cal-prev" aria-label="Previous month">‹</button>
+            <span class="cal-month" id="cal-month-label"></span>
+            <button type="button" class="cal-nav-btn" id="cal-next" aria-label="Next month">›</button>
+          </div>
+          <div class="cal-weekdays" aria-hidden="true">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
+            <span>Thu</span><span>Fri</span><span>Sat</span>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+      </div>
+
+      <div id="times-wrap" class="hidden">
+        <p class="step-title" id="times-label">2 · Pick a time</p>
+        <div id="times-skeleton" class="times-skel hidden" aria-hidden="true">
+          <div class="skel skel-chip"></div><div class="skel skel-chip"></div><div class="skel skel-chip"></div>
+          <div class="skel skel-chip"></div><div class="skel skel-chip"></div><div class="skel skel-chip"></div>
+          <div class="skel skel-chip"></div><div class="skel skel-chip"></div>
+        </div>
+        <div id="times" class="times" aria-live="polite"></div>
+      </div>
+
+      <div id="form-wrap" class="hidden">
+        <p class="step-title">3 · Your details</p>
+        <form id="form" class="form">
+          <label>Name <input type="text" name="name" required autocomplete="name" /></label>
+          <label>Email <input type="email" name="email" required autocomplete="email" /></label>
+          <label>Business name <input type="text" name="businessName" required autocomplete="organization" /></label>
+          <label>
+            Business type
+            <select name="businessType" id="business-type" required>
+              <option value="" disabled selected>Select a category</option>
+              <option value="restaurants">Restaurants</option>
+              <option value="barbershops-salons">Barbershops &amp; salons</option>
+              <option value="photographers">Photographers</option>
+              <option value="florists">Florists</option>
+              <option value="lawn-care">Lawn care</option>
+              <option value="retail">Retail</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+          <label class="field-other hidden" id="business-type-other-wrap">
+            Describe your business <span style="text-transform:none;letter-spacing:0">(optional)</span>
+            <input type="text" name="businessTypeOther" id="business-type-other" placeholder="e.g. Videography, HVAC, studio" />
+          </label>
+          <button type="submit" class="btn" id="submit">Confirm booking</button>
+          <p class="msg" id="form-msg"></p>
+        </form>
+      </div>
+
+      <p class="msg hidden" id="load-msg" role="status"></p>
+    </div>
+
+    <div id="success" class="done hidden">
+      <p class="label">You're booked</p>
+      <h1 id="success-greeting">See you soon.</h1>
+      <p class="sub" id="success-lead">Check your email for the calendar invite and Meet link.</p>
+      <dl class="success-summary" id="success-summary" aria-label="Booking summary"></dl>
+      <p style="margin-top:28px"><a href="index.html">Back to site</a></p>
+    </div>
+  </div>
+
+<script>
+(function () {
+  let tz = 'America/Chicago';
+  const calEl = document.getElementById('cal');
+  const calSkeleton = document.getElementById('cal-skeleton');
+  const calLive = document.getElementById('cal-live');
+  const calGrid = document.getElementById('cal-grid');
+  const calMonthLabel = document.getElementById('cal-month-label');
+  const calPrev = document.getElementById('cal-prev');
+  const calNext = document.getElementById('cal-next');
+  const timesSkeleton = document.getElementById('times-skeleton');
+  const timesWrap = document.getElementById('times-wrap');
+  const timesLabel = document.getElementById('times-label');
+  const timesEl = document.getElementById('times');
+  const formWrap = document.getElementById('form-wrap');
+  const form = document.getElementById('form');
+  const loadMsg = document.getElementById('load-msg');
+  const formMsg = document.getElementById('form-msg');
+  const booking = document.getElementById('booking');
+  const success = document.getElementById('success');
+  const submitBtn = document.getElementById('submit');
+  const businessTypeSelect = document.getElementById('business-type');
+  const businessTypeOtherWrap = document.getElementById('business-type-other-wrap');
+  const pageHead = document.getElementById('page-head');
+  const successGreeting = document.getElementById('success-greeting');
+  const successLead = document.getElementById('success-lead');
+  const successSummary = document.getElementById('success-summary');
+
+  const BUSINESS_TYPE_LABELS = {
+    restaurants: 'Restaurants',
+    'barbershops-salons': 'Barbershops & salons',
+    photographers: 'Photographers',
+    florists: 'Florists',
+    'lawn-care': 'Lawn care',
+    retail: 'Retail',
+    other: 'Other',
+  };
+
+  let meta = { dates: [], today: '', timezone: tz };
+  let availableSet = new Set();
+  let viewYear, viewMonth;
+  let selectedDate = null;
+  let selectedStart = null;
+  let slotsCache = [];
+
+  let fmtMonth;
+  let fmtDayLong;
+
+  function initFormatters() {
+    fmtMonth = new Intl.DateTimeFormat('en-US', { timeZone: tz, month: 'long', year: 'numeric' });
+    fmtDayLong = new Intl.DateTimeFormat('en-US', {
+      timeZone: tz,
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+    });
+  }
+  initFormatters();
+
+  function parseIso(iso) {
+    const [y, m, d] = iso.split('-').map(Number);
+    return { y, m, d };
+  }
+
+  function isoFromParts(y, m, d) {
+    return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+  }
+
+  function firstWeekdayOfMonth(y, m) {
+    const iso = isoFromParts(y, m, 1);
+    const wd = new Intl.DateTimeFormat('en-US', { timeZone: tz, weekday: 'short' })
+      .format(Date.parse(`${iso}T12:00:00Z`));
+    const dowMap = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+    return dowMap[wd.slice(0, 3)] ?? 0;
+  }
+
+  function monthBounds() {
+    if (!meta.dates.length) return null;
+    return {
+      first: parseIso(meta.dates[0]),
+      last: parseIso(meta.dates[meta.dates.length - 1]),
+    };
+  }
+
+  function canGoPrev() {
+    const b = monthBounds();
+    if (!b) return false;
+    return viewYear > b.first.y || (viewYear === b.first.y && viewMonth > b.first.m);
+  }
+
+  function canGoNext() {
+    const b = monthBounds();
+    if (!b) return false;
+    return viewYear < b.last.y || (viewYear === b.last.y && viewMonth < b.last.m);
+  }
+
+  function renderCalendar() {
+    if (!viewYear || !viewMonth) return;
+    calMonthLabel.textContent = fmtMonth.format(new Date(Date.UTC(viewYear, viewMonth - 1, 15)));
+    calPrev.disabled = !canGoPrev();
+    calNext.disabled = !canGoNext();
+    calGrid.innerHTML = '';
+
+    let pad = firstWeekdayOfMonth(viewYear, viewMonth);
+    const daysInMonth = new Date(viewYear, viewMonth, 0).getDate();
+
+    for (let i = 0; i < pad; i++) {
+      const el = document.createElement('span');
+      el.className = 'cal-day is-empty';
+      el.setAttribute('aria-hidden', 'true');
+      calGrid.appendChild(el);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const iso = isoFromParts(viewYear, viewMonth, day);
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'cal-day';
+      btn.textContent = day;
+
+      if (availableSet.has(iso)) {
+        btn.classList.add('is-open');
+        if (iso === meta.today) btn.classList.add('is-today');
+        if (iso === selectedDate) btn.classList.add('is-selected');
+        btn.addEventListener('click', () => selectDate(iso));
+      } else {
+        btn.classList.add('is-muted');
+        btn.disabled = true;
+      }
+      calGrid.appendChild(btn);
+    }
+  }
+
+  function setCalLoading(loading) {
+    calEl.setAttribute('aria-busy', loading ? 'true' : 'false');
+    calSkeleton.classList.toggle('hidden', !loading);
+    calLive.classList.toggle('hidden', loading);
+  }
+
+  function setTimesLoading(loading) {
+    timesSkeleton.classList.toggle('hidden', !loading);
+    timesEl.classList.toggle('hidden', loading);
+  }
+
+  function chip(text, selected, onClick) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip' + (selected ? ' is-selected' : '');
+    b.textContent = text;
+    b.addEventListener('click', onClick);
+    return b;
+  }
+
+  async function loadDates() {
+    setCalLoading(true);
+    loadMsg.classList.add('hidden');
+    try {
+      const res = await fetch('/api/slots');
+      if (!res.ok) throw new Error('load');
+      meta = await res.json();
+      if (meta.timezone) {
+        tz = meta.timezone;
+        initFormatters();
+      }
+      availableSet = new Set(meta.dates || []);
+      if (!meta.dates?.length) {
+        setCalLoading(false);
+        loadMsg.textContent = 'No open days right now. Email hello@freeformworks.com instead.';
+        loadMsg.classList.remove('hidden');
+        return;
+      }
+      const start = parseIso(meta.today || meta.dates[0]);
+      viewYear = start.y;
+      viewMonth = start.m;
+      renderCalendar();
+      setCalLoading(false);
+    } catch (e) {
+      setCalLoading(false);
+      throw e;
+    }
+  }
+
+  async function selectDate(d) {
+    selectedDate = d;
+    selectedStart = null;
+    formWrap.classList.add('hidden');
+    renderCalendar();
+
+    const p = parseIso(d);
+    if (p.m !== viewMonth || p.y !== viewYear) {
+      viewYear = p.y;
+      viewMonth = p.m;
+      renderCalendar();
+    }
+
+    timesLabel.textContent = '2 · Pick a time · ' + fmtDayLong.format(Date.parse(`${d}T12:00:00Z`));
+    timesWrap.classList.remove('hidden');
+    timesEl.innerHTML = '';
+    loadMsg.classList.add('hidden');
+    setTimesLoading(true);
+
+    const res = await fetch('/api/slots?date=' + encodeURIComponent(d));
+    setTimesLoading(false);
+    if (!res.ok) {
+      loadMsg.textContent = 'Could not load times.';
+      loadMsg.classList.remove('hidden');
+      return;
+    }
+    const data = await res.json();
+    slotsCache = data.slots || [];
+    if (!slotsCache.length) {
+      loadMsg.textContent = 'No times left this day. Pick another.';
+      loadMsg.classList.remove('hidden');
+      return;
+    }
+    slotsCache.forEach((s) => {
+      timesEl.appendChild(chip(s.label, false, () => selectTime(s.start)));
+    });
+  }
+
+  function selectTime(start) {
+    selectedStart = start;
+    formWrap.classList.remove('hidden');
+    Array.from(timesEl.children).forEach((c, i) => {
+      c.classList.toggle('is-selected', slotsCache[i]?.start === start);
+    });
+  }
+
+  calPrev.addEventListener('click', () => {
+    if (!canGoPrev()) return;
+    viewMonth--;
+    if (viewMonth < 1) { viewMonth = 12; viewYear--; }
+    renderCalendar();
+  });
+
+  calNext.addEventListener('click', () => {
+    if (!canGoNext()) return;
+    viewMonth++;
+    if (viewMonth > 12) { viewMonth = 1; viewYear++; }
+    renderCalendar();
+  });
+
+  function formatBusinessTypeLabel(type, other) {
+    const label = BUSINESS_TYPE_LABELS[type] || type;
+    if (type === 'other' && other?.trim()) return `${label} — ${other.trim()}`;
+    return label;
+  }
+
+  function formatSlotWhen(startIso) {
+    const date = startIso.slice(0, 10);
+    const when = fmtDayLong.format(Date.parse(`${date}T12:00:00Z`));
+    const slot = slotsCache.find((s) => s.start === startIso);
+    const time = slot?.label || startIso.slice(11, 16);
+    return `${when} · ${time} CT`;
+  }
+
+  function addSummaryRow(term, detail) {
+    const row = document.createElement('div');
+    row.className = 'success-row';
+    const dt = document.createElement('dt');
+    dt.textContent = term;
+    const dd = document.createElement('dd');
+    dd.textContent = detail;
+    row.appendChild(dt);
+    row.appendChild(dd);
+    successSummary.appendChild(row);
+  }
+
+  function showSuccessSummary(fd) {
+    const name = String(fd.get('name') || '').trim();
+    const email = String(fd.get('email') || '').trim();
+    const businessName = String(fd.get('businessName') || '').trim();
+    const businessType = String(fd.get('businessType') || '');
+    const businessTypeOther = String(fd.get('businessTypeOther') || '');
+
+    successGreeting.textContent = name ? `You're set, ${name}.` : 'See you soon.';
+    successLead.textContent = email
+      ? `We sent the invite and Meet link to ${email}.`
+      : 'Check your email for the calendar invite and Meet link.';
+
+    successSummary.innerHTML = '';
+    addSummaryRow('When', formatSlotWhen(selectedStart));
+    addSummaryRow('Business', businessName);
+    addSummaryRow('Type', formatBusinessTypeLabel(businessType, businessTypeOther));
+    addSummaryRow('Contact', name);
+    addSummaryRow('Email', email);
+  }
+
+  businessTypeSelect.addEventListener('change', () => {
+    const isOther = businessTypeSelect.value === 'other';
+    businessTypeOtherWrap.classList.toggle('hidden', !isOther);
+    if (!isOther) document.getElementById('business-type-other').value = '';
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!selectedStart) return;
+    submitBtn.disabled = true;
+    formMsg.textContent = '';
+    formMsg.className = 'msg';
+    const fd = new FormData(form);
+    const res = await fetch('/api/book', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        start: selectedStart,
+        name: fd.get('name'),
+        email: fd.get('email'),
+        businessName: fd.get('businessName'),
+        businessType: fd.get('businessType'),
+        businessTypeOther: fd.get('businessTypeOther'),
+      }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      formMsg.textContent = data.error || 'Something went wrong. Try again or email hello@freeformworks.com.';
+      formMsg.className = 'msg is-error';
+      submitBtn.disabled = false;
+      return;
+    }
+    showSuccessSummary(fd);
+    pageHead.classList.add('hidden');
+    booking.classList.add('hidden');
+    success.classList.remove('hidden');
+  });
+
+  setCalLoading(true);
+  loadDates().catch((err) => {
+    console.error(err);
+    setCalLoading(false);
+    loadMsg.textContent = 'Could not load the calendar. Run vercel dev and refresh, or email hello@freeformworks.com.';
+    loadMsg.classList.remove('hidden');
+  });
+})();
+</script>
+</body>
+</html>

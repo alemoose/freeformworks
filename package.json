@@ -1,0 +1,7 @@
+{
+  "name": "freeformworks",
+  "private": true,
+  "dependencies": {
+    "googleapis": "^148.0.0"
+  }
+}

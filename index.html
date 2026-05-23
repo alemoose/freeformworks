@@ -11,7 +11,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Cormorant:ital,wght@1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Oswald:wght@500;700&family=Playfair+Display:wght@300;400&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet" />
 
 <style>
   :root {
@@ -46,6 +46,13 @@
 
   *, *::before, *::after { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
+  .page-top {
+    display: block;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
   body {
     margin: 0;
     background: var(--paper);
@@ -243,7 +250,10 @@
   /* ─── Work ──────────────────────────────────────────── */
   #work {
     padding-top: clamp(40px, 5vw, 56px);
-    padding-bottom: clamp(48px, 6vw, 64px);
+    padding-bottom: clamp(28px, 4vw, 40px);
+  }
+  #build {
+    padding-top: clamp(32px, 4.5vw, 48px);
   }
   .work-head {
     display: grid; grid-template-columns: 1fr 1fr;
@@ -410,6 +420,199 @@
     display: block;
   }
 
+  /* Phone frame (shown on narrow viewports instead of browser) */
+  .phone {
+    display: none;
+    max-width: min(300px, 78vw);
+    margin: 0 auto;
+    text-decoration: none;
+    color: inherit;
+  }
+  .phone-bezel {
+    background: #000;
+    border-radius: 44px;
+    padding: 11px 9px 11px;
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.6),
+      0 32px 72px -28px rgba(0, 0, 0, 0.55);
+    width: 100%;
+  }
+  .phone-screen-wrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border-radius: 36px;
+    overflow: hidden;
+    background: #0f0f10;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    container-type: inline-size;
+    aspect-ratio: 9 / 21.2;
+  }
+  .phone-shot {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+    background: #0f0f10;
+    overflow: hidden;
+  }
+  .phone-shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+  .phone-chrome {
+    flex-shrink: 0;
+    background: linear-gradient(180deg, #1e1e20 0%, #121214 100%);
+    padding: clamp(5px, 1.6cqw, 7px) clamp(8px, 2.2cqw, 10px) clamp(6px, 1.8cqw, 8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .phone-urlbar {
+    width: fit-content;
+    max-width: 72%;
+    margin: 0 auto;
+    padding: clamp(7px, 2.1cqw, 9px) clamp(16px, 5cqw, 22px);
+    background: rgba(38, 38, 42, 0.72);
+    backdrop-filter: blur(20px) saturate(1.2);
+    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    border: 0.5px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.05) inset,
+      0 4px 14px rgba(0, 0, 0, 0.35);
+    text-align: center;
+  }
+  .phone-urlbar-site {
+    display: block;
+    font-size: clamp(11px, 3cqw, 12.5px);
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.92);
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .phone-shot--placeholder {
+    background: linear-gradient(165deg, #222226 0%, #0f0f10 55%, #18181b 100%);
+  }
+  #build-phones .phone-shot--site {
+    container-type: inline-size;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
+    scrollbar-width: none;
+    background: transparent;
+  }
+  #build-phones .phone-shot--site::-webkit-scrollbar {
+    display: none;
+  }
+  #build-phones .phone-site {
+    padding: 5cqw 4.5cqw 6cqw;
+    min-height: 100%;
+  }
+
+  /* Build section — swipeable phone stack (mobile) */
+  .build-phones {
+    display: none;
+    margin-bottom: clamp(40px, 6vw, 56px);
+  }
+  .phone-stack-hint {
+    margin: clamp(14px, 3vw, 20px) 0 0;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+  .phone-stack-viewport {
+    overflow: hidden;
+    width: 100%;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .phone-stack-track {
+    --slides: 6;
+    display: flex;
+    align-items: center;
+    width: calc(var(--slides) * 100%);
+    will-change: transform;
+    cursor: grab;
+  }
+  .phone-stack-track.is-dragging {
+    cursor: grabbing;
+    transition: none !important;
+  }
+  .phone-slide {
+    flex: 0 0 calc(100% / var(--slides));
+    width: calc(100% / var(--slides));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 clamp(16px, 5vw, 28px);
+    box-sizing: border-box;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 280ms ease, visibility 0s linear 280ms;
+  }
+  .phone-slide.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 280ms ease, visibility 0s linear 0s;
+  }
+  .phone-stack-track.is-dragging .phone-slide {
+    opacity: 1;
+    visibility: visible;
+  }
+  #build-phones .phone-bezel {
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6);
+  }
+  .phone-stack-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: clamp(16px, 3vw, 22px);
+  }
+  .phone-stack-dot {
+    width: 6px;
+    height: 6px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--rule);
+    cursor: pointer;
+    transition: transform 200ms ease, background 200ms ease;
+  }
+  .phone-stack-dot.is-active {
+    background: var(--ox);
+    transform: scale(1.35);
+  }
+
+  a.browser.preview-desktop { display: block; }
+  #build .tabshell.preview-desktop { display: block; }
+  @media (max-width: 760px) {
+    a.browser.preview-desktop { display: none; }
+    a.phone.preview-mobile { display: block; }
+    #build .tabshell.preview-desktop { display: none; }
+    .build-phone-label { display: block; }
+    #build .build-head { margin-bottom: clamp(32px, 5vw, 48px); }
+    .build-phones.preview-mobile { display: block; margin-bottom: clamp(32px, 5vw, 48px); }
+    #build-phones .phone {
+      display: block;
+      width: 100%;
+      max-width: min(300px, 78vw);
+    }
+  }
+
   /* Case meta row */
   .case-meta {
     margin-top: clamp(48px, 6vw, 64px);
@@ -516,6 +719,194 @@
     margin: 0;
     text-wrap: balance;
   }
+  .build-phone-head {
+    text-align: center;
+    margin-bottom: clamp(16px, 3.5vw, 22px);
+  }
+  .build-phone-label {
+    margin: 0;
+    font-size: clamp(20px, 5vw, 28px);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    transition: opacity 200ms ease;
+  }
+  .build-phone-incl {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: clamp(8px, 2vw, 12px) auto 0;
+    padding: 0 0 2px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--ox);
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ox);
+    transition: color 160ms ease, border-color 160ms ease;
+  }
+  .build-phone-incl:hover {
+    color: var(--ox-deep);
+    border-bottom-color: var(--ox-deep);
+  }
+  .build-phone-incl[hidden] { display: none; }
+  .build-phone-incl .arr {
+    display: inline-block;
+    transition: transform 200ms ease;
+  }
+  .build-phone-incl:hover .arr { transform: translate(2px, -2px); }
+  #build-phones .phone-incl-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 15, 16, 0.38);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 220ms ease, visibility 0s linear 220ms;
+    z-index: 12;
+    cursor: pointer;
+  }
+  #build-phones .phone-screen-wrap.is-incl-open .phone-incl-overlay {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 220ms ease, visibility 0s linear 0s;
+  }
+  #build-phones .phone-incl-panel {
+    position: absolute;
+    inset: 0;
+    z-index: 13;
+    background: #F2F6F8;
+    font-family: var(--sans);
+    padding: clamp(20px, 7cqw, 28px) 4.5cqw 6cqw;
+    display: flex;
+    flex-direction: column;
+    gap: 3.5cqw;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transform: translateY(102%);
+    transition: transform 340ms cubic-bezier(0.2, 0, 0.15, 1);
+    box-sizing: border-box;
+  }
+  #build-phones .phone-screen-wrap.is-incl-open .phone-incl-panel {
+    transform: translateY(0);
+  }
+  #build-phones .phone-incl-panel .incl-title {
+    font-size: clamp(18px, 8cqw, 24px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: #252525;
+    margin: clamp(10px, 3.5cqw, 16px) 0 0;
+    text-align: center;
+    font-family: var(--sans);
+  }
+  #build-phones .phone-incl-panel .incl-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid rgba(37, 37, 37, 0.16);
+  }
+  #build-phones .phone-incl-panel .incl-list li {
+    font-size: clamp(13px, 5.2cqw, 16px);
+    line-height: 1.5;
+    color: #666666;
+    padding: clamp(10px, 3.4cqw, 14px) 0;
+    border-bottom: 1px solid rgba(37, 37, 37, 0.16);
+    letter-spacing: -0.005em;
+  }
+  #build-phones .phone-incl-panel .incl-list li strong {
+    color: #252525;
+    font-weight: 500;
+  }
+  #build-phones .phone-incl-panel .incl-cta {
+    color: #A84838;
+    border-bottom: 1px solid #A84838;
+    padding-bottom: 2px;
+    font-size: clamp(12px, 4.5cqw, 15px);
+    font-weight: 500;
+    align-self: center;
+    text-decoration: none;
+    display: inline-flex;
+    gap: 0.5cqw;
+    margin-top: 1cqw;
+  }
+  #build-phones .phone-incl-panel--barb {
+    background: #F3EBD8;
+  }
+  #build-phones .phone-incl-panel--barb .incl-title { color: #141210; }
+  #build-phones .phone-incl-panel--barb .incl-list { border-top-color: rgba(20, 18, 16, 0.22); }
+  #build-phones .phone-incl-panel--barb .incl-list li {
+    color: #4A443C;
+    border-bottom-color: rgba(20, 18, 16, 0.22);
+  }
+  #build-phones .phone-incl-panel--barb .incl-list li strong { color: #141210; }
+  #build-phones .phone-incl-panel--barb .incl-cta {
+    color: #6E1F28;
+    border-bottom-color: #6E1F28;
+  }
+  #build-phones .phone-incl-panel--photo {
+    background: #18181B;
+  }
+  #build-phones .phone-incl-panel--photo .incl-title { color: #F1ECE2; }
+  #build-phones .phone-incl-panel--photo .incl-list { border-top-color: rgba(241, 236, 226, 0.1); }
+  #build-phones .phone-incl-panel--photo .incl-list li {
+    color: #6F6B66;
+    border-bottom-color: rgba(241, 236, 226, 0.1);
+  }
+  #build-phones .phone-incl-panel--photo .incl-list li strong { color: #F1ECE2; }
+  #build-phones .phone-incl-panel--photo .incl-cta {
+    color: #D9CEBD;
+    border-bottom-color: #D9CEBD;
+  }
+  #build-phones .phone-incl-panel--flor {
+    background: #F5EFE6;
+  }
+  #build-phones .phone-incl-panel--flor .incl-title { color: #3A3834; }
+  #build-phones .phone-incl-panel--flor .incl-list { border-top-color: rgba(58, 56, 52, 0.12); }
+  #build-phones .phone-incl-panel--flor .incl-list li {
+    color: #6E6A64;
+    border-bottom-color: rgba(58, 56, 52, 0.12);
+  }
+  #build-phones .phone-incl-panel--flor .incl-list li strong { color: #3A3834; }
+  #build-phones .phone-incl-panel--flor .incl-cta {
+    color: #7A8B72;
+    border-bottom-color: #7A8B72;
+  }
+  #build-phones .phone-incl-panel--lawn {
+    background: #F4F5F1;
+  }
+  #build-phones .phone-incl-panel--lawn .incl-title { color: #3D342C; }
+  #build-phones .phone-incl-panel--lawn .incl-list { border-top-color: rgba(61, 52, 44, 0.28); }
+  #build-phones .phone-incl-panel--lawn .incl-list li {
+    color: #646058;
+    border-bottom-color: rgba(61, 52, 44, 0.28);
+  }
+  #build-phones .phone-incl-panel--lawn .incl-list li strong { color: #3D342C; }
+  #build-phones .phone-incl-panel--lawn .incl-cta {
+    color: #5C6B47;
+    border-bottom-color: #5C6B47;
+  }
+  #build-phones .phone-incl-panel--retail {
+    background: #F2E9DC;
+  }
+  #build-phones .phone-incl-panel--retail .incl-title { color: #12100E; }
+  #build-phones .phone-incl-panel--retail .incl-list { border-top-color: rgba(18, 16, 14, 0.18); }
+  #build-phones .phone-incl-panel--retail .incl-list li {
+    color: #5C534A;
+    border-bottom-color: rgba(18, 16, 14, 0.18);
+  }
+  #build-phones .phone-incl-panel--retail .incl-list li strong { color: #12100E; }
+  #build-phones .phone-incl-panel--retail .incl-cta {
+    color: #9B4E2E;
+    border-bottom-color: #9B4E2E;
+  }
+  @media (min-width: 761px) {
+    .build-phone-label { display: none; }
+  }
 
   /* Tabbed browser shell */
   .tabshell {
@@ -579,7 +970,7 @@
     transition: opacity 280ms ease, visibility 0s linear 0s;
   }
 
-  /* shared mockup vocabulary */
+  /* shared mockup shell — each pane overrides tokens below */
   .mk-bar {
     display: flex; align-items: center; justify-content: space-between;
     padding-bottom: clamp(12px, 1.4cqw, 20px);
@@ -591,689 +982,2216 @@
     letter-spacing: -0.012em;
     color: var(--ink);
   }
-  .mk-brand .dot { color: var(--ox); }
   .mk-nav {
     display: flex; gap: clamp(10px, 1.4cqw, 22px);
     font-size: clamp(9px, 0.85cqw, 12px);
     color: var(--gray-deep);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
   }
   .mk-tile {
-    background:
-      repeating-linear-gradient(135deg, rgba(15,15,16,0.045) 0 8px, transparent 8px 16px),
-      var(--paper-2);
     border: 1px solid var(--rule);
     position: relative;
     overflow: hidden;
   }
-  .mk-tile.dark {
-    background:
-      repeating-linear-gradient(135deg, rgba(241,236,226,0.06) 0 8px, transparent 8px 16px),
-      var(--d-paper-2);
-    border-color: var(--d-rule);
-  }
-  .mk-tile .lbl {
-    position: absolute; bottom: 6px; left: 8px;
-    font-size: clamp(8px, 0.7cqw, 10px);
-    color: var(--gray);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  }
-  .mk-eyebrow {
-    font-size: clamp(9px, 0.85cqw, 11px);
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--ox);
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  }
   .mk-cta {
     display: inline-flex; align-items: center; gap: 8px;
     padding: clamp(7px, 0.95cqw, 12px) clamp(12px, 1.5cqw, 20px);
-    background: var(--ink); color: var(--paper);
-    border-radius: 999px;
     font-size: clamp(10px, 0.95cqw, 13px);
     font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
     text-decoration: none;
     line-height: 1;
   }
-  .mk-cta.ox { background: var(--ox); color: var(--paper); }
-  .mk-cta.ghost {
-    background: transparent; color: var(--ink);
-    box-shadow: inset 0 0 0 1px var(--ink);
-  }
-  .mono {
-    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  }
 
-  /* ── Restaurants ── */
+  /* ── Harry's Ramen — printed menu ── */
+  .tabcanvas:has(.pn-rest.is-active) {
+    background: #F2F6F8;
+  }
+  .pn-rest {
+    --rest-paper: #F2F6F8;
+    --rest-ink: #252525;
+    --rest-muted: #666666;
+    --rest-rule: rgba(37, 37, 37, 0.16);
+    --rest-vermillion: #A84838;
+    background: var(--rest-paper);
+    color: var(--rest-ink);
+    font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif;
+    line-height: 1.18;
+  }
+  .pn-rest .mk-bar {
+    border-color: var(--rest-rule);
+    padding-bottom: clamp(8px, 1cqw, 12px);
+  }
+  .pn-rest .mk-brand {
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    font-size: clamp(15px, 1.55cqw, 20px);
+    line-height: 1.1;
+    color: var(--rest-ink);
+  }
+  .pn-rest .mk-brand .dot { color: var(--rest-vermillion); }
+  .pn-rest .mk-nav {
+    font-size: clamp(9px, 0.88cqw, 13px);
+    letter-spacing: 0.03em;
+    color: var(--rest-muted);
+    text-transform: none;
+    line-height: 1.15;
+  }
   .pn-rest .mk-hero {
-    display: grid; grid-template-columns: 1.3fr 1fr;
-    gap: clamp(14px, 2cqw, 28px);
-    margin: clamp(14px, 1.8cqw, 24px) 0 clamp(14px, 1.8cqw, 24px);
-    align-items: stretch;
+    display: grid; grid-template-columns: 1.35fr 0.88fr;
+    gap: clamp(10px, 1.5cqw, 20px);
+    margin: clamp(8px, 1.1cqw, 14px) 0 clamp(6px, 0.85cqw, 10px);
+    align-items: start;
   }
   .pn-rest .mk-hero h2 {
-    font-size: clamp(18px, 3.2cqw, 44px);
-    line-height: 1.02;
+    font-family: "Shippori Mincho", serif;
+    font-size: clamp(20px, 3.25cqw, 42px);
+    line-height: 1.08;
     font-weight: 500;
-    letter-spacing: -0.025em;
-    margin: 0 0 clamp(6px, 0.9cqw, 12px);
-    color: var(--ink);
+    letter-spacing: 0.01em;
+    margin: 0 0 clamp(4px, 0.55cqw, 7px);
+    color: var(--rest-ink);
     text-wrap: balance;
   }
-  .pn-rest .mk-hero h2 .ox { color: var(--ox); }
+  .pn-rest .mk-hero h2 .spot { color: var(--rest-vermillion); }
   .pn-rest .mk-hero p {
-    font-size: clamp(10px, 0.95cqw, 13px);
-    line-height: 1.45;
-    color: var(--gray-deep);
-    margin: 0 0 clamp(10px, 1.4cqw, 18px);
-    max-width: 32ch;
+    font-size: clamp(10px, 0.92cqw, 13px);
+    line-height: 1.22;
+    color: var(--rest-muted);
+    margin: 0 0 clamp(6px, 0.8cqw, 9px);
+    max-width: 34ch;
   }
-  .pn-rest .dd-row {
-    margin-top: clamp(8px, 1cqw, 12px);
-    display: flex; align-items: center; gap: 8px;
+  .pn-rest .mk-hero a.mk-cta.order {
+    background: var(--rest-ink);
+    background-color: var(--rest-ink);
+    color: var(--rest-paper);
+    border: none;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    font-size: clamp(10px, 0.92cqw, 13px);
+    letter-spacing: 0.03em;
+    padding: clamp(5px, 0.65cqw, 7px) clamp(9px, 1.05cqw, 12px);
+    line-height: 1.1;
+    box-shadow: none;
+    appearance: none;
+    -webkit-appearance: none;
   }
-  .pn-rest .dd-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: clamp(5px, 0.7cqw, 8px) clamp(8px, 1.1cqw, 12px);
-    border: 1px solid var(--rule);
-    border-radius: 999px;
-    font-size: clamp(8px, 0.75cqw, 10px);
-    color: var(--gray-deep);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    background: var(--paper);
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  .pn-rest .dd-note {
+    margin-top: clamp(4px, 0.55cqw, 6px);
+    font-size: clamp(9px, 0.82cqw, 12px);
+    color: var(--rest-muted);
+    line-height: 1.2;
+    letter-spacing: 0.01em;
   }
-  .pn-rest .dd-badge::before {
-    content: "";
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--ox);
+  .pn-rest .dd-note .dot {
+    color: var(--rest-vermillion);
+    margin-right: 0.25em;
   }
   .pn-rest .reserve-card {
-    border: 1px solid var(--rule);
-    border-radius: 8px;
-    background: var(--paper);
-    padding: clamp(12px, 1.6cqw, 18px) clamp(14px, 1.8cqw, 20px);
+    border: 1px solid var(--rest-ink);
+    border-radius: 0;
+    background: var(--rest-paper);
+    padding: clamp(6px, 0.75cqw, 9px) clamp(8px, 1cqw, 11px) clamp(7px, 0.85cqw, 10px);
     display: flex; flex-direction: column;
-    gap: clamp(2px, 0.4cqw, 6px);
+    gap: 0;
+    box-shadow: none;
+    position: relative;
+  }
+  .pn-rest .reserve-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 10%; right: 10%;
+    height: 3px;
+    background: repeating-linear-gradient(90deg, var(--rest-ink) 0 3px, transparent 3px 6px);
+    opacity: 0.2;
   }
   .pn-rest .reserve-card .eb {
     font-size: clamp(8px, 0.75cqw, 10px);
-    color: var(--gray);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    padding-bottom: clamp(6px, 0.8cqw, 10px);
-    border-bottom: 1px solid var(--rule);
+    color: var(--rest-muted);
+    letter-spacing: 0.08em;
+    padding: clamp(3px, 0.4cqw, 5px) 0 clamp(3px, 0.45cqw, 5px);
+    border-bottom: 1px solid var(--rest-rule);
+    font-weight: 500;
+    line-height: 1.15;
   }
   .pn-rest .reserve-card .row {
     display: flex; justify-content: space-between; align-items: baseline;
-    padding: clamp(5px, 0.7cqw, 8px) 0;
-    border-bottom: 1px solid var(--rule);
+    padding: clamp(3px, 0.4cqw, 4px) 0;
+    border-bottom: 1px solid var(--rest-rule);
   }
   .pn-rest .reserve-card .lbl {
-    font-size: clamp(8px, 0.7cqw, 10px);
-    color: var(--gray);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: clamp(8px, 0.72cqw, 10px);
+    color: var(--rest-muted);
+    letter-spacing: 0.04em;
+    line-height: 1.15;
   }
   .pn-rest .reserve-card .val {
-    font-size: clamp(10px, 0.95cqw, 13px);
-    color: var(--ink);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: clamp(10px, 0.9cqw, 13px);
+    color: var(--rest-ink);
     font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.15;
   }
   .pn-rest .reserve-card .mk-cta {
     justify-content: center;
-    margin-top: clamp(8px, 1cqw, 12px);
+    margin-top: clamp(5px, 0.65cqw, 7px);
+    background: transparent;
+    color: var(--rest-ink);
+    border: 1px solid var(--rest-ink);
+    border-radius: 0;
+    font-size: clamp(9px, 0.82cqw, 12px);
+    padding: clamp(4px, 0.5cqw, 6px) clamp(8px, 0.95cqw, 11px);
+    line-height: 1.1;
   }
   .pn-rest .menu {
     display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: clamp(8px, 1.2cqw, 14px);
+    gap: 0 clamp(5px, 0.75cqw, 8px);
+    border-top: 1px solid var(--rest-rule);
+    padding-top: clamp(4px, 0.55cqw, 7px);
   }
-  .pn-rest .dish { display: flex; flex-direction: column; gap: clamp(4px, 0.55cqw, 7px); }
-  .pn-rest .dish-img { aspect-ratio: 4 / 3; }
+  .pn-rest .dish {
+    display: flex; flex-direction: column; gap: clamp(2px, 0.3cqw, 4px);
+    padding: clamp(4px, 0.5cqw, 6px) 0;
+    border-bottom: 1px solid var(--rest-rule);
+  }
+  .pn-rest .dish-frame {
+    aspect-ratio: 4 / 3;
+    background: #ECEFF1;
+    border: 1px solid var(--rest-rule);
+  }
   .pn-rest .dish-row {
     display: flex; justify-content: space-between; align-items: baseline;
-    font-size: clamp(10px, 0.95cqw, 13px);
+    font-size: clamp(10px, 0.92cqw, 13px);
     font-weight: 500;
-    color: var(--ink);
-    letter-spacing: -0.005em;
+    color: var(--rest-ink);
+    line-height: 1.12;
+    padding-top: 2px;
   }
-  .pn-rest .dish-row .px { color: var(--gray-deep); font-weight: 400; }
+  .pn-rest .dish-row .px { color: var(--rest-muted); font-weight: 400; }
   .pn-rest .dish-desc {
-    font-size: clamp(8px, 0.75cqw, 10px);
-    color: var(--gray);
+    font-size: clamp(8px, 0.72cqw, 10px);
+    color: var(--rest-muted);
+    line-height: 1.18;
+  }
+  .pn-rest .incl-cta {
+    color: var(--rest-vermillion);
+    border-bottom: 1px solid var(--rest-vermillion);
+    border-bottom-color: var(--rest-vermillion);
+  }
+  .pn-rest .incl-panel {
+    background: var(--rest-paper);
+    border-left-color: var(--rest-rule);
+  }
+  .pn-rest .incl-title { color: var(--rest-ink); }
+  .pn-rest .incl-list li { color: var(--rest-muted); border-bottom-color: var(--rest-rule); }
+  .pn-rest .incl-list li strong { color: var(--rest-ink); }
+
+  /* Harry's Ramen — phone mini site (build carousel) */
+  #build-phones .pn-rest-m {
+    --rest-paper: #F2F6F8;
+    --rest-ink: #252525;
+    --rest-muted: #666666;
+    --rest-rule: rgba(37, 37, 37, 0.16);
+    --rest-vermillion: #A84838;
+    background: var(--rest-paper);
+    color: var(--rest-ink);
+    font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif;
+    line-height: 1.18;
+  }
+  #build-phones .pn-rest-m .mk-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2cqw;
+    padding-bottom: 3.2cqw;
+    border-bottom: 1px solid var(--rest-rule);
+  }
+  #build-phones .pn-rest-m .mk-brand {
+    font-weight: 500;
     letter-spacing: 0.02em;
-    line-height: 1.3;
+    font-size: 5.2cqw;
+    line-height: 1.1;
+    color: var(--rest-ink);
+    flex-shrink: 0;
+  }
+  #build-phones .pn-rest-m .mk-brand .dot { color: var(--rest-vermillion); }
+  #build-phones .pn-rest-m .mk-menu-btn {
+    flex-shrink: 0;
+    width: 9cqw;
+    height: 8cqw;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.1cqw;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  #build-phones .pn-rest-m .mk-menu-btn span {
+    display: block;
+    width: 4.2cqw;
+    height: 1px;
+    background: var(--rest-ink);
+  }
+  #build-phones .pn-rest-m .mk-nav-drawer {
+    display: none;
+    flex-direction: column;
+    margin: 0 0 2.5cqw;
+    border-bottom: 1px solid var(--rest-rule);
+  }
+  #build-phones .pn-rest-m .mk-nav-drawer.is-open {
+    display: flex;
+  }
+  #build-phones .pn-rest-m .mk-nav-drawer span {
+    display: block;
+    padding: 2.8cqw 0;
+    border-bottom: 1px solid var(--rest-rule);
+    font-size: 3.2cqw;
+    letter-spacing: 0.03em;
+    color: var(--rest-ink);
+    line-height: 1.15;
+  }
+  #build-phones .pn-rest-m .mk-nav-drawer span:last-child {
+    border-bottom: none;
+  }
+  #build-phones .pn-rest-m .mk-hero {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5cqw;
+    margin: 3.2cqw 0 2.8cqw;
+  }
+  #build-phones .pn-rest-m .mk-hero h2 {
+    font-family: "Shippori Mincho", serif;
+    font-size: 6.8cqw;
+    line-height: 1.08;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    margin: 0 0 2cqw;
+    color: var(--rest-ink);
+  }
+  #build-phones .pn-rest-m .mk-hero h2 .spot { color: var(--rest-vermillion); }
+  #build-phones .pn-rest-m .mk-hero p {
+    font-size: 3.15cqw;
+    line-height: 1.22;
+    color: var(--rest-muted);
+    margin: 0 0 2.8cqw;
+  }
+  #build-phones .pn-rest-m .mk-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5cqw;
+    text-decoration: none;
+    line-height: 1.1;
+  }
+  #build-phones .pn-rest-m .mk-cta.order {
+    background: var(--rest-ink);
+    color: var(--rest-paper);
+    border: none;
+    border-radius: 0;
+    font-size: 3.15cqw;
+    letter-spacing: 0.03em;
+    padding: 2cqw 3.2cqw;
+    box-shadow: none;
+  }
+  #build-phones .pn-rest-m .dd-note {
+    margin-top: 2cqw;
+    font-size: 2.75cqw;
+    color: var(--rest-muted);
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+  }
+  #build-phones .pn-rest-m .dd-note .dot {
+    color: var(--rest-vermillion);
+    margin-right: 0.25em;
+  }
+  #build-phones .pn-rest-m .reserve-card {
+    border: 1px solid var(--rest-ink);
+    border-radius: 0;
+    background: var(--rest-paper);
+    padding: 2.5cqw 3cqw 2.8cqw;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  #build-phones .pn-rest-m .reserve-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 3px;
+    background: repeating-linear-gradient(90deg, var(--rest-ink) 0 3px, transparent 3px 6px);
+    opacity: 0.2;
+  }
+  #build-phones .pn-rest-m .reserve-card .eb {
+    font-size: 2.5cqw;
+    color: var(--rest-muted);
+    letter-spacing: 0.08em;
+    padding: 1.5cqw 0;
+    border-bottom: 1px solid var(--rest-rule);
+    font-weight: 500;
+    line-height: 1.15;
+  }
+  #build-phones .pn-rest-m .reserve-card .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 1.5cqw 0;
+    border-bottom: 1px solid var(--rest-rule);
+  }
+  #build-phones .pn-rest-m .reserve-card .lbl {
+    font-size: 2.4cqw;
+    color: var(--rest-muted);
+    letter-spacing: 0.04em;
+    line-height: 1.15;
+  }
+  #build-phones .pn-rest-m .reserve-card .val {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 3cqw;
+    color: var(--rest-ink);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.15;
+  }
+  #build-phones .pn-rest-m .reserve-card .mk-cta {
+    justify-content: center;
+    margin-top: 2.5cqw;
+    background: transparent;
+    color: var(--rest-ink);
+    border: 1px solid var(--rest-ink);
+    border-radius: 0;
+    font-size: 2.85cqw;
+    padding: 1.8cqw 3cqw;
+  }
+  #build-phones .pn-rest-m .menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.5cqw 2.8cqw;
+    border-top: 1px solid var(--rest-rule);
+    padding-top: 3.2cqw;
+  }
+  #build-phones .pn-rest-m .dish {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2cqw;
+    padding-bottom: 2.5cqw;
+    border-bottom: 1px solid var(--rest-rule);
+  }
+  #build-phones .pn-rest-m .dish-frame {
+    aspect-ratio: 4 / 3;
+    background: #ECEFF1;
+    border: 1px solid var(--rest-rule);
+  }
+  #build-phones .pn-rest-m .dish-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 3.15cqw;
+    font-weight: 500;
+    color: var(--rest-ink);
+    line-height: 1.12;
+    padding-top: 0.5cqw;
+  }
+  #build-phones .pn-rest-m .dish-row .px {
+    color: var(--rest-muted);
+    font-weight: 400;
+  }
+  #build-phones .pn-rest-m .dish-desc {
+    font-size: 2.5cqw;
+    color: var(--rest-muted);
+    line-height: 1.18;
   }
 
-  /* ── Barbershops ── */
-  .pn-barb .mk-body {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: clamp(16px, 2.2cqw, 34px);
-    margin-top: clamp(14px, 1.8cqw, 24px);
-    flex: 1; min-height: 0;
-  }
-  .pn-barb h2 {
-    font-size: clamp(20px, 3cqw, 38px);
+  /* Fades by Paul — phone mini site */
+  #build-phones .pn-barb-m {
+    --barb-cream: #F3EBD8;
+    --barb-ink: #141210;
+    --barb-oxblood: #6E1F28;
+    --barb-muted: #4A443C;
+    --barb-rule: rgba(20, 18, 16, 0.22);
+    background: var(--barb-cream);
+    color: var(--barb-ink);
+    font-family: "Oswald", "Arial Narrow", sans-serif;
     font-weight: 500;
-    letter-spacing: -0.022em;
-    line-height: 1.04;
-    margin: 0 0 clamp(6px, 0.9cqw, 10px);
-    color: var(--ink);
+  }
+  #build-phones .pn-barb-m .mk-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2cqw;
+    border-bottom: 3px solid var(--barb-ink);
+    padding-bottom: 3.2cqw;
+  }
+  #build-phones .pn-barb-m .mk-brand {
+    font-family: "Anton", "Oswald", sans-serif;
+    font-size: 5.8cqw;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  #build-phones .pn-barb-m .mk-menu-btn {
+    flex-shrink: 0;
+    width: 9cqw;
+    height: 8cqw;
+    padding: 0;
+    border: none;
+    background: transparent;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.1cqw;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  #build-phones .pn-barb-m .mk-menu-btn span {
+    display: block;
+    width: 4.2cqw;
+    height: 2px;
+    background: var(--barb-ink);
+  }
+  #build-phones .pn-barb-m .mk-nav-drawer {
+    display: none;
+    flex-direction: column;
+    margin: 0 0 2.5cqw;
+    border-bottom: 3px solid var(--barb-ink);
+  }
+  #build-phones .pn-barb-m .mk-nav-drawer.is-open { display: flex; }
+  #build-phones .pn-barb-m .mk-nav-drawer span {
+    display: block;
+    padding: 2.8cqw 0;
+    border-bottom: 2px solid var(--barb-rule);
+    font-family: "Oswald", sans-serif;
+    font-size: 3.2cqw;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--barb-ink);
+    line-height: 1.15;
+  }
+  #build-phones .pn-barb-m .mk-nav-drawer span:last-child { border-bottom: none; }
+  #build-phones .pn-barb-m .barb-hero { margin-top: 3.2cqw; }
+  #build-phones .pn-barb-m h2 {
+    font-family: "Anton", "Oswald", sans-serif;
+    font-size: 8.5cqw;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 0.95;
+    text-transform: uppercase;
+    margin: 0 0 2.2cqw;
+    color: var(--barb-ink);
+  }
+  #build-phones .pn-barb-m .sub {
+    font-size: 3.15cqw;
+    font-weight: 500;
+    color: var(--barb-muted);
+    margin: 0;
+    line-height: 1.35;
+  }
+  #build-phones .pn-barb-m .mk-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4cqw;
+    margin-top: 3.5cqw;
+  }
+  #build-phones .pn-barb-m .booking {
+    border: 3px solid var(--barb-ink);
+    padding: 3cqw;
+    background: var(--barb-cream);
+    display: flex;
+    flex-direction: column;
+    gap: 2.5cqw;
+  }
+  #build-phones .pn-barb-m .barb-sign {
+    font-family: "Anton", "Oswald", sans-serif;
+    font-size: 3.6cqw;
+    font-weight: 400;
+    color: var(--barb-ink);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1;
+  }
+  #build-phones .pn-barb-m .barb-sign.times { margin-top: 0.5cqw; }
+  #build-phones .pn-barb-m .cal {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1.2cqw;
+    border: 2px solid var(--barb-ink);
+    padding: 1.5cqw;
+  }
+  #build-phones .pn-barb-m .cal .dn {
+    text-align: center;
+    color: var(--barb-muted);
+    font-size: 2.4cqw;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  #build-phones .pn-barb-m .cal .d {
+    text-align: center;
+    padding: 1.8cqw 0;
+    font-size: 2.85cqw;
+    color: var(--barb-ink);
+    font-weight: 600;
+    border: 2px solid transparent;
+  }
+  #build-phones .pn-barb-m .cal .d.dim { color: var(--barb-muted); opacity: 0.35; }
+  #build-phones .pn-barb-m .cal .d.avail {
+    border-bottom: 3px solid var(--barb-oxblood);
+    padding-bottom: calc(1.8cqw - 3px);
+  }
+  #build-phones .pn-barb-m .cal .d.act {
+    background: var(--barb-oxblood);
+    color: var(--barb-cream);
+    border-color: var(--barb-oxblood);
+  }
+  #build-phones .pn-barb-m .slots {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5cqw;
+  }
+  #build-phones .pn-barb-m .slot {
+    padding: 2.2cqw 0;
+    text-align: center;
+    border: 2px solid var(--barb-ink);
+    font-size: 2.75cqw;
+    color: var(--barb-ink);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  #build-phones .pn-barb-m .slot.act {
+    background: var(--barb-oxblood);
+    color: var(--barb-cream);
+    border-color: var(--barb-oxblood);
+  }
+  #build-phones .pn-barb-m .slot.off {
+    color: var(--barb-muted);
+    opacity: 0.5;
+    text-decoration: line-through;
+    border-color: var(--barb-rule);
+  }
+  #build-phones .pn-barb-m .barb-side {
+    display: flex;
+    flex-direction: column;
+  }
+  #build-phones .pn-barb-m .services {
+    display: flex;
+    flex-direction: column;
+    border-top: 3px solid var(--barb-ink);
+  }
+  #build-phones .pn-barb-m .service {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: 2cqw;
+    padding: 2.8cqw 0;
+    border-bottom: 2px solid var(--barb-rule);
+  }
+  #build-phones .pn-barb-m .service .n {
+    font-size: 3.1cqw;
+    color: var(--barb-ink);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  #build-phones .pn-barb-m .service .dot-row {
+    align-self: end;
+    border-bottom: 3px dotted var(--barb-ink);
+    height: 5px;
+    opacity: 0.35;
+  }
+  #build-phones .pn-barb-m .service .p {
+    font-size: 3.4cqw;
+    color: var(--barb-oxblood);
+    font-weight: 700;
+  }
+  #build-phones .pn-barb-m .reserve-row {
+    margin-top: 3cqw;
+    padding-top: 3cqw;
+    border-top: 2px solid var(--barb-rule);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2.5cqw;
+  }
+  #build-phones .pn-barb-m .deposit {
+    font-size: 2.85cqw;
+    color: var(--barb-muted);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-align: center;
+  }
+  #build-phones .pn-barb-m .mk-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5cqw;
+    background: var(--barb-oxblood);
+    color: var(--barb-cream);
+    border-radius: 0;
+    font-family: "Oswald", sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 3.15cqw;
+    padding: 2.5cqw 4cqw;
+    line-height: 1.1;
+    text-decoration: none;
+  }
+
+  /* Hollis Reid — phone mini site */
+  #build-phones .pn-photo-m {
+    --photo-bg: #080809;
+    --photo-ink: #F2EBE0;
+    --photo-cream: #D9CEBD;
+    --photo-muted: #8A8478;
+    --photo-rule: rgba(242, 235, 224, 0.14);
+    background: var(--photo-bg);
+    color: var(--photo-ink);
+    font-family: "Playfair Display", "Didot", "Bodoni MT", serif;
+  }
+  #build-phones .pn-photo-m .mk-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2cqw;
+    padding-bottom: 3.2cqw;
+    border-bottom: 1px solid var(--photo-rule);
+  }
+  #build-phones .pn-photo-m .mk-brand {
+    color: var(--photo-ink);
+    font-weight: 300;
+    letter-spacing: 0.22em;
+    font-size: 3.2cqw;
+    text-transform: uppercase;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  #build-phones .pn-photo-m .mk-menu-btn {
+    flex-shrink: 0;
+    width: 9cqw;
+    height: 8cqw;
+    padding: 0;
+    border: none;
+    background: transparent;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.1cqw;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  #build-phones .pn-photo-m .mk-menu-btn span {
+    display: block;
+    width: 4.2cqw;
+    height: 1px;
+    background: var(--photo-ink);
+  }
+  #build-phones .pn-photo-m .mk-nav-drawer {
+    display: none;
+    flex-direction: column;
+    margin: 0 0 2.5cqw;
+    border-bottom: 1px solid var(--photo-rule);
+  }
+  #build-phones .pn-photo-m .mk-nav-drawer.is-open { display: flex; }
+  #build-phones .pn-photo-m .mk-nav-drawer span {
+    display: block;
+    padding: 2.8cqw 0;
+    border-bottom: 1px solid var(--photo-rule);
+    font-family: "Playfair Display", serif;
+    font-size: 2.85cqw;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--photo-muted);
+    line-height: 1.15;
+  }
+  #build-phones .pn-photo-m .mk-nav-drawer span.login {
+    color: var(--photo-cream);
+    border-bottom: none;
+  }
+  #build-phones .pn-photo-m .mk-hero {
+    margin: 3.5cqw 0 3cqw;
+  }
+  #build-phones .pn-photo-m .mk-hero h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 7.5cqw;
+    line-height: 1.02;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    margin: 0;
+    color: var(--photo-ink);
+  }
+  #build-phones .pn-photo-m .mk-hero h2 .gr {
+    color: var(--photo-muted);
+    font-weight: 300;
+  }
+  #build-phones .pn-photo-m .mk-hero .meta {
+    margin-top: 2.2cqw;
+    font-size: 2.5cqw;
+    color: var(--photo-muted);
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+  #build-phones .pn-photo-m .tiles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2cqw;
+    margin-bottom: 3.5cqw;
+  }
+  #build-phones .pn-photo-m .folio-frame {
+    background: #141416;
+    border: 1px solid var(--photo-rule);
+    position: relative;
+    min-height: 0;
+  }
+  #build-phones .pn-photo-m .folio-frame.lead {
+    grid-column: 1 / -1;
+    aspect-ratio: 4 / 5;
+  }
+  #build-phones .pn-photo-m .folio-frame:not(.lead) {
+    aspect-ratio: 1;
+  }
+  #build-phones .pn-photo-m .folio-frame .lbl {
+    position: absolute;
+    bottom: 2cqw;
+    left: 2.5cqw;
+    font-size: 2.2cqw;
+    color: var(--photo-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+  #build-phones .pn-photo-m .packages {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-top: 3.2cqw;
+    border-top: 1px solid var(--photo-rule);
+  }
+  #build-phones .pn-photo-m .pkg {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2cqw;
+    padding: 3cqw 0;
+    border-top: 1px solid var(--photo-rule);
+  }
+  #build-phones .pn-photo-m .pkg:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+  #build-phones .pn-photo-m .pkg .n {
+    font-size: 2.5cqw;
+    color: var(--photo-muted);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+  #build-phones .pn-photo-m .pkg .v {
+    font-size: 5.5cqw;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    color: var(--photo-cream);
+    line-height: 1;
+  }
+  #build-phones .pn-photo-m .pkg.fea .v { color: var(--photo-ink); }
+  #build-phones .pn-photo-m .pkg .d {
+    font-size: 2.75cqw;
+    color: var(--photo-muted);
+    line-height: 1.35;
+    letter-spacing: 0.06em;
+    font-weight: 300;
+  }
+
+  /* Bluestem Floral — phone mini site */
+  #build-phones .pn-flor-m {
+    --flor-cream: #F5EFE6;
+    --flor-sage: #7A8B72;
+    --flor-rose: #C9A0A4;
+    --flor-ink: #3A3834;
+    --flor-muted: #6E6A64;
+    --flor-rule: rgba(58, 56, 52, 0.12);
+    background: var(--flor-cream);
+    color: var(--flor-ink);
+    font-family: "Cormorant", "Georgia", serif;
+  }
+  #build-phones .pn-flor-m .mk-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2cqw;
+    padding-bottom: 3.2cqw;
+    border-bottom: 1px solid var(--flor-rule);
+  }
+  #build-phones .pn-flor-m .mk-brand {
+    font-style: italic;
+    font-weight: 500;
+    font-size: 5.2cqw;
+    letter-spacing: 0.01em;
+    color: var(--flor-sage);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  #build-phones .pn-flor-m .mk-menu-btn {
+    flex-shrink: 0;
+    width: 9cqw;
+    height: 8cqw;
+    padding: 0;
+    border: none;
+    background: transparent;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.1cqw;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  #build-phones .pn-flor-m .mk-menu-btn span {
+    display: block;
+    width: 4.2cqw;
+    height: 1px;
+    background: var(--flor-ink);
+  }
+  #build-phones .pn-flor-m .mk-nav-drawer {
+    display: none;
+    flex-direction: column;
+    margin: 0 0 2.5cqw;
+    border-bottom: 1px solid var(--flor-rule);
+  }
+  #build-phones .pn-flor-m .mk-nav-drawer.is-open { display: flex; }
+  #build-phones .pn-flor-m .mk-nav-drawer span {
+    display: block;
+    padding: 2.8cqw 0;
+    border-bottom: 1px solid var(--flor-rule);
+    font-family: "Cormorant", serif;
+    font-style: italic;
+    font-size: 3.2cqw;
+    color: var(--flor-muted);
+    letter-spacing: 0.04em;
+    line-height: 1.15;
+  }
+  #build-phones .pn-flor-m .mk-nav-drawer span:last-child { border-bottom: none; }
+  #build-phones .pn-flor-m .mk-hero {
+    margin: 4cqw 0 3.5cqw;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2.5cqw;
+  }
+  #build-phones .pn-flor-m .flor-season {
+    font-style: italic;
+    font-size: 3.15cqw;
+    color: var(--flor-sage);
+    letter-spacing: 0.02em;
+    display: block;
+    margin-bottom: 1cqw;
+  }
+  #build-phones .pn-flor-m .mk-hero h2 {
+    font-size: 7.2cqw;
+    font-weight: 500;
+    font-style: italic;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    margin: 0;
+    color: var(--flor-ink);
+  }
+  #build-phones .pn-flor-m .mk-hero h2 .it { color: var(--flor-rose); }
+  #build-phones .pn-flor-m .wedding {
+    font-style: italic;
+    font-size: 3.15cqw;
+    color: var(--flor-sage);
+    border-bottom: 1px solid rgba(122, 139, 114, 0.45);
+    padding-bottom: 2px;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+  #build-phones .pn-flor-m .arr-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5cqw;
+    margin-bottom: 3.5cqw;
+  }
+  #build-phones .pn-flor-m .arr {
+    display: flex;
+    flex-direction: column;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #FFFCF8;
+    box-shadow: 0 10px 28px -18px rgba(58, 56, 52, 0.35);
+  }
+  #build-phones .pn-flor-m .season-block {
+    aspect-ratio: 4 / 3;
+    border-radius: 14px 14px 0 0;
+  }
+  #build-phones .pn-flor-m .season-block.t1 {
+    background: color-mix(in oklab, var(--flor-rose) 55%, #F5EFE6);
+  }
+  #build-phones .pn-flor-m .season-block.t2 {
+    background: color-mix(in oklab, var(--flor-sage) 45%, #E8E4DC);
+  }
+  #build-phones .pn-flor-m .season-block.t3 {
+    background: color-mix(in oklab, var(--flor-rose) 35%, var(--flor-sage) 25%, #F0EBE3);
+  }
+  #build-phones .pn-flor-m .arr-info {
+    padding: 3cqw;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5cqw;
+  }
+  #build-phones .pn-flor-m .arr-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 2cqw;
+  }
+  #build-phones .pn-flor-m .arr-name {
+    font-size: 3.6cqw;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--flor-ink);
+  }
+  #build-phones .pn-flor-m .arr-px {
+    font-size: 3.2cqw;
+    color: var(--flor-muted);
+    font-style: italic;
+  }
+  #build-phones .pn-flor-m .arr-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5cqw;
+  }
+  #build-phones .pn-flor-m .arr-stem {
+    font-size: 2.75cqw;
+    color: var(--flor-muted);
+    font-style: italic;
+    letter-spacing: 0.02em;
+  }
+  #build-phones .pn-flor-m .add {
+    width: 7cqw;
+    height: 7cqw;
+    border-radius: 50%;
+    background: var(--flor-sage);
+    color: #FFFCF8;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4cqw;
+    font-style: normal;
+    line-height: 1;
+    box-shadow: 0 4px 12px -4px rgba(58, 56, 52, 0.35);
+  }
+  #build-phones .pn-flor-m .ftr {
+    margin-top: 1cqw;
+    padding-top: 3.2cqw;
+    border-top: 1px solid var(--flor-rule);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2cqw;
+    text-align: center;
+    font-size: 2.85cqw;
+    color: var(--flor-muted);
+    font-style: italic;
+    letter-spacing: 0.03em;
+  }
+  #build-phones .pn-flor-m .ftr-link {
+    font-style: italic;
+    font-size: 3.15cqw;
+    color: var(--flor-sage);
+    border-bottom: 1px solid rgba(122, 139, 114, 0.45);
+    padding-bottom: 2px;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+
+  /* Red Oak Grounds — phone mini site */
+  #build-phones .pn-lawn-m {
+    --lawn-bg: #F4F5F1;
+    --lawn-khaki: #DED9CE;
+    --lawn-olive: #5C6B47;
+    --lawn-soil: #3D342C;
+    --lawn-muted: #646058;
+    --lawn-rule: rgba(61, 52, 44, 0.28);
+    background: var(--lawn-bg);
+    color: var(--lawn-soil);
+    font-family: "IBM Plex Sans", "Inter", sans-serif;
+    font-size: 3.1cqw;
+    line-height: 1.32;
+  }
+  #build-phones .pn-lawn-m .mk-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2cqw;
+    padding-bottom: 2.5cqw;
+    border-bottom: 1px solid var(--lawn-rule);
+  }
+  #build-phones .pn-lawn-m .mk-brand {
+    font-weight: 700;
+    font-size: 4.2cqw;
+    letter-spacing: -0.02em;
+    color: var(--lawn-soil);
+    line-height: 1.1;
+    flex-shrink: 0;
+  }
+  #build-phones .pn-lawn-m .mk-menu-btn {
+    flex-shrink: 0;
+    width: 9cqw;
+    height: 8cqw;
+    padding: 0;
+    border: none;
+    background: transparent;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.1cqw;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  #build-phones .pn-lawn-m .mk-menu-btn span {
+    display: block;
+    width: 4.2cqw;
+    height: 2px;
+    background: var(--lawn-soil);
+  }
+  #build-phones .pn-lawn-m .mk-nav-drawer {
+    display: none;
+    flex-direction: column;
+    margin: 0 0 2.5cqw;
+    border-bottom: 1px solid var(--lawn-rule);
+  }
+  #build-phones .pn-lawn-m .mk-nav-drawer.is-open { display: flex; }
+  #build-phones .pn-lawn-m .mk-nav-drawer span {
+    display: block;
+    padding: 2.8cqw 0;
+    border-bottom: 1px solid var(--lawn-rule);
+    font-size: 3cqw;
+    font-weight: 600;
+    color: var(--lawn-muted);
+    line-height: 1.15;
+  }
+  #build-phones .pn-lawn-m .mk-nav-drawer span:last-child { border-bottom: none; }
+  #build-phones .pn-lawn-m .lawn-intro {
+    margin-top: 3.2cqw;
+  }
+  #build-phones .pn-lawn-m h2 {
+    font-size: 5.8cqw;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0 0 1.5cqw;
+    color: var(--lawn-soil);
+    text-transform: uppercase;
+  }
+  #build-phones .pn-lawn-m .sub {
+    font-size: 3.1cqw;
+    color: var(--lawn-muted);
+    margin: 0;
+    line-height: 1.3;
+  }
+  #build-phones .pn-lawn-m .mk-body {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5cqw;
+    margin-top: 3.5cqw;
+  }
+  #build-phones .pn-lawn-m .map {
+    position: relative;
+    border: 2px solid var(--lawn-soil);
+    background: var(--lawn-khaki);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    min-height: 42cqw;
+    background-image:
+      linear-gradient(to right, rgba(74, 63, 53, 0.12) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(74, 63, 53, 0.12) 1px, transparent 1px);
+    background-size: 14px 14px;
+  }
+  #build-phones .pn-lawn-m .county {
+    position: absolute;
+    border: 1px solid var(--lawn-soil);
+    background: var(--lawn-bg);
+    padding: 1cqw 1.5cqw;
+    font-size: 2.4cqw;
+    font-weight: 500;
+    color: var(--lawn-soil);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  #build-phones .pn-lawn-m .county.serviced {
+    border-color: var(--lawn-olive);
+    color: var(--lawn-olive);
+    font-weight: 600;
+  }
+  #build-phones .pn-lawn-m .county.serviced::before {
+    content: "";
+    display: inline-block;
+    width: 1.5cqw;
+    height: 1.5cqw;
+    margin-right: 0.8cqw;
+    background: var(--lawn-olive);
+    vertical-align: middle;
+  }
+  #build-phones .pn-lawn-m .map-legend {
+    position: absolute;
+    right: 2cqw;
+    bottom: 1.5cqw;
+    font-size: 2.2cqw;
+    color: var(--lawn-muted);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  #build-phones .pn-lawn-m .right {
+    display: flex;
+    flex-direction: column;
+    gap: 3cqw;
+  }
+  #build-phones .pn-lawn-m .ba {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2cqw;
+  }
+  #build-phones .pn-lawn-m .work-frame {
+    aspect-ratio: 4 / 3;
+    background: var(--lawn-khaki);
+    border: 2px solid var(--lawn-soil);
+  }
+  #build-phones .pn-lawn-m .ba .cap {
+    margin-top: 1cqw;
+    font-size: 2.75cqw;
+    color: var(--lawn-muted);
+    font-weight: 500;
+  }
+  #build-phones .pn-lawn-m .form {
+    border: 3px solid var(--lawn-soil);
+    padding: 2.8cqw;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5cqw;
+    background: var(--lawn-bg);
+  }
+  #build-phones .pn-lawn-m .form .eb {
+    font-size: 3.4cqw;
+    color: var(--lawn-soil);
+    font-weight: 600;
+    margin-bottom: 0.5cqw;
+  }
+  #build-phones .pn-lawn-m .form .row {
+    border-bottom: 2px solid var(--lawn-rule);
+    padding-bottom: 1.8cqw;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 2cqw;
+  }
+  #build-phones .pn-lawn-m .form .lbl {
+    font-size: 2.9cqw;
+    color: var(--lawn-muted);
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  #build-phones .pn-lawn-m .form .val {
+    font-size: 2.9cqw;
+    color: var(--lawn-soil);
+    font-weight: 500;
+    text-align: right;
+  }
+  #build-phones .pn-lawn-m .mk-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5cqw;
+    background: var(--lawn-olive);
+    color: var(--lawn-bg);
+    border-radius: 0;
+    font-weight: 700;
+    font-size: 3cqw;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin-top: 1cqw;
+    padding: 2.2cqw 3.5cqw;
+    line-height: 1.1;
+    text-decoration: none;
+  }
+
+  /* Northriver General — phone mini site */
+  #build-phones .pn-retail-m {
+    --nr-cream: #F2E9DC;
+    --nr-ink: #12100E;
+    --nr-rust: #9B4E2E;
+    --nr-muted: #5C534A;
+    --nr-rule: rgba(18, 16, 14, 0.18);
+    background: var(--nr-cream);
+    color: var(--nr-ink);
+    font-family: "Libre Baskerville", "Georgia", serif;
+  }
+  #build-phones .pn-retail-m .mk-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2cqw;
+    padding-bottom: 3.2cqw;
+    border-bottom: 1px solid var(--nr-rule);
+  }
+  #build-phones .pn-retail-m .mk-brand {
+    font-size: 5cqw;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--nr-ink);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  #build-phones .pn-retail-m .mk-menu-btn {
+    flex-shrink: 0;
+    width: 9cqw;
+    height: 8cqw;
+    padding: 0;
+    border: none;
+    background: transparent;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.1cqw;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  #build-phones .pn-retail-m .mk-menu-btn span {
+    display: block;
+    width: 4.2cqw;
+    height: 1px;
+    background: var(--nr-ink);
+  }
+  #build-phones .pn-retail-m .mk-nav-drawer {
+    display: none;
+    flex-direction: column;
+    margin: 0 0 2.5cqw;
+    border-bottom: 1px solid var(--nr-rule);
+  }
+  #build-phones .pn-retail-m .mk-nav-drawer.is-open { display: flex; }
+  #build-phones .pn-retail-m .mk-nav-drawer span {
+    display: block;
+    padding: 2.8cqw 0;
+    border-bottom: 1px solid var(--nr-rule);
+    font-family: "Libre Baskerville", serif;
+    font-style: italic;
+    font-size: 3.2cqw;
+    color: var(--nr-muted);
+    letter-spacing: 0.04em;
+    line-height: 1.15;
+  }
+  #build-phones .pn-retail-m .mk-nav-drawer span:last-child { border-bottom: none; }
+  #build-phones .pn-retail-m .heritage-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4cqw;
+    margin-top: 3.5cqw;
+  }
+  #build-phones .pn-retail-m .hero-block {
+    aspect-ratio: 4 / 5;
+    width: 100%;
+    background: color-mix(in oklab, var(--nr-rust) 18%, var(--nr-cream));
+    border: 1px solid var(--nr-rule);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+  }
+  #build-phones .pn-retail-m .hero-copy .catalog {
+    font-size: 3.15cqw;
+    font-style: italic;
+    color: var(--nr-rust);
+    margin: 0 0 1.5cqw;
+    letter-spacing: 0.04em;
+  }
+  #build-phones .pn-retail-m .hero-copy h2 {
+    font-family: "Libre Baskerville", serif;
+    font-size: 7.5cqw;
+    font-weight: 700;
+    line-height: 1.08;
+    margin: 0 0 2.5cqw;
+    letter-spacing: -0.01em;
+  }
+  #build-phones .pn-retail-m .hero-copy .lead {
+    font-size: 3.2cqw;
+    line-height: 1.55;
+    color: var(--nr-muted);
+    margin: 0 0 2.5cqw;
+  }
+  #build-phones .pn-retail-m .hero-copy .price {
+    font-size: 4.5cqw;
+    font-weight: 700;
+    color: var(--nr-ink);
+    margin: 0 0 2.5cqw;
+  }
+  #build-phones .pn-retail-m .mk-cta {
+    display: inline-block;
+    background: transparent;
+    color: var(--nr-ink);
+    border-bottom: 2px solid var(--nr-rust);
+    padding: 0 0 3px;
+    border-radius: 0;
+    font-family: "Libre Baskerville", serif;
+    font-style: italic;
+    font-size: 3.4cqw;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+  #build-phones .pn-retail-m .shelf {
+    display: flex;
+    flex-direction: column;
+    gap: 3cqw;
+    border-top: 1px solid var(--nr-rule);
+    padding-top: 3.5cqw;
+  }
+  #build-phones .pn-retail-m .shelf-label {
+    font-size: 3.15cqw;
+    font-style: italic;
+    color: var(--nr-muted);
+    margin: 0;
+    padding-bottom: 2cqw;
+    border-bottom: 1px solid var(--nr-rule);
+  }
+  #build-phones .pn-retail-m .shelf-item {
+    display: grid;
+    grid-template-columns: 14cqw 1fr;
+    gap: 2.5cqw;
+    align-items: start;
+    padding-bottom: 2.5cqw;
+    border-bottom: 1px solid var(--nr-rule);
+  }
+  #build-phones .pn-retail-m .shelf-item:last-child { border-bottom: none; padding-bottom: 0; }
+  #build-phones .pn-retail-m .shelf-thumb {
+    aspect-ratio: 1;
+    background: color-mix(in oklab, var(--nr-muted) 22%, var(--nr-cream));
+    border: 1px solid var(--nr-rule);
+  }
+  #build-phones .pn-retail-m .shelf-thumb.t2 { background: color-mix(in oklab, var(--nr-rust) 12%, var(--nr-cream)); }
+  #build-phones .pn-retail-m .shelf-thumb.t3 { background: #D4C9BC; }
+  #build-phones .pn-retail-m .shelf-name {
+    font-size: 3.6cqw;
+    font-weight: 700;
+    margin: 0 0 0.5cqw;
+    line-height: 1.2;
+  }
+  #build-phones .pn-retail-m .shelf-px {
+    font-size: 3.2cqw;
+    font-style: italic;
+    color: var(--nr-rust);
+    margin: 0;
+  }
+  #build-phones .pn-retail-m .shelf-note {
+    font-size: 2.75cqw;
+    color: var(--nr-muted);
+    margin: 1cqw 0 0;
+    line-height: 1.4;
+  }
+
+  /* ── Fades by Paul — hand-painted sign ── */
+  .pn-barb {
+    --barb-cream: #F3EBD8;
+    --barb-ink: #141210;
+    --barb-oxblood: #6E1F28;
+    --barb-muted: #4A443C;
+    --barb-rule: rgba(20, 18, 16, 0.22);
+    background: var(--barb-cream);
+    color: var(--barb-ink);
+    font-family: "Oswald", "Arial Narrow", sans-serif;
+    font-weight: 500;
+  }
+  .pn-barb .mk-bar { border-bottom: 3px solid var(--barb-ink); padding-bottom: clamp(10px, 1.2cqw, 16px); }
+  .pn-barb .mk-brand {
+    font-family: "Anton", "Oswald", sans-serif;
+    font-size: clamp(16px, 1.8cqw, 26px);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .pn-barb .mk-nav {
+    font-family: "Oswald", sans-serif;
+    font-size: clamp(9px, 0.88cqw, 12px);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--barb-muted);
+  }
+  .pn-barb .barb-hero { margin-top: clamp(10px, 1.3cqw, 16px); }
+  .pn-barb h2 {
+    font-family: "Anton", "Oswald", sans-serif;
+    font-size: clamp(28px, 4.8cqw, 58px);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 0.95;
+    text-transform: uppercase;
+    margin: 0 0 clamp(6px, 0.8cqw, 10px);
+    color: var(--barb-ink);
   }
   .pn-barb .sub {
-    font-size: clamp(10px, 0.95cqw, 13px);
-    color: var(--gray-deep);
+    font-family: "Oswald", sans-serif;
+    font-size: clamp(11px, 1cqw, 14px);
+    font-weight: 500;
+    color: var(--barb-muted);
     margin: 0;
-    max-width: 32ch;
+    max-width: 36ch;
+    line-height: 1.35;
+  }
+  .pn-barb .mk-body {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: clamp(14px, 2cqw, 30px);
+    margin-top: clamp(10px, 1.3cqw, 18px);
+    flex: 1; min-height: 0;
   }
   .pn-barb .booking {
-    border: 1px solid var(--rule);
-    border-radius: 10px;
-    padding: clamp(10px, 1.4cqw, 18px);
-    background: var(--paper);
-    display: flex; flex-direction: column; gap: clamp(8px, 1.1cqw, 14px);
+    border: 3px solid var(--barb-ink);
+    border-radius: 0;
+    padding: clamp(8px, 1.05cqw, 12px);
+    background: var(--barb-cream);
+    display: flex; flex-direction: column; gap: clamp(6px, 0.85cqw, 10px);
   }
-  .pn-barb .booking .eb {
-    font-size: clamp(8px, 0.75cqw, 10px);
-    color: var(--gray);
-    letter-spacing: 0.14em;
+  .pn-barb .barb-sign {
+    font-family: "Anton", "Oswald", sans-serif;
+    font-size: clamp(11px, 1.05cqw, 15px);
+    font-weight: 400;
+    color: var(--barb-ink);
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    line-height: 1.1;
+    margin: 0;
   }
+  .pn-barb .barb-sign.times { margin-top: 3px; }
   .pn-barb .cal {
     display: grid; grid-template-columns: repeat(7, 1fr);
-    gap: clamp(2px, 0.3cqw, 4px);
+    gap: clamp(3px, 0.4cqw, 5px);
+    border: 2px solid var(--barb-ink);
+    padding: clamp(6px, 0.75cqw, 9px);
   }
   .pn-barb .cal .dn {
-    font-size: clamp(7px, 0.6cqw, 9px);
-    color: var(--gray);
+    font-size: clamp(8px, 0.72cqw, 10px);
+    color: var(--barb-muted);
     text-align: center;
+    font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
   .pn-barb .cal .d {
     aspect-ratio: 1;
     display: flex; align-items: center; justify-content: center;
-    font-size: clamp(9px, 0.85cqw, 12px);
-    color: var(--gray-deep);
-    border-radius: 5px;
-  }
-  .pn-barb .cal .d.dim { color: var(--gray); opacity: 0.45; }
-  .pn-barb .cal .d.act {
-    background: var(--ink); color: var(--paper);
+    font-size: clamp(10px, 0.9cqw, 13px);
+    color: var(--barb-ink);
+    border: 2px solid transparent;
     font-weight: 500;
   }
-  .pn-barb .cal .d.dot { position: relative; }
-  .pn-barb .cal .d.dot::after {
-    content: ""; width: 3px; height: 3px; border-radius: 50%;
-    background: var(--ox);
-    position: absolute; bottom: 3px;
+  .pn-barb .cal .d.dim { color: var(--barb-muted); opacity: 0.35; }
+  .pn-barb .cal .d.avail {
+    border-bottom: 3px solid var(--barb-oxblood);
+    padding-bottom: 1px;
+  }
+  .pn-barb .cal .d.act {
+    background: var(--barb-oxblood); color: var(--barb-cream);
+    border-color: var(--barb-oxblood);
+    font-weight: 700;
+    border-bottom-width: 3px;
   }
   .pn-barb .slots {
     display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: clamp(4px, 0.6cqw, 7px);
+    gap: clamp(4px, 0.55cqw, 6px);
   }
   .pn-barb .slot {
-    padding: clamp(5px, 0.75cqw, 9px) 0;
+    padding: clamp(6px, 0.8cqw, 10px) 0;
     text-align: center;
-    border: 1px solid var(--rule);
-    border-radius: 5px;
-    font-size: clamp(9px, 0.85cqw, 12px);
-    color: var(--gray-deep);
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    letter-spacing: 0.02em;
+    border: 2px solid var(--barb-ink);
+    border-radius: 0;
+    font-size: clamp(10px, 0.88cqw, 12px);
+    color: var(--barb-ink);
+    font-weight: 600;
+    letter-spacing: 0.04em;
   }
   .pn-barb .slot.act {
-    background: var(--ink); color: var(--paper); border-color: var(--ink);
+    background: var(--barb-oxblood); color: var(--barb-cream); border-color: var(--barb-oxblood);
   }
-  .pn-barb .slot.off { color: var(--gray); opacity: 0.45; text-decoration: line-through; }
+  .pn-barb .slot.off { color: var(--barb-muted); opacity: 0.5; text-decoration: line-through; border-color: var(--barb-rule); }
   .pn-barb .services {
     display: flex; flex-direction: column;
-    border-top: 1px solid var(--rule);
+    border-top: 3px solid var(--barb-ink);
   }
   .pn-barb .service {
     display: grid; grid-template-columns: auto 1fr auto;
     align-items: baseline;
-    gap: clamp(10px, 1.2cqw, 18px);
-    padding: clamp(8px, 1.1cqw, 14px) 0;
-    border-bottom: 1px solid var(--rule);
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    gap: clamp(8px, 1cqw, 14px);
+    padding: clamp(9px, 1.1cqw, 13px) 0;
+    border-bottom: 2px solid var(--barb-rule);
   }
   .pn-barb .service .n {
-    font-size: clamp(10px, 0.95cqw, 13px);
-    color: var(--ink);
-    letter-spacing: 0.04em;
+    font-size: clamp(11px, 1cqw, 14px);
+    color: var(--barb-ink);
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    font-weight: 500;
+    font-weight: 700;
   }
   .pn-barb .service .dot-row {
     align-self: end;
-    border-bottom: 1px dotted var(--rule);
-    height: 7px;
+    border-bottom: 3px dotted var(--barb-ink);
+    height: 6px;
+    opacity: 0.35;
   }
   .pn-barb .service .p {
-    font-size: clamp(10px, 0.95cqw, 13px);
-    color: var(--gray-deep);
+    font-size: clamp(12px, 1.05cqw, 15px);
+    color: var(--barb-oxblood);
+    font-weight: 700;
   }
   .pn-barb .reserve-row {
     margin-top: auto;
-    padding-top: clamp(10px, 1.4cqw, 18px);
+    padding-top: clamp(10px, 1.2cqw, 16px);
     display: flex; justify-content: space-between; align-items: center;
     gap: 14px;
   }
   .pn-barb .deposit {
-    font-size: clamp(9px, 0.85cqw, 11px);
-    color: var(--gray);
-    letter-spacing: 0.04em;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: clamp(10px, 0.88cqw, 12px);
+    color: var(--barb-muted);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .pn-barb .mk-cta {
+    background: var(--barb-oxblood);
+    color: var(--barb-cream);
+    border-radius: 0;
+    font-family: "Oswald", sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: clamp(9px, 1.1cqw, 13px) clamp(14px, 1.6cqw, 22px);
+  }
+  .pn-barb .incl-cta {
+    color: var(--barb-oxblood);
+    border-bottom-color: var(--barb-oxblood);
   }
 
-  /* ── Photographers (dark) ── */
+  /* ── Hollis Reid — folio spread ── */
   .pn-photo {
-    background: var(--d-paper);
-    color: var(--d-ink);
+    --photo-bg: #080809;
+    --photo-ink: #F2EBE0;
+    --photo-cream: #D9CEBD;
+    --photo-muted: #8A8478;
+    --photo-rule: rgba(242, 235, 224, 0.14);
+    background: var(--photo-bg);
+    color: var(--photo-ink);
+    font-family: "Playfair Display", "Didot", "Bodoni MT", serif;
   }
-  .pn-photo .mk-bar {
-    border-color: var(--d-rule);
-  }
-  .pn-photo .mk-brand { color: var(--d-ink); font-weight: 500; letter-spacing: 0.04em; }
-  .pn-photo .mk-nav { color: var(--d-gray); }
-  .pn-photo .login {
-    font-size: clamp(8px, 0.75cqw, 10px);
-    color: var(--ox-tint);
-    letter-spacing: 0.16em;
+  .pn-photo .mk-bar { border-color: var(--photo-rule); }
+  .pn-photo .mk-brand {
+    color: var(--photo-ink);
+    font-weight: 300;
+    letter-spacing: 0.22em;
+    font-size: clamp(11px, 1.1cqw, 15px);
     text-transform: uppercase;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .pn-photo .mk-nav {
+    color: var(--photo-muted);
+    font-family: "Playfair Display", serif;
+    font-size: clamp(8px, 0.78cqw, 10px);
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    align-items: center;
+  }
+  .pn-photo .mk-nav .login {
+    font-size: clamp(8px, 0.75cqw, 10px);
+    color: var(--photo-cream);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 300;
+    text-decoration: none;
+    border: none;
+    border-bottom: none;
+    box-shadow: none;
+  }
+  .pn-photo .incl-cta {
+    color: var(--photo-cream);
+    border-bottom: 1px solid var(--photo-cream);
+    border-bottom-color: var(--photo-cream);
   }
   .pn-photo .mk-hero {
-    margin: clamp(14px, 2cqw, 28px) 0 clamp(12px, 1.6cqw, 20px);
+    margin: clamp(10px, 1.4cqw, 20px) 0 clamp(8px, 1.1cqw, 14px);
   }
   .pn-photo .mk-hero h2 {
-    font-size: clamp(24px, 4.2cqw, 60px);
-    line-height: 0.94;
-    font-weight: 500;
-    letter-spacing: -0.03em;
+    font-family: "Playfair Display", serif;
+    font-size: clamp(22px, 3.6cqw, 48px);
+    line-height: 1.02;
+    font-weight: 300;
+    letter-spacing: 0.02em;
     margin: 0;
-    color: var(--d-ink);
+    color: var(--photo-ink);
     text-wrap: balance;
   }
-  .pn-photo .mk-hero h2 .gr { color: var(--d-gray); }
+  .pn-photo .mk-hero h2 .gr { color: var(--photo-muted); font-weight: 300; }
   .pn-photo .mk-hero .meta {
-    margin-top: clamp(6px, 0.9cqw, 12px);
-    font-size: clamp(9px, 0.85cqw, 11px);
-    color: var(--d-gray);
-    letter-spacing: 0.12em;
+    margin-top: clamp(6px, 0.8cqw, 10px);
+    font-size: clamp(8px, 0.72cqw, 10px);
+    color: var(--photo-muted);
+    letter-spacing: 0.24em;
     text-transform: uppercase;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-weight: 300;
   }
   .pn-photo .tiles {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: clamp(8px, 1cqw, 12px);
-  }
-  .pn-photo .tiles .mk-tile {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-  }
-  .pn-photo .packages {
-    margin-top: auto;
-    padding-top: clamp(12px, 1.4cqw, 20px);
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: clamp(8px, 1.1cqw, 14px);
-    border-top: 1px solid var(--d-rule);
-  }
-  .pn-photo .pkg {
-    display: flex; flex-direction: column; gap: clamp(3px, 0.4cqw, 6px);
-  }
-  .pn-photo .pkg .n {
-    font-size: clamp(9px, 0.85cqw, 11px);
-    color: var(--d-gray);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  }
-  .pn-photo .pkg .v {
-    font-size: clamp(16px, 2.2cqw, 30px);
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    color: var(--d-ink);
-    line-height: 1;
-  }
-  .pn-photo .pkg .v .unit { color: var(--d-gray); font-weight: 400; font-size: 0.6em; }
-  .pn-photo .pkg .d {
-    font-size: clamp(9px, 0.82cqw, 11px);
-    color: var(--d-gray);
-    line-height: 1.35;
-  }
-  .pn-photo .pkg.fea .v { color: var(--ox-tint); }
-
-  /* ── Florists ── */
-  /* ── Florists ── */
-  .pn-flor .mk-hero {
-    display: flex; align-items: end; justify-content: space-between;
-    margin: clamp(22px, 3cqw, 36px) 0 clamp(18px, 2.2cqw, 28px);
-    gap: 16px;
-  }
-  .pn-flor .mk-hero h2 {
-    font-size: clamp(26px, 4.6cqw, 64px);
-    font-weight: 500;
-    letter-spacing: -0.025em;
-    line-height: 1;
-    margin: clamp(6px, 0.8cqw, 10px) 0 0;
-    color: var(--ink);
-  }
-  .pn-flor .mk-hero h2 .it {
-    font-style: italic; font-weight: 400; color: var(--ox);
-  }
-  .pn-flor .wedding {
-    font-size: clamp(10px, 0.9cqw, 12px);
-    color: var(--ox);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    border-bottom: 1px solid var(--ox);
-    padding-bottom: 2px;
-  }
-  .pn-flor .arr-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: clamp(14px, 1.8cqw, 24px);
+    grid-template-columns: 1.55fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: clamp(6px, 0.85cqw, 10px);
     flex: 1;
     min-height: 0;
   }
+  .pn-photo .folio-frame {
+    background: #141416;
+    border: 1px solid var(--photo-rule);
+    position: relative;
+    min-height: 0;
+  }
+  .pn-photo .folio-frame.lead {
+    grid-row: 1 / 3;
+    grid-column: 1;
+  }
+  .pn-photo .folio-frame .lbl {
+    position: absolute; bottom: 8px; left: 10px;
+    font-size: clamp(7px, 0.65cqw, 9px);
+    color: var(--photo-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+  .pn-photo .packages {
+    margin-top: auto;
+    padding-top: clamp(10px, 1.2cqw, 16px);
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: clamp(8px, 1cqw, 12px);
+    border-top: none;
+  }
+  .pn-photo .pkg {
+    display: flex; flex-direction: column; gap: clamp(3px, 0.35cqw, 5px);
+    padding-top: clamp(8px, 1cqw, 12px);
+    border-top: 1px solid var(--photo-rule);
+  }
+  .pn-photo .pkg .n {
+    font-size: clamp(8px, 0.72cqw, 10px);
+    color: var(--photo-muted);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+  .pn-photo .pkg .v {
+    font-size: clamp(15px, 2cqw, 26px);
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    color: var(--photo-cream);
+    line-height: 1;
+  }
+  .pn-photo .pkg .v .unit { color: var(--photo-muted); font-weight: 300; font-size: 0.55em; letter-spacing: 0.12em; }
+  .pn-photo .pkg .d {
+    font-size: clamp(8px, 0.75cqw, 10px);
+    color: var(--photo-muted);
+    line-height: 1.35;
+    letter-spacing: 0.06em;
+    font-weight: 300;
+  }
+  .pn-photo .pkg.fea .v { color: var(--photo-ink); }
+
+  /* ── Bluestem Floral — seasonal notebook ── */
+  .pn-flor {
+    --flor-cream: #F5EFE6;
+    --flor-sage: #7A8B72;
+    --flor-rose: #C9A0A4;
+    --flor-ink: #3A3834;
+    --flor-muted: #6E6A64;
+    --flor-rule: rgba(58, 56, 52, 0.12);
+    background: var(--flor-cream);
+    color: var(--flor-ink);
+    font-family: "Cormorant", "Georgia", serif;
+  }
+  .pn-flor .mk-bar { border-color: var(--flor-rule); }
+  .pn-flor .mk-brand {
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(15px, 1.6cqw, 22px);
+    letter-spacing: 0.01em;
+    color: var(--flor-sage);
+  }
+  .pn-flor .mk-nav {
+    font-family: inherit;
+    font-style: italic;
+    font-size: clamp(9px, 0.85cqw, 12px);
+    color: var(--flor-muted);
+    letter-spacing: 0.04em;
+    text-transform: none;
+  }
+  .pn-flor .mk-hero {
+    display: flex; align-items: end; justify-content: space-between;
+    margin: clamp(16px, 2.2cqw, 28px) 0 clamp(14px, 1.8cqw, 22px);
+    gap: 16px;
+  }
+  .pn-flor .flor-season {
+    font-family: "Cormorant", serif;
+    font-style: italic;
+    font-size: clamp(11px, 1cqw, 14px);
+    color: var(--flor-sage);
+    letter-spacing: 0.02em;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .pn-flor .mk-hero h2 {
+    font-family: "Cormorant", serif;
+    font-size: clamp(24px, 4.2cqw, 56px);
+    font-weight: 500;
+    font-style: italic;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    margin: 0;
+    color: var(--flor-ink);
+  }
+  .pn-flor .mk-hero h2 .it { color: var(--flor-rose); font-style: italic; }
+  .pn-flor .wedding,
+  .pn-flor .ftr-link {
+    font-family: "Cormorant", serif;
+    font-style: italic;
+    font-size: clamp(11px, 1cqw, 14px);
+    color: var(--flor-sage);
+    border-bottom: 1px solid rgba(122, 139, 114, 0.45);
+    padding-bottom: 2px;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    background: none;
+  }
+  .pn-flor .ftr-link {
+    cursor: pointer;
+  }
+  .pn-flor .incl-cta {
+    color: var(--flor-sage);
+    border-bottom: 1px solid var(--flor-sage);
+    border-bottom-color: var(--flor-sage);
+  }
+  .pn-flor .incl-panel {
+    background: var(--flor-cream);
+    border-left-color: var(--flor-rule);
+  }
+  .pn-flor .incl-title { color: var(--flor-ink); }
+  .pn-flor .incl-list li { color: var(--flor-muted); border-bottom-color: var(--flor-rule); }
+  .pn-flor .incl-list li strong { color: var(--flor-ink); }
+  .pn-flor .arr-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: clamp(16px, 2cqw, 26px);
+    flex: 1;
+    min-height: 0;
+    align-items: start;
+  }
   .pn-flor .arr {
     display: flex; flex-direction: column;
-    border: 1px solid var(--rule);
-    border-radius: 8px;
+    border: none;
+    border-radius: 14px;
     overflow: hidden;
-    background: var(--paper);
+    background: #FFFCF8;
+    box-shadow: 0 10px 28px -18px rgba(58, 56, 52, 0.35);
   }
-  .pn-flor .arr-img { aspect-ratio: 4 / 5; flex: 1; min-height: 0; border: none; border-radius: 0; }
+  .pn-flor .season-block {
+    aspect-ratio: 4 / 5;
+    flex: 1;
+    min-height: 0;
+    border-radius: 14px 14px 0 0;
+    border: none;
+  }
+  .pn-flor .season-block.t1 { background: color-mix(in oklab, var(--flor-rose) 55%, #F5EFE6); }
+  .pn-flor .season-block.t2 { background: color-mix(in oklab, var(--flor-sage) 45%, #E8E4DC); }
+  .pn-flor .season-block.t3 { background: color-mix(in oklab, var(--flor-rose) 35%, var(--flor-sage) 25%, #F0EBE3); }
   .pn-flor .arr-info {
-    padding: clamp(10px, 1.3cqw, 16px);
-    display: flex; flex-direction: column; gap: clamp(4px, 0.5cqw, 6px);
+    padding: clamp(12px, 1.4cqw, 18px);
+    display: flex; flex-direction: column; gap: clamp(5px, 0.55cqw, 8px);
   }
   .pn-flor .arr-row {
     display: flex; justify-content: space-between; align-items: baseline;
     gap: 8px;
   }
   .pn-flor .arr-name {
-    font-size: clamp(12px, 1.15cqw, 16px);
+    font-size: clamp(13px, 1.2cqw, 17px);
     font-weight: 500;
-    color: var(--ink);
-    letter-spacing: -0.01em;
+    font-style: italic;
+    color: var(--flor-ink);
   }
   .pn-flor .arr-px {
-    font-size: clamp(11px, 1cqw, 14px);
-    color: var(--gray-deep);
+    font-size: clamp(12px, 1.05cqw, 15px);
+    color: var(--flor-muted);
+    font-style: italic;
   }
   .pn-flor .arr-actions {
     display: flex; justify-content: space-between; align-items: center;
-    margin-top: clamp(4px, 0.5cqw, 6px);
+    margin-top: clamp(2px, 0.3cqw, 4px);
   }
   .pn-flor .arr-stem {
-    font-size: clamp(9px, 0.8cqw, 11px);
-    color: var(--gray);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: clamp(10px, 0.88cqw, 12px);
+    color: var(--flor-muted);
+    font-style: italic;
+    letter-spacing: 0.02em;
   }
   .pn-flor .add {
-    width: clamp(24px, 2.4cqw, 32px);
-    height: clamp(24px, 2.4cqw, 32px);
+    width: clamp(26px, 2.5cqw, 34px);
+    height: clamp(26px, 2.5cqw, 34px);
     border-radius: 50%;
-    background: var(--ink); color: var(--paper);
+    background: var(--flor-sage); color: #FFFCF8;
     display: inline-flex; align-items: center; justify-content: center;
-    font-size: clamp(14px, 1.4cqw, 18px); font-weight: 400;
+    font-size: clamp(15px, 1.4cqw, 19px);
+    font-style: normal;
     line-height: 1;
+    box-shadow: 0 4px 12px -4px rgba(58, 56, 52, 0.35);
   }
   .pn-flor .ftr {
-    margin-top: clamp(14px, 1.6cqw, 22px);
-    padding-top: clamp(12px, 1.4cqw, 18px);
-    border-top: 1px solid var(--rule);
+    margin-top: clamp(12px, 1.4cqw, 18px);
+    padding-top: clamp(10px, 1.2cqw, 14px);
+    border-top: 1px solid var(--flor-rule);
     display: flex; justify-content: space-between; align-items: center;
     font-size: clamp(10px, 0.9cqw, 12px);
-    color: var(--gray);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--flor-muted);
+    font-style: italic;
+    letter-spacing: 0.03em;
+  }
+  .pn-flor .ftr > span:first-child {
+    color: var(--flor-muted);
+    border: none;
   }
 
-  /* ── Lawn care ── */
-  .pn-lawn .mk-body {
-    display: grid; grid-template-columns: 1.2fr 1fr;
-    gap: clamp(18px, 2.4cqw, 32px);
-    margin-top: clamp(20px, 2.4cqw, 30px);
-    flex: 1; min-height: 0;
+  /* ── Red Oak Grounds — utilitarian crew ── */
+  .pn-lawn {
+    --lawn-bg: #F4F5F1;
+    --lawn-khaki: #DED9CE;
+    --lawn-olive: #5C6B47;
+    --lawn-soil: #3D342C;
+    --lawn-muted: #646058;
+    --lawn-rule: rgba(61, 52, 44, 0.28);
+    background: var(--lawn-bg);
+    color: var(--lawn-soil);
+    font-family: "IBM Plex Sans", "Inter", sans-serif;
+    font-size: clamp(11px, 1.05cqw, 14px);
+    line-height: 1.32;
   }
-  .pn-lawn h2 {
-    font-size: clamp(20px, 2.8cqw, 36px);
-    font-weight: 500;
+  .pn-lawn .mk-bar {
+    border-color: var(--lawn-rule);
+    padding-bottom: clamp(6px, 0.75cqw, 10px);
+  }
+  .pn-lawn .mk-brand {
+    font-family: "IBM Plex Sans", "Inter", sans-serif;
+    font-weight: 700;
+    font-size: clamp(15px, 1.5cqw, 20px);
     letter-spacing: -0.02em;
-    line-height: 1.04;
-    margin: 0 0 clamp(8px, 1cqw, 12px);
-    color: var(--ink);
+    color: var(--lawn-soil);
+    text-transform: none;
+    line-height: 1.1;
+  }
+  .pn-lawn .mk-nav {
+    font-size: clamp(10px, 0.98cqw, 13px);
+    font-weight: 600;
+    color: var(--lawn-muted);
+    letter-spacing: 0;
+    text-transform: none;
+    gap: clamp(8px, 1cqw, 14px);
+  }
+  .pn-lawn .lawn-intro { margin-top: clamp(6px, 0.8cqw, 10px); }
+  .pn-lawn h2 {
+    font-family: "IBM Plex Sans", "Inter", sans-serif;
+    font-size: clamp(19px, 2.5cqw, 30px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0 0 clamp(3px, 0.4cqw, 5px);
+    color: var(--lawn-soil);
+    max-width: 26ch;
+    text-transform: uppercase;
   }
   .pn-lawn .sub {
-    font-size: clamp(11px, 1cqw, 13px);
-    color: var(--gray-deep);
-    margin: 0 0 clamp(10px, 1.2cqw, 14px);
-    max-width: 34ch;
+    font-size: clamp(11px, 1.02cqw, 14px);
+    color: var(--lawn-muted);
+    margin: 0;
+    max-width: 36ch;
+    line-height: 1.3;
+  }
+  .pn-lawn .mk-body {
+    display: grid; grid-template-columns: 1.2fr 1fr;
+    gap: clamp(8px, 1.1cqw, 14px);
+    margin-top: clamp(8px, 1cqw, 12px);
+    flex: 1; min-height: 0;
   }
   .pn-lawn .map {
     position: relative;
-    border: 1px solid var(--rule);
-    border-radius: 10px;
-    background: var(--paper-2);
+    border: 2px solid var(--lawn-soil);
+    border-radius: 0;
+    background: var(--lawn-khaki);
     overflow: hidden;
     flex: 1;
     min-height: 0;
     background-image:
-      linear-gradient(to right, var(--rule-soft) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--rule-soft) 1px, transparent 1px);
-    background-size: 32px 32px;
+      linear-gradient(to right, rgba(74, 63, 53, 0.12) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(74, 63, 53, 0.12) 1px, transparent 1px);
+    background-size: 20px 20px;
   }
   .pn-lawn .county {
     position: absolute;
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    background: var(--paper);
-    padding: clamp(6px, 0.8cqw, 10px) clamp(8px, 1cqw, 12px);
-    font-size: clamp(8px, 0.75cqw, 10px);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--gray-deep);
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    border: 1px solid var(--lawn-soil);
+    border-radius: 0;
+    background: var(--lawn-bg);
+    padding: clamp(3px, 0.45cqw, 5px) clamp(5px, 0.6cqw, 7px);
+    font-size: clamp(9px, 0.82cqw, 12px);
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--lawn-soil);
+    font-family: "IBM Plex Sans", sans-serif;
     line-height: 1.2;
   }
   .pn-lawn .county.serviced {
-    border-color: var(--ox);
-    color: var(--ox);
-    background: color-mix(in oklab, var(--ox) 6%, var(--paper));
+    border-color: var(--lawn-olive);
+    color: var(--lawn-olive);
+    background: var(--lawn-bg);
+    font-weight: 600;
   }
   .pn-lawn .county.serviced::before {
-    content: "●";
-    margin-right: 5px;
-    color: var(--ox);
+    content: "";
+    display: inline-block;
+    width: 5px; height: 5px;
+    margin-right: 4px;
+    background: var(--lawn-olive);
+    vertical-align: middle;
   }
   .pn-lawn .map-legend {
-    position: absolute; right: 10px; bottom: 10px;
-    font-size: clamp(8px, 0.7cqw, 10px);
-    color: var(--gray);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    background: var(--paper);
-    padding: 4px 8px;
-    border: 1px solid var(--rule);
-    border-radius: 4px;
+    position: absolute; right: 6px; bottom: 5px;
+    font-size: clamp(8px, 0.72cqw, 10px);
+    color: var(--lawn-muted);
+    font-weight: 600;
+    background: none;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    letter-spacing: 0.02em;
   }
-  .pn-lawn .right { display: flex; flex-direction: column; gap: clamp(12px, 1.6cqw, 20px); min-height: 0; }
+  .pn-lawn .right { display: flex; flex-direction: column; gap: clamp(6px, 0.8cqw, 10px); min-height: 0; }
   .pn-lawn .ba {
     display: grid; grid-template-columns: 1fr 1fr;
-    gap: clamp(6px, 0.8cqw, 10px);
+    gap: clamp(4px, 0.55cqw, 6px);
   }
-  .pn-lawn .ba .mk-tile { aspect-ratio: 4 / 3; }
+  .pn-lawn .work-frame {
+    aspect-ratio: 4 / 3;
+    background: var(--lawn-khaki);
+    border: 2px solid var(--lawn-soil);
+  }
   .pn-lawn .ba .cap {
-    margin-top: 4px;
-    font-size: clamp(8px, 0.7cqw, 10px);
-    color: var(--gray);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    margin-top: 3px;
+    font-size: clamp(10px, 0.9cqw, 13px);
+    color: var(--lawn-muted);
+    font-weight: 500;
   }
   .pn-lawn .form {
-    border: 1px solid var(--rule);
-    border-radius: 8px;
-    padding: clamp(10px, 1.4cqw, 16px);
+    border: 3px solid var(--lawn-soil);
+    border-radius: 0;
+    padding: clamp(7px, 0.85cqw, 10px);
     display: flex; flex-direction: column;
-    gap: clamp(8px, 1cqw, 12px);
-    background: var(--paper);
+    gap: clamp(4px, 0.55cqw, 6px);
+    background: var(--lawn-bg);
   }
   .pn-lawn .form .eb {
-    font-size: clamp(9px, 0.8cqw, 11px);
-    color: var(--gray);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: clamp(13px, 1.12cqw, 15px);
+    color: var(--lawn-soil);
+    font-weight: 600;
     margin-bottom: 2px;
+    letter-spacing: 0;
+    text-transform: none;
   }
   .pn-lawn .form .row {
-    border-bottom: 1px solid var(--rule);
-    padding-bottom: clamp(5px, 0.7cqw, 8px);
+    border-bottom: 2px solid var(--lawn-rule);
+    padding-bottom: clamp(5px, 0.65cqw, 7px);
     display: flex; align-items: baseline; justify-content: space-between;
     gap: 8px;
   }
   .pn-lawn .form .lbl {
-    font-size: clamp(9px, 0.8cqw, 11px);
-    color: var(--gray);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: clamp(11px, 1.02cqw, 14px);
+    color: var(--lawn-muted);
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
   }
   .pn-lawn .form .val {
-    font-size: clamp(10px, 0.95cqw, 13px);
-    color: var(--ink);
+    font-size: clamp(13px, 1.12cqw, 15px);
+    color: var(--lawn-soil);
+    font-weight: 500;
   }
-  .pn-lawn .form .val.placeholder { color: var(--gray); }
-  .pn-lawn .form .submit {
+  .pn-lawn .mk-cta {
+    background: var(--lawn-olive);
+    color: var(--lawn-bg);
+    border-radius: 0;
+    font-weight: 700;
+    font-size: clamp(11px, 1.02cqw, 14px);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    justify-content: center;
     align-self: stretch;
-    margin-top: 4px;
+    margin-top: 2px;
+    padding: clamp(6px, 0.75cqw, 8px) clamp(10px, 1.1cqw, 14px);
+  }
+  .pn-lawn .incl-cta {
+    color: var(--lawn-olive);
+    border-bottom-color: var(--lawn-olive);
   }
 
-  /* ── Retail ── */
-  .pn-retail .mk-body {
-    display: grid; grid-template-columns: 1.6fr 1fr;
-    gap: clamp(18px, 2.2cqw, 28px);
-    margin-top: clamp(20px, 2.4cqw, 30px);
-    flex: 1; min-height: 0;
+  /* ── Northriver General — heritage letterpress ── */
+  .pn-retail {
+    --nr-cream: #F2E9DC;
+    --nr-ink: #12100E;
+    --nr-rust: #9B4E2E;
+    --nr-muted: #5C534A;
+    --nr-rule: rgba(18, 16, 14, 0.18);
+    background: var(--nr-cream);
+    color: var(--nr-ink);
+    font-family: "Libre Baskerville", "Georgia", serif;
   }
-  .pn-retail .grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: clamp(10px, 1.4cqw, 16px);
+  .pn-retail .mk-bar { border-color: var(--nr-rule); }
+  .pn-retail .mk-brand {
+    font-size: clamp(17px, 1.8cqw, 25px);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--nr-ink);
+  }
+  .pn-retail .mk-nav {
+    font-family: "Libre Baskerville", serif;
+    font-size: clamp(11px, 1.02cqw, 14px);
+    font-style: italic;
+    color: var(--nr-muted);
+    letter-spacing: 0.04em;
+    text-transform: none;
+  }
+  .pn-retail .heritage-body {
+    display: grid;
+    grid-template-columns: 1.35fr 0.85fr;
+    grid-template-rows: auto 1fr;
+    gap: clamp(12px, 1.6cqw, 22px);
+    margin-top: clamp(14px, 1.8cqw, 22px);
+    flex: 1;
+    min-height: 0;
+  }
+  .pn-retail .hero-piece {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(12px, 1.5cqw, 20px);
     align-content: start;
   }
-  .pn-retail .prod {
-    display: flex; flex-direction: column; gap: clamp(5px, 0.7cqw, 8px);
+  .pn-retail .hero-block {
+    aspect-ratio: 5 / 6;
+    background: color-mix(in oklab, var(--nr-rust) 18%, var(--nr-cream));
+    border: 1px solid var(--nr-rule);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
   }
-  .pn-retail .prod-img { aspect-ratio: 1; }
-  .pn-retail .prod-name {
-    font-size: clamp(10px, 0.95cqw, 13px);
-    color: var(--ink);
-    font-weight: 500;
-    letter-spacing: -0.005em;
-  }
-  .pn-retail .prod-px {
-    font-size: clamp(10px, 0.9cqw, 12px);
-    color: var(--gray-deep);
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  }
-  .pn-retail .prod.sel .prod-img {
-    box-shadow: 0 0 0 1.5px var(--ox);
-    border-color: transparent;
-  }
-  .pn-retail .detail {
-    border: 1px solid var(--rule);
-    border-radius: 10px;
-    padding: clamp(12px, 1.6cqw, 20px);
-    display: flex; flex-direction: column;
-    gap: clamp(8px, 1cqw, 12px);
-    background: var(--paper);
-  }
-  .pn-retail .detail-img { aspect-ratio: 4 / 3; }
-  .pn-retail .det-name {
-    font-size: clamp(13px, 1.3cqw, 18px);
-    font-weight: 500;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-    margin: 0;
-  }
-  .pn-retail .det-px {
-    font-size: clamp(12px, 1.15cqw, 16px);
-    color: var(--ox);
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    margin: 0;
-  }
-  .pn-retail .opt-row {
-    display: flex; gap: clamp(4px, 0.5cqw, 6px); flex-wrap: wrap;
-  }
-  .pn-retail .opt {
-    padding: clamp(5px, 0.7cqw, 7px) clamp(8px, 1cqw, 12px);
-    border: 1px solid var(--rule);
-    border-radius: 5px;
-    font-size: clamp(9px, 0.85cqw, 11px);
-    color: var(--gray-deep);
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  .pn-retail .hero-copy .catalog {
+    font-size: clamp(11px, 1.02cqw, 14px);
+    font-style: italic;
+    color: var(--nr-rust);
+    margin: 0 0 6px;
     letter-spacing: 0.04em;
   }
-  .pn-retail .opt.sel {
-    background: var(--ink); color: var(--paper); border-color: var(--ink);
+  .pn-retail .hero-copy h2 {
+    font-family: "Libre Baskerville", serif;
+    font-size: clamp(25px, 3.5cqw, 45px);
+    font-weight: 700;
+    line-height: 1.08;
+    margin: 0 0 clamp(8px, 1cqw, 12px);
+    letter-spacing: -0.01em;
   }
-  .pn-retail .swatch {
-    width: clamp(16px, 1.6cqw, 22px);
-    height: clamp(16px, 1.6cqw, 22px);
-    border-radius: 50%;
-    border: 1px solid var(--rule);
+  .pn-retail .hero-copy .lead {
+    font-size: clamp(13px, 1.12cqw, 15px);
+    line-height: 1.55;
+    color: var(--nr-muted);
+    margin: 0 0 clamp(10px, 1.2cqw, 14px);
+    max-width: 32ch;
   }
-  .pn-retail .swatch.sel { box-shadow: 0 0 0 1.5px var(--ox); border-color: transparent; }
-  .pn-retail .det-key {
-    font-size: clamp(8px, 0.7cqw, 10px);
-    color: var(--gray);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    margin-bottom: 2px;
+  .pn-retail .hero-copy .price {
+    font-size: clamp(17px, 1.75cqw, 23px);
+    font-weight: 700;
+    color: var(--nr-ink);
+    margin: 0 0 clamp(10px, 1.2cqw, 14px);
   }
-  .pn-retail .toggle {
-    display: grid; grid-template-columns: 1fr 1fr;
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    overflow: hidden;
+  .pn-retail .mk-cta {
+    display: inline-block;
+    background: transparent;
+    color: var(--nr-ink);
+    border-bottom: 2px solid var(--nr-rust);
+    padding: 0 0 3px;
+    border-radius: 0;
+    font-family: "Libre Baskerville", serif;
+    font-style: italic;
+    font-size: clamp(14px, 1.25cqw, 16px);
+    letter-spacing: 0.02em;
+    text-transform: none;
   }
-  .pn-retail .toggle button {
-    padding: clamp(7px, 0.95cqw, 10px) 0;
-    background: var(--paper);
-    border: none;
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: clamp(9px, 0.85cqw, 11px);
-    color: var(--gray-deep);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    cursor: pointer;
+  .pn-retail .shelf {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(10px, 1.2cqw, 16px);
+    border-left: 1px solid var(--nr-rule);
+    padding-left: clamp(12px, 1.5cqw, 18px);
   }
-  .pn-retail .toggle button.sel {
-    background: var(--ink); color: var(--paper);
+  .pn-retail .shelf-label {
+    font-size: clamp(11px, 1.02cqw, 14px);
+    font-style: italic;
+    color: var(--nr-muted);
+    margin: 0;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--nr-rule);
   }
-  .pn-retail .add-cart {
-    margin-top: auto;
+  .pn-retail .shelf-item {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: clamp(8px, 1cqw, 12px);
+    align-items: start;
+    padding-bottom: clamp(8px, 1cqw, 12px);
+    border-bottom: 1px solid var(--nr-rule);
+  }
+  .pn-retail .shelf-item:last-child { border-bottom: none; }
+  .pn-retail .shelf-thumb {
+    aspect-ratio: 1;
+    background: color-mix(in oklab, var(--nr-muted) 22%, var(--nr-cream));
+    border: 1px solid var(--nr-rule);
+  }
+  .pn-retail .shelf-thumb.t2 { background: color-mix(in oklab, var(--nr-rust) 12%, var(--nr-cream)); }
+  .pn-retail .shelf-thumb.t3 { background: #D4C9BC; }
+  .pn-retail .shelf-name {
+    font-size: clamp(14px, 1.25cqw, 18px);
+    font-weight: 700;
+    margin: 0 0 2px;
+    line-height: 1.2;
+  }
+  .pn-retail .shelf-px {
+    font-size: clamp(13px, 1.1cqw, 15px);
+    font-style: italic;
+    color: var(--nr-rust);
+    margin: 0;
+  }
+  .pn-retail .shelf-note {
+    font-size: clamp(11px, 0.98cqw, 13px);
+    color: var(--nr-muted);
+    margin: 4px 0 0;
+    line-height: 1.4;
+  }
+  .pn-retail .incl-cta {
+    color: var(--nr-rust);
+    border-bottom-color: var(--nr-rust);
   }
 
   .incl-trigger {
@@ -1281,7 +3199,7 @@
     border: none;
     border-bottom: 1px solid var(--ox);
     cursor: pointer;
-    font-family: inherit;
+    font-family: var(--sans);
     font-size: 11px;
     font-weight: 500;
     letter-spacing: 0.14em;
@@ -1328,6 +3246,7 @@
     display: flex; flex-direction: column;
     gap: clamp(16px, 2cqw, 24px);
     overflow-y: auto;
+    font-family: var(--sans);
   }
   .pane.is-open .incl-panel { transform: translateX(0); }
 
@@ -1382,7 +3301,6 @@
   .pn-photo .incl-list { border-top-color: var(--d-rule); }
   .pn-photo .incl-list li { color: var(--d-gray); border-bottom-color: var(--d-rule); }
   .pn-photo .incl-list li strong { color: var(--d-ink); }
-  .pn-photo .incl-cta { color: var(--ox-tint); border-bottom-color: var(--ox-tint); }
 
   /* Build CTA */
   .build-cta {
@@ -1682,10 +3600,89 @@
     .pill-pricing { display: none; }
     .pill-sep { display: none; }
   }
+
+  /* Mobile — centered copy & CTAs */
+  @media (max-width: 760px) {
+    .hero .label {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .hero-stmt {
+      text-align: center;
+    }
+    .hero-ctas {
+      justify-content: center;
+    }
+
+    .work-head .label {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .work-head .body {
+      justify-self: center !important;
+      text-align: center !important;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #work .stmt {
+      text-align: center;
+    }
+    .work-footer {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .quote-card {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+    }
+    .quote-body {
+      max-width: none;
+    }
+
+    .build-head {
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    .build-head .label {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .build-cta {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .contact .label {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .contact-stmt,
+    .contact-grid .email {
+      text-align: center;
+    }
+    .contact-side {
+      justify-self: center;
+      align-items: center;
+      width: 100%;
+    }
+    .contact-side .btn {
+      align-self: center !important;
+    }
+  }
 </style>
 </head>
 
 <body>
+<span id="top" class="page-top" tabindex="-1" aria-hidden="true"></span>
 
 <!-- ─── Nav ─────────────────────────────────────────────── -->
 <nav class="nav" id="nav" data-screen-label="Nav">
@@ -1699,7 +3696,7 @@
       <a href="#principles">Principles</a>
       <a href="#contact">Contact</a>
     </div>
-    <a href="#contact" class="nav-cta">
+    <a href="book.html" class="nav-cta">
       <span>Let's chat</span>
       <span>↗</span>
     </a>
@@ -1707,7 +3704,7 @@
 </nav>
 
 <!-- ─── Hero ────────────────────────────────────────────── -->
-<section class="hero" id="top" data-screen-label="01 Hero">
+<section class="hero" data-screen-label="01 Hero">
   <div class="wrap">
     <p class="label">An independent studio · Tuscaloosa, AL</p>
 
@@ -1720,7 +3717,7 @@
         </h1>
 
         <div class="hero-ctas">
-          <a href="#contact" class="btn btn-primary">
+          <a href="book.html" class="btn btn-primary">
             <span>Book a 15-min call</span>
             <span class="arr">↗</span>
           </a>
@@ -1755,7 +3752,7 @@
       <span class="ink">under half a second</span> and feels considered, not templated.
     </h2>
 
-    <a class="browser" href="https://lemooseproductions.com" target="_blank" rel="noopener noreferrer" aria-label="Visit lemooseproductions.com">
+    <a class="browser preview-desktop" href="https://lemooseproductions.com" target="_blank" rel="noopener noreferrer" aria-label="Visit lemooseproductions.com — desktop">
       <div class="browser-bar browser-bar--with-tabs" aria-hidden="true">
         <div class="browser-top">
           <div class="browser-dots"><span></span><span></span><span></span></div>
@@ -1773,6 +3770,21 @@
       </div>
       <div class="browser-shot">
         <img src="assets/lemooseproductions-hero.png" alt="Lemoose Productions homepage — dark moody hero with halftone wordmark over an automotive close-up">
+      </div>
+    </a>
+
+    <a class="phone preview-mobile" href="https://lemooseproductions.com" target="_blank" rel="noopener noreferrer" aria-label="Visit lemooseproductions.com — mobile">
+      <div class="phone-bezel" aria-hidden="true">
+        <div class="phone-screen-wrap">
+          <div class="phone-shot">
+            <img src="assets/lemooseproductions-mobile.png" alt="Lemoose Productions mobile homepage — halftone wordmark over automotive hero with portrait, automotive, and athletic categories">
+          </div>
+          <div class="phone-chrome" aria-hidden="true">
+            <div class="phone-urlbar">
+              <span class="phone-urlbar-site">lemooseproductions.com</span>
+            </div>
+          </div>
+        </div>
       </div>
     </a>
 
@@ -1832,7 +3844,7 @@
     </figure>
     <p class="work-footer">
       <span class="note">More case studies arrive as projects ship.</span>
-      <a href="#contact" style="color: var(--ox); border-bottom: 1px solid var(--ox); padding-bottom: 2px;">Become the second &nbsp;↗</a>
+      <a href="book.html" style="color: var(--ox); border-bottom: 1px solid var(--ox); padding-bottom: 2px;">Become the second &nbsp;↗</a>
     </p>
   </div>
 </section>
@@ -1845,7 +3857,488 @@
       <h2>Six common builds. Each one is a starting point, not a fixed package.</h2>
     </div>
 
-    <div class="tabshell" id="build-tabs">
+    <div class="build-phones preview-mobile" id="build-phones" aria-label="Mobile builds — swipe to explore">
+      <div class="build-phone-head">
+        <p class="build-phone-label" id="build-phone-label" aria-live="polite">Restaurants</p>
+        <button type="button" class="build-phone-incl" id="build-phone-incl" aria-expanded="false">What's included <span class="arr" aria-hidden="true">↗</span></button>
+      </div>
+      <div class="phone-stack-viewport">
+        <div class="phone-stack-track" id="phone-stack-track">
+          <article class="phone-slide is-active" data-tab="rest" data-label="Restaurants">
+            <div class="phone">
+              <div class="phone-bezel" aria-hidden="true">
+                <div class="phone-screen-wrap" id="rest-phone-screen" data-incl>
+                  <div class="phone-incl-overlay" data-close aria-hidden="true"></div>
+                  <aside class="phone-incl-panel" aria-label="What's included for restaurants" aria-hidden="true">
+                    <h3 class="incl-title">For Restaurants</h3>
+                    <ul class="incl-list">
+                      <li><strong>Direct ordering through DoorDash, Uber Eats, or Grubhub</strong> at 0% commission, replacing the 15-30% they take on app orders.</li>
+                      <li><strong>A menu you own</strong> instead of scattered across places.singleplatform.com, Linktree, and the apps.</li>
+                      <li><strong>Reservation system</strong> built-in or via OpenTable embed.</li>
+                      <li><strong>Hours, location, and contact</strong> kept consistent across Google, Facebook, and the site.</li>
+                      <li><strong>Press and reviews consolidated</strong> from Yelp, Tripadvisor, Google, and any feature mentions.</li>
+                      <li><strong>Fast on mobile</strong> because that's where most orders start.</li>
+                    </ul>
+                    <a class="incl-cta" href="book.html">Start a project <span aria-hidden="true">↗</span></a>
+                  </aside>
+                  <div class="phone-shot phone-shot--site">
+                    <div class="phone-site pn-rest-m">
+                      <div class="mk-bar">
+                        <div class="mk-brand">Harry's<span class="dot">·</span>Ramen</div>
+                        <button type="button" class="mk-menu-btn" aria-expanded="false" aria-label="Open menu">
+                          <span></span><span></span><span></span>
+                        </button>
+                      </div>
+                      <nav class="mk-nav-drawer" aria-hidden="true" aria-label="Site">
+                        <span>Menu</span>
+                        <span>Order</span>
+                        <span>Reserve</span>
+                        <span>Find us</span>
+                      </nav>
+                      <div class="mk-hero">
+                        <div>
+                          <h2>House-pulled noodles. <span class="spot">Tonkotsu in six hours.</span></h2>
+                          <p>A small ramen counter on University Boulevard. Open Wednesday through Sunday, four o'clock until the broth is gone.</p>
+                          <span class="mk-cta order">Order now <span>↗</span></span>
+                          <p class="dd-note"><span class="dot">·</span>DoorDash · 25 min</p>
+                        </div>
+                        <div class="reserve-card">
+                          <div class="eb">Reservation</div>
+                          <div class="row"><span class="lbl">Date</span><span class="val">Fri, May 22</span></div>
+                          <div class="row"><span class="lbl">Time</span><span class="val">7:30 PM</span></div>
+                          <div class="row"><span class="lbl">Party</span><span class="val">2 guests</span></div>
+                          <span class="mk-cta">Reserve <span>↗</span></span>
+                        </div>
+                      </div>
+                      <div class="menu">
+                        <div class="dish">
+                          <div class="dish-frame"></div>
+                          <div class="dish-row"><span>Tonkotsu</span><span class="px">$14</span></div>
+                          <div class="dish-desc">Pork bone, soft egg, scallion.</div>
+                        </div>
+                        <div class="dish">
+                          <div class="dish-frame"></div>
+                          <div class="dish-row"><span>Spicy Miso</span><span class="px">$15</span></div>
+                          <div class="dish-desc">Three-week white miso, chili oil.</div>
+                        </div>
+                        <div class="dish">
+                          <div class="dish-frame"></div>
+                          <div class="dish-row"><span>Shoyu</span><span class="px">$13</span></div>
+                          <div class="dish-desc">Chicken stock, soy, menma.</div>
+                        </div>
+                        <div class="dish">
+                          <div class="dish-frame"></div>
+                          <div class="dish-row"><span>Tsukemen</span><span class="px">$16</span></div>
+                          <div class="dish-desc">Cold noodles, hot dipping broth.</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="phone-chrome" aria-hidden="true">
+                    <div class="phone-urlbar"><span class="phone-urlbar-site">harrysramen.com</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="phone-slide" data-tab="barb" data-label="Barbershops &amp; Salons">
+            <div class="phone">
+              <div class="phone-bezel" aria-hidden="true">
+                <div class="phone-screen-wrap" id="barb-phone-screen" data-incl>
+                  <div class="phone-incl-overlay" data-close aria-hidden="true"></div>
+                  <aside class="phone-incl-panel phone-incl-panel--barb" aria-label="What's included for barbershops and salons" aria-hidden="true">
+                    <h3 class="incl-title">For Barbershops &amp; Salons</h3>
+                    <ul class="incl-list">
+                      <li><strong>Booking embedded on your own domain</strong> through GlossGenius, Square Appointments, or Vagaro, not a marketplace platform that shows competitors next to you every time someone rebooks.</li>
+                      <li><strong>Deposit collection at booking</strong> to cut no-shows and stop chasing payment.</li>
+                      <li><strong>Automated text and email confirmations and reminders</strong> instead of manual follow-up.</li>
+                      <li><strong>Stylist-specific scheduling</strong> so clients book the right person, not just an open slot.</li>
+                      <li><strong>A real home base that buries aggregator pages</strong> like wannabiz and com-place currently ranking above you in Google.</li>
+                      <li><strong>Service menu with pricing</strong> that doubles as portfolio space.</li>
+                    </ul>
+                    <a class="incl-cta" href="book.html">Start a project <span aria-hidden="true">↗</span></a>
+                  </aside>
+                  <div class="phone-shot phone-shot--site">
+                    <div class="phone-site pn-barb-m">
+                      <div class="mk-bar">
+                        <div class="mk-brand">Fades by Paul</div>
+                        <button type="button" class="mk-menu-btn" aria-expanded="false" aria-label="Open menu">
+                          <span></span><span></span><span></span>
+                        </button>
+                      </div>
+                      <nav class="mk-nav-drawer" aria-hidden="true" aria-label="Site">
+                        <span>Book</span>
+                        <span>Services</span>
+                        <span>About</span>
+                        <span>Hours</span>
+                      </nav>
+                      <div class="barb-hero">
+                        <h2>Cuts for working men.<br/>Downtown Tuscaloosa.</h2>
+                        <p class="sub">Open Tuesday through Saturday. Walk-ins welcome, online booking preferred.</p>
+                      </div>
+                      <div class="mk-body">
+                        <div class="booking">
+                          <p class="barb-sign">Pick a date</p>
+                          <div class="cal">
+                            <div class="dn">M</div><div class="dn">T</div><div class="dn">W</div><div class="dn">T</div><div class="dn">F</div><div class="dn">S</div><div class="dn">S</div>
+                            <div class="d dim">28</div><div class="d dim">29</div><div class="d dim">30</div><div class="d">1</div><div class="d avail">2</div><div class="d">3</div><div class="d">4</div>
+                            <div class="d">5</div><div class="d avail">6</div><div class="d">7</div><div class="d avail">8</div><div class="d">9</div><div class="d act">10</div><div class="d">11</div>
+                            <div class="d">12</div><div class="d avail">13</div><div class="d">14</div><div class="d">15</div><div class="d avail">16</div><div class="d">17</div><div class="d">18</div>
+                          </div>
+                          <p class="barb-sign times">Times for Sat, May 10</p>
+                          <div class="slots">
+                            <div class="slot off">9:00</div>
+                            <div class="slot">9:45</div>
+                            <div class="slot">10:30</div>
+                            <div class="slot act">11:15</div>
+                            <div class="slot">1:00</div>
+                            <div class="slot">1:45</div>
+                            <div class="slot off">2:30</div>
+                            <div class="slot">3:15</div>
+                            <div class="slot">4:00</div>
+                          </div>
+                        </div>
+                        <div class="barb-side">
+                          <p class="barb-sign">Services</p>
+                          <div class="services">
+                            <div class="service"><span class="n">Haircut</span><span class="dot-row"></span><span class="p">$25</span></div>
+                            <div class="service"><span class="n">Beard trim</span><span class="dot-row"></span><span class="p">$15</span></div>
+                            <div class="service"><span class="n">Fade</span><span class="dot-row"></span><span class="p">$30</span></div>
+                            <div class="service"><span class="n">Hot towel</span><span class="dot-row"></span><span class="p">$10</span></div>
+                            <div class="service"><span class="n">Father + son</span><span class="dot-row"></span><span class="p">$40</span></div>
+                          </div>
+                          <div class="reserve-row">
+                            <span class="deposit">Deposit · $10 · held until visit</span>
+                            <span class="mk-cta">Reserve <span>↗</span></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="phone-chrome" aria-hidden="true">
+                    <div class="phone-urlbar"><span class="phone-urlbar-site">fadesbypaul.com</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="phone-slide" data-tab="photo" data-label="Photographers">
+            <div class="phone">
+              <div class="phone-bezel" aria-hidden="true">
+                <div class="phone-screen-wrap" id="photo-phone-screen" data-incl>
+                  <div class="phone-incl-overlay" data-close aria-hidden="true"></div>
+                  <aside class="phone-incl-panel phone-incl-panel--photo" aria-label="What's included for photographers" aria-hidden="true">
+                    <h3 class="incl-title">For Photographers</h3>
+                    <ul class="incl-list">
+                      <li><strong>Editorial portfolio</strong> with category filtering.</li>
+                      <li><strong>Password-protected client galleries.</strong></li>
+                      <li><strong>Online proofing</strong> and selection tools.</li>
+                      <li><strong>Package and pricing pages.</strong></li>
+                      <li><strong>Inquiry and booking forms</strong> with date selection.</li>
+                      <li><strong>Print order integration.</strong></li>
+                    </ul>
+                    <a class="incl-cta" href="book.html">Start a project <span aria-hidden="true">↗</span></a>
+                  </aside>
+                  <div class="phone-shot phone-shot--site">
+                    <div class="phone-site pn-photo-m">
+                      <div class="mk-bar">
+                        <div class="mk-brand">HOLLIS REID</div>
+                        <button type="button" class="mk-menu-btn" aria-expanded="false" aria-label="Open menu">
+                          <span></span><span></span><span></span>
+                        </button>
+                      </div>
+                      <nav class="mk-nav-drawer" aria-hidden="true" aria-label="Site">
+                        <span>Work</span>
+                        <span>Studio</span>
+                        <span>Contact</span>
+                        <span class="login">Client login ↗</span>
+                      </nav>
+                      <div class="mk-hero">
+                        <h2>Quiet rooms,<br/><span class="gr">long looks.</span></h2>
+                        <div class="meta">Selected portraits · 2024-2026</div>
+                      </div>
+                      <div class="tiles">
+                        <div class="folio-frame lead"><span class="lbl">01 · cover</span></div>
+                        <div class="folio-frame"><span class="lbl">02</span></div>
+                        <div class="folio-frame"><span class="lbl">03</span></div>
+                        <div class="folio-frame"><span class="lbl">04</span></div>
+                      </div>
+                      <div class="packages">
+                        <div class="pkg">
+                          <span class="n">Portrait session</span>
+                          <span class="v">$250</span>
+                          <span class="d">Studio session, 12 retouched portraits, online gallery.</span>
+                        </div>
+                        <div class="pkg">
+                          <span class="n">Editorial shoot</span>
+                          <span class="v">$400</span>
+                          <span class="d">Half-day on location, high-res digital files, two-week turnaround.</span>
+                        </div>
+                        <div class="pkg fea">
+                          <span class="n">Full day</span>
+                          <span class="v">$1,200</span>
+                          <span class="d">All-day coverage, full edit, half-hour planning call.</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="phone-chrome" aria-hidden="true">
+                    <div class="phone-urlbar"><span class="phone-urlbar-site">hollisreid.studio</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="phone-slide" data-tab="flor" data-label="Florists">
+            <div class="phone">
+              <div class="phone-bezel" aria-hidden="true">
+                <div class="phone-screen-wrap" id="flor-phone-screen" data-incl>
+                  <div class="phone-incl-overlay" data-close aria-hidden="true"></div>
+                  <aside class="phone-incl-panel phone-incl-panel--flor" aria-label="What's included for florists" aria-hidden="true">
+                    <h3 class="incl-title">For Florists</h3>
+                    <ul class="incl-list">
+                      <li><strong>Seasonal catalog</strong> with inventory.</li>
+                      <li><strong>E-commerce checkout</strong> for arrangements.</li>
+                      <li><strong>Wedding and event inquiry intake.</strong></li>
+                      <li><strong>Subscription and recurring orders.</strong></li>
+                      <li><strong>Delivery zone management.</strong></li>
+                      <li><strong>Care instruction cards.</strong></li>
+                    </ul>
+                    <a class="incl-cta" href="book.html">Start a project <span aria-hidden="true">↗</span></a>
+                  </aside>
+                  <div class="phone-shot phone-shot--site">
+                    <div class="phone-site pn-flor-m">
+                      <div class="mk-bar">
+                        <div class="mk-brand">Bluestem Floral</div>
+                        <button type="button" class="mk-menu-btn" aria-expanded="false" aria-label="Open menu">
+                          <span></span><span></span><span></span>
+                        </button>
+                      </div>
+                      <nav class="mk-nav-drawer" aria-hidden="true" aria-label="Site">
+                        <span>Shop</span>
+                        <span>Weddings</span>
+                        <span>Subscriptions</span>
+                        <span>Studio</span>
+                      </nav>
+                      <div class="mk-hero">
+                        <div>
+                          <span class="flor-season">Spring '26 · The Spring Edit</span>
+                          <h2>Tulips, lilac &amp; <span class="it">wild-cut greens</span></h2>
+                        </div>
+                        <span class="wedding">Wedding inquiries ↗</span>
+                      </div>
+                      <div class="arr-grid">
+                        <div class="arr">
+                          <div class="season-block t1"></div>
+                          <div class="arr-info">
+                            <div class="arr-row"><span class="arr-name">Aster &amp; Lilac</span><span class="arr-px">$85</span></div>
+                            <div class="arr-actions">
+                              <span class="arr-stem">22 stems · vase included</span>
+                              <span class="add">+</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="arr">
+                          <div class="season-block t2"></div>
+                          <div class="arr-info">
+                            <div class="arr-row"><span class="arr-name">The Magnolia</span><span class="arr-px">$120</span></div>
+                            <div class="arr-actions">
+                              <span class="arr-stem">large · seasonal</span>
+                              <span class="add">+</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="arr">
+                          <div class="season-block t3"></div>
+                          <div class="arr-info">
+                            <div class="arr-row"><span class="arr-name">Wildwood</span><span class="arr-px">$65</span></div>
+                            <div class="arr-actions">
+                              <span class="arr-stem">hand-tied bunch</span>
+                              <span class="add">+</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="ftr">
+                        <span>Delivery · Tuscaloosa &amp; Northport</span>
+                        <span class="ftr-link">Subscribe for seasonal drops ↗</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="phone-chrome" aria-hidden="true">
+                    <div class="phone-urlbar"><span class="phone-urlbar-site">bluestemfloral.com</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="phone-slide" data-tab="lawn" data-label="Lawn care">
+            <div class="phone">
+              <div class="phone-bezel" aria-hidden="true">
+                <div class="phone-screen-wrap" id="lawn-phone-screen" data-incl>
+                  <div class="phone-incl-overlay" data-close aria-hidden="true"></div>
+                  <aside class="phone-incl-panel phone-incl-panel--lawn" aria-label="What's included for lawn care and contractors" aria-hidden="true">
+                    <h3 class="incl-title">For Lawn Care &amp; Contractors</h3>
+                    <ul class="incl-list">
+                      <li><strong>Service area map</strong> with covered counties.</li>
+                      <li><strong>Quote request forms</strong> with photo upload.</li>
+                      <li><strong>Before-and-after portfolio.</strong></li>
+                      <li><strong>Service menu</strong> with starting prices.</li>
+                      <li><strong>Recurring and seasonal scheduling.</strong></li>
+                      <li><strong>Customer review display.</strong></li>
+                    </ul>
+                    <a class="incl-cta" href="book.html">Start a project <span aria-hidden="true">↗</span></a>
+                  </aside>
+                  <div class="phone-shot phone-shot--site">
+                    <div class="phone-site pn-lawn-m">
+                      <div class="mk-bar">
+                        <div class="mk-brand">Red Oak Grounds</div>
+                        <button type="button" class="mk-menu-btn" aria-expanded="false" aria-label="Open menu">
+                          <span></span><span></span><span></span>
+                        </button>
+                      </div>
+                      <nav class="mk-nav-drawer" aria-hidden="true" aria-label="Site">
+                        <span>Services</span>
+                        <span>Coverage</span>
+                        <span>Gallery</span>
+                        <span>Quote</span>
+                      </nav>
+                      <div class="lawn-intro">
+                        <h2>Grounds work across West Alabama.</h2>
+                        <p class="sub">Eight trucks, three crews. Weekly mowing through full-property restoration.</p>
+                      </div>
+                      <div class="mk-body">
+                        <div class="map">
+                          <div class="county" style="top: 8%; left: 14%;">Fayette</div>
+                          <div class="county" style="top: 10%; left: 52%;">Walker</div>
+                          <div class="county serviced" style="top: 32%; left: 8%;">Pickens</div>
+                          <div class="county serviced" style="top: 36%; left: 38%;">Tuscaloosa</div>
+                          <div class="county" style="top: 38%; left: 72%;">Jefferson</div>
+                          <div class="county serviced" style="top: 60%; left: 16%;">Greene</div>
+                          <div class="county serviced" style="top: 62%; left: 44%;">Hale</div>
+                          <div class="county" style="top: 64%; left: 74%;">Bibb</div>
+                          <span class="map-legend">Service area</span>
+                        </div>
+                        <div class="right">
+                          <div class="ba">
+                            <div>
+                              <div class="work-frame"></div>
+                              <p class="cap">Before</p>
+                            </div>
+                            <div>
+                              <div class="work-frame"></div>
+                              <p class="cap">After</p>
+                            </div>
+                          </div>
+                          <div class="form">
+                            <div class="eb">Quote request</div>
+                            <div class="row"><span class="lbl">Name</span><span class="val">Will Carter</span></div>
+                            <div class="row"><span class="lbl">Address</span><span class="val">1820 8th St, Tuscaloosa</span></div>
+                            <div class="row"><span class="lbl">Service needed</span><span class="val">Mowing + edging, weekly</span></div>
+                            <span class="mk-cta submit">Send request <span>↗</span></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="phone-chrome" aria-hidden="true">
+                    <div class="phone-urlbar"><span class="phone-urlbar-site">redoakgrounds.com</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="phone-slide" data-tab="retail" data-label="Retail">
+            <div class="phone">
+              <div class="phone-bezel" aria-hidden="true">
+                <div class="phone-screen-wrap" id="retail-phone-screen" data-incl>
+                  <div class="phone-incl-overlay" data-close aria-hidden="true"></div>
+                  <aside class="phone-incl-panel phone-incl-panel--retail" aria-label="What's included for retail and boutiques" aria-hidden="true">
+                    <h3 class="incl-title">For Retail &amp; Boutiques</h3>
+                    <ul class="incl-list">
+                      <li><strong>Product catalog</strong> with variants.</li>
+                      <li><strong>Shopping cart and checkout.</strong></li>
+                      <li><strong>In-store pickup option.</strong></li>
+                      <li><strong>Inventory display</strong> with in-stock and sold-out states.</li>
+                      <li><strong>Size, color, and material selectors.</strong></li>
+                      <li><strong>Stockist or wholesale section.</strong></li>
+                    </ul>
+                    <a class="incl-cta" href="book.html">Start a project <span aria-hidden="true">↗</span></a>
+                  </aside>
+                  <div class="phone-shot phone-shot--site">
+                    <div class="phone-site pn-retail-m">
+                      <div class="mk-bar">
+                        <div class="mk-brand">Northriver General</div>
+                        <button type="button" class="mk-menu-btn" aria-expanded="false" aria-label="Open menu">
+                          <span></span><span></span><span></span>
+                        </button>
+                      </div>
+                      <nav class="mk-nav-drawer" aria-hidden="true" aria-label="Site">
+                        <span>Shop</span>
+                        <span>Workshop</span>
+                        <span>Stockists</span>
+                        <span>About</span>
+                      </nav>
+                      <div class="heritage-body">
+                        <div class="hero-block"></div>
+                        <div class="hero-copy">
+                          <p class="catalog">Spring catalog · No. 4</p>
+                          <h2>Waxed canvas tote</h2>
+                          <p class="lead">Cut from 18oz cotton duck, oiled once in Birmingham. Built to carry tools, groceries, or a week of mail.</p>
+                          <p class="price">$94</p>
+                          <span class="mk-cta">Write to order ↗</span>
+                        </div>
+                        <div class="shelf">
+                          <p class="shelf-label">Also in the shop</p>
+                          <div class="shelf-item">
+                            <div class="shelf-thumb t2"></div>
+                            <div>
+                              <p class="shelf-name">Field shirt</p>
+                              <p class="shelf-px">$78</p>
+                              <p class="shelf-note">Heavy cotton, union-made buttons.</p>
+                            </div>
+                          </div>
+                          <div class="shelf-item">
+                            <div class="shelf-thumb t3"></div>
+                            <div>
+                              <p class="shelf-name">Enamel mug</p>
+                              <p class="shelf-px">$22</p>
+                              <p class="shelf-note">Camp cup, forest green rim.</p>
+                            </div>
+                          </div>
+                          <div class="shelf-item">
+                            <div class="shelf-thumb"></div>
+                            <div>
+                              <p class="shelf-name">Wool blanket</p>
+                              <p class="shelf-px">$148</p>
+                              <p class="shelf-note">Loomed in North Carolina, rust stripe.</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="phone-chrome" aria-hidden="true">
+                    <div class="phone-urlbar"><span class="phone-urlbar-site">northrivergeneral.com</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="phone-stack-dots" role="tablist" aria-label="Build type">
+        <button type="button" class="phone-stack-dot is-active" role="tab" aria-selected="true" aria-label="Restaurants" data-index="0"></button>
+        <button type="button" class="phone-stack-dot" role="tab" aria-selected="false" aria-label="Barbershops and salons" data-index="1"></button>
+        <button type="button" class="phone-stack-dot" role="tab" aria-selected="false" aria-label="Photographers" data-index="2"></button>
+        <button type="button" class="phone-stack-dot" role="tab" aria-selected="false" aria-label="Florists" data-index="3"></button>
+        <button type="button" class="phone-stack-dot" role="tab" aria-selected="false" aria-label="Lawn care" data-index="4"></button>
+        <button type="button" class="phone-stack-dot" role="tab" aria-selected="false" aria-label="Retail" data-index="5"></button>
+      </div>
+      <p class="phone-stack-hint" aria-hidden="true">Swipe to explore</p>
+    </div>
+
+    <div class="tabshell preview-desktop" id="build-tabs">
       <div class="browser-top">
         <div class="browser-dots" aria-hidden="true"><span></span><span></span><span></span></div>
         <div class="browser-tabs" role="tablist" aria-label="Build types">
@@ -1898,12 +4391,10 @@
 
           <div class="mk-hero">
             <div>
-              <h2>House-pulled noodles. <span class="ox">Tonkotsu in six hours.</span></h2>
+              <h2>House-pulled noodles. <span class="spot">Tonkotsu in six hours.</span></h2>
               <p>A small ramen counter on University Boulevard. Open Wednesday through Sunday, four o'clock until the broth is gone.</p>
-              <a class="mk-cta ox">Order now <span>↗</span></a>
-              <div class="dd-row">
-                <span class="dd-badge">DoorDash · 25 min</span>
-              </div>
+              <a class="mk-cta order">Order now <span>↗</span></a>
+              <p class="dd-note"><span class="dot">·</span>DoorDash · 25 min</p>
             </div>
             <div class="reserve-card">
               <div class="eb">Reservation</div>
@@ -1916,22 +4407,22 @@
 
           <div class="menu">
             <div class="dish">
-              <div class="mk-tile dish-img"></div>
+              <div class="dish-frame"></div>
               <div class="dish-row"><span>Tonkotsu</span><span class="px">$14</span></div>
               <div class="dish-desc">Pork bone, soft egg, scallion.</div>
             </div>
             <div class="dish">
-              <div class="mk-tile dish-img"></div>
+              <div class="dish-frame"></div>
               <div class="dish-row"><span>Spicy Miso</span><span class="px">$15</span></div>
               <div class="dish-desc">Three-week white miso, chili oil.</div>
             </div>
             <div class="dish">
-              <div class="mk-tile dish-img"></div>
+              <div class="dish-frame"></div>
               <div class="dish-row"><span>Shoyu</span><span class="px">$13</span></div>
               <div class="dish-desc">Chicken stock, soy, menma.</div>
             </div>
             <div class="dish">
-              <div class="mk-tile dish-img"></div>
+              <div class="dish-frame"></div>
               <div class="dish-row"><span>Tsukemen</span><span class="px">$16</span></div>
               <div class="dish-desc">Cold noodles, hot dipping broth.</div>
             </div>
@@ -1950,7 +4441,7 @@
               <li><strong>Press and reviews consolidated</strong> from Yelp, Tripadvisor, Google, and any feature mentions.</li>
               <li><strong>Fast on mobile</strong> because that's where most orders start.</li>
             </ul>
-            <a class="incl-cta" href="#contact">Start a project <span aria-hidden="true">↗</span></a>
+            <a class="incl-cta" href="book.html">Start a project <span aria-hidden="true">↗</span></a>
           </aside>
         </div>
 
@@ -1961,22 +4452,22 @@
             <div class="mk-nav"><span>Book</span><span>Services</span><span>About</span><span>Hours</span></div>
           </div>
 
-          <div style="margin-top: clamp(16px, 2cqw, 24px);">
-            <h2>Cuts for working men. <br/>Downtown Tuscaloosa.</h2>
+          <div class="barb-hero">
+            <h2>Cuts for working men.<br/>Downtown Tuscaloosa.</h2>
             <p class="sub">Open Tuesday through Saturday. Walk-ins welcome, online booking preferred.</p>
           </div>
 
           <div class="mk-body">
             <div class="booking">
-              <div class="eb">Pick a date</div>
+              <p class="barb-sign">Pick a date</p>
               <div class="cal">
                 <div class="dn">M</div><div class="dn">T</div><div class="dn">W</div><div class="dn">T</div><div class="dn">F</div><div class="dn">S</div><div class="dn">S</div>
-                <div class="d dim">28</div><div class="d dim">29</div><div class="d dim">30</div><div class="d">1</div><div class="d dot">2</div><div class="d">3</div><div class="d">4</div>
-                <div class="d">5</div><div class="d dot">6</div><div class="d">7</div><div class="d dot">8</div><div class="d">9</div><div class="d act">10</div><div class="d">11</div>
-                <div class="d">12</div><div class="d dot">13</div><div class="d">14</div><div class="d">15</div><div class="d dot">16</div><div class="d">17</div><div class="d">18</div>
+                <div class="d dim">28</div><div class="d dim">29</div><div class="d dim">30</div><div class="d">1</div><div class="d avail">2</div><div class="d">3</div><div class="d">4</div>
+                <div class="d">5</div><div class="d avail">6</div><div class="d">7</div><div class="d avail">8</div><div class="d">9</div><div class="d act">10</div><div class="d">11</div>
+                <div class="d">12</div><div class="d avail">13</div><div class="d">14</div><div class="d">15</div><div class="d avail">16</div><div class="d">17</div><div class="d">18</div>
               </div>
 
-              <div class="eb" style="margin-top: 4px;">Times for Sat, May 10</div>
+              <p class="barb-sign times">Times for Sat, May 10</p>
               <div class="slots">
                 <div class="slot off">9:00</div>
                 <div class="slot">9:45</div>
@@ -1991,7 +4482,7 @@
             </div>
 
             <div style="display: flex; flex-direction: column;">
-              <div class="eb" style="font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: clamp(9px, 0.8cqw, 11px); color: var(--gray); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: clamp(6px, 0.8cqw, 10px);">Services</div>
+              <p class="barb-sign">Services</p>
               <div class="services">
                 <div class="service"><span class="n">Haircut</span><span class="dot-row"></span><span class="p">$25</span></div>
                 <div class="service"><span class="n">Beard trim</span><span class="dot-row"></span><span class="p">$15</span></div>
@@ -2020,7 +4511,7 @@
               <li><strong>A real home base that buries aggregator pages</strong> like wannabiz and com-place currently ranking above you in Google.</li>
               <li><strong>Service menu with pricing</strong> that doubles as portfolio space.</li>
             </ul>
-            <a class="incl-cta" href="#contact">Start a project <span aria-hidden="true">↗</span></a>
+            <a class="incl-cta" href="book.html">Start a project <span aria-hidden="true">↗</span></a>
           </aside>
         </div>
 
@@ -2028,7 +4519,7 @@
         <div class="pane pn-photo" data-panel="photo" role="tabpanel">
           <div class="mk-bar">
             <div class="mk-brand">HOLLIS REID</div>
-            <div class="mk-nav" style="align-items: center;">
+            <div class="mk-nav">
               <span>Work</span><span>Studio</span><span>Contact</span>
               <span class="login">Client login ↗</span>
             </div>
@@ -2040,10 +4531,10 @@
           </div>
 
           <div class="tiles">
-            <div class="mk-tile dark"><span class="lbl">01 · cover</span></div>
-            <div class="mk-tile dark"><span class="lbl">02</span></div>
-            <div class="mk-tile dark"><span class="lbl">03</span></div>
-            <div class="mk-tile dark"><span class="lbl">04</span></div>
+            <div class="folio-frame lead"><span class="lbl">01 · cover</span></div>
+            <div class="folio-frame"><span class="lbl">02</span></div>
+            <div class="folio-frame"><span class="lbl">03</span></div>
+            <div class="folio-frame"><span class="lbl">04</span></div>
           </div>
 
           <div class="packages">
@@ -2077,7 +4568,7 @@
               <li><strong>Inquiry and booking forms</strong> with date selection.</li>
               <li><strong>Print order integration.</strong></li>
             </ul>
-            <a class="incl-cta" href="#contact">Start a project <span aria-hidden="true">↗</span></a>
+            <a class="incl-cta" href="book.html">Start a project <span aria-hidden="true">↗</span></a>
           </aside>
         </div>
 
@@ -2090,7 +4581,7 @@
 
           <div class="mk-hero">
             <div>
-              <span class="mk-eyebrow">Spring '26 · The Spring Edit</span>
+              <span class="flor-season">Spring '26 · The Spring Edit</span>
               <h2>Tulips, lilac &amp; <span class="it">wild-cut greens</span></h2>
             </div>
             <a class="wedding">Wedding inquiries ↗</a>
@@ -2098,7 +4589,7 @@
 
           <div class="arr-grid">
             <div class="arr">
-              <div class="mk-tile arr-img"></div>
+              <div class="season-block t1"></div>
               <div class="arr-info">
                 <div class="arr-row"><span class="arr-name">Aster &amp; Lilac</span><span class="arr-px">$85</span></div>
                 <div class="arr-actions">
@@ -2108,7 +4599,7 @@
               </div>
             </div>
             <div class="arr">
-              <div class="mk-tile arr-img"></div>
+              <div class="season-block t2"></div>
               <div class="arr-info">
                 <div class="arr-row"><span class="arr-name">The Magnolia</span><span class="arr-px">$120</span></div>
                 <div class="arr-actions">
@@ -2118,7 +4609,7 @@
               </div>
             </div>
             <div class="arr">
-              <div class="mk-tile arr-img"></div>
+              <div class="season-block t3"></div>
               <div class="arr-info">
                 <div class="arr-row"><span class="arr-name">Wildwood</span><span class="arr-px">$65</span></div>
                 <div class="arr-actions">
@@ -2131,7 +4622,7 @@
 
           <div class="ftr">
             <span>Delivery · Tuscaloosa &amp; Northport</span>
-            <span>Subscribe for seasonal drops ↗</span>
+            <a href="#" class="ftr-link">Subscribe for seasonal drops ↗</a>
           </div>
 
           <div class="incl-overlay" data-close aria-hidden="true"></div>
@@ -2147,7 +4638,7 @@
               <li><strong>Delivery zone management.</strong></li>
               <li><strong>Care instruction cards.</strong></li>
             </ul>
-            <a class="incl-cta" href="#contact">Start a project <span aria-hidden="true">↗</span></a>
+            <a class="incl-cta" href="book.html">Start a project <span aria-hidden="true">↗</span></a>
           </aside>
         </div>
 
@@ -2158,9 +4649,9 @@
             <div class="mk-nav"><span>Services</span><span>Coverage</span><span>Gallery</span><span>Quote</span></div>
           </div>
 
-          <div style="margin-top: clamp(14px, 1.8cqw, 22px);">
-            <h2>Lawn care &amp; grounds work, West Alabama.</h2>
-            <p class="sub">Family-owned, eight trucks, three crews. Weekly maintenance through full-property restoration.</p>
+          <div class="lawn-intro">
+            <h2>Grounds work across West Alabama.</h2>
+            <p class="sub">Eight trucks, three crews. Weekly mowing through full-property restoration.</p>
           </div>
 
           <div class="mk-body">
@@ -2173,16 +4664,18 @@
               <div class="county serviced"   style="top: 60%; left: 16%;">Greene</div>
               <div class="county serviced"   style="top: 62%; left: 44%;">Hale</div>
               <div class="county"            style="top: 64%; left: 74%;">Bibb</div>
-              <div class="map-legend">● Service area</div>
+              <span class="map-legend">Service area</span>
             </div>
 
             <div class="right">
               <div class="ba">
                 <div>
-                  <div class="mk-tile"><span class="lbl">Before</span></div>
+                  <div class="work-frame"></div>
+                  <p class="cap">Before</p>
                 </div>
                 <div>
-                  <div class="mk-tile"><span class="lbl">After</span></div>
+                  <div class="work-frame"></div>
+                  <p class="cap">After</p>
                 </div>
               </div>
 
@@ -2209,7 +4702,7 @@
               <li><strong>Recurring and seasonal scheduling.</strong></li>
               <li><strong>Customer review display.</strong></li>
             </ul>
-            <a class="incl-cta" href="#contact">Start a project <span aria-hidden="true">↗</span></a>
+            <a class="incl-cta" href="book.html">Start a project <span aria-hidden="true">↗</span></a>
           </aside>
         </div>
 
@@ -2217,69 +4710,46 @@
         <div class="pane pn-retail" data-panel="retail" role="tabpanel">
           <div class="mk-bar">
             <div class="mk-brand">Northriver General</div>
-            <div class="mk-nav"><span>Shop</span><span>Workshop</span><span>Stockists</span><span>Cart · 1</span></div>
+            <div class="mk-nav"><span>Shop</span><span>Workshop</span><span>Stockists</span><span>About</span></div>
           </div>
 
-          <div class="mk-body">
-            <div class="grid">
-              <div class="prod">
-                <div class="mk-tile prod-img"></div>
-                <div class="prod-name">Field shirt</div>
-                <div class="prod-px">$78</div>
-              </div>
-              <div class="prod sel">
-                <div class="mk-tile prod-img"></div>
-                <div class="prod-name">Waxed canvas tote</div>
-                <div class="prod-px">$94</div>
-              </div>
-              <div class="prod">
-                <div class="mk-tile prod-img"></div>
-                <div class="prod-name">Enamel mug</div>
-                <div class="prod-px">$22</div>
-              </div>
-              <div class="prod">
-                <div class="mk-tile prod-img"></div>
-                <div class="prod-name">Wool blanket</div>
-                <div class="prod-px">$148</div>
-              </div>
-              <div class="prod">
-                <div class="mk-tile prod-img"></div>
-                <div class="prod-name">Work apron</div>
-                <div class="prod-px">$64</div>
-              </div>
-              <div class="prod">
-                <div class="mk-tile prod-img"></div>
-                <div class="prod-name">Knife roll</div>
-                <div class="prod-px">$112</div>
+          <div class="heritage-body">
+            <div class="hero-piece">
+              <div class="hero-block"></div>
+              <div class="hero-copy">
+                <p class="catalog">Spring catalog · No. 4</p>
+                <h2>Waxed canvas tote</h2>
+                <p class="lead">Cut from 18oz cotton duck, oiled once in Birmingham. Built to carry tools, groceries, or a week of mail.</p>
+                <p class="price">$94</p>
+                <a class="mk-cta" href="#">Write to order ↗</a>
               </div>
             </div>
 
-            <div class="detail">
-              <div class="mk-tile detail-img"></div>
-              <p class="det-name">Waxed canvas tote</p>
-              <p class="det-px">$94.00</p>
-
-              <div>
-                <div class="det-key">Size</div>
-                <div class="opt-row">
-                  <span class="opt">S</span>
-                  <span class="opt sel">M</span>
-                  <span class="opt">L</span>
+            <div class="shelf">
+              <p class="shelf-label">Also in the shop</p>
+              <div class="shelf-item">
+                <div class="shelf-thumb t2"></div>
+                <div>
+                  <p class="shelf-name">Field shirt</p>
+                  <p class="shelf-px">$78</p>
+                  <p class="shelf-note">Heavy cotton, union-made buttons.</p>
                 </div>
               </div>
-
-              <div>
-                <div class="det-key">Color</div>
-                <div class="opt-row" style="align-items: center;">
-                  <span class="swatch sel" style="background: #2A2A2C;"></span>
-                  <span class="swatch" style="background: #8C7656;"></span>
-                  <span class="swatch" style="background: #B7B1A5;"></span>
+              <div class="shelf-item">
+                <div class="shelf-thumb t3"></div>
+                <div>
+                  <p class="shelf-name">Enamel mug</p>
+                  <p class="shelf-px">$22</p>
+                  <p class="shelf-note">Camp cup, forest green rim.</p>
                 </div>
               </div>
-
-              <div class="toggle">
-                <button class="sel">Add to cart</button>
-                <button>Pickup in store</button>
+              <div class="shelf-item">
+                <div class="shelf-thumb"></div>
+                <div>
+                  <p class="shelf-name">Wool blanket</p>
+                  <p class="shelf-px">$148</p>
+                  <p class="shelf-note">Loomed in North Carolina, rust stripe.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -2297,16 +4767,17 @@
               <li><strong>Size, color, and material selectors.</strong></li>
               <li><strong>Stockist or wholesale section.</strong></li>
             </ul>
-            <a class="incl-cta" href="#contact">Start a project <span aria-hidden="true">↗</span></a>
+            <a class="incl-cta" href="book.html">Start a project <span aria-hidden="true">↗</span></a>
           </aside>
         </div>
+
 
       </div>
     </div>
 
     <div class="build-cta">
       <p class="lede">Don't see your business? Tell me what you'd want.</p>
-      <a href="#contact">Start the conversation &nbsp;↗</a>
+      <a href="book.html">Start the conversation &nbsp;↗</a>
     </div>
   </div>
 </section>
@@ -2363,11 +4834,11 @@
       </p>
       <div class="contact-side">
         <span class="meta">Or, more directly</span>
-        <a href="#" class="btn btn-primary" style="align-self: flex-start;">
+        <a href="book.html" class="btn btn-primary" style="align-self: flex-start;">
           <span>Book a 15-min call</span>
           <span class="arr">↗</span>
         </a>
-        <span class="meta">Calendly &nbsp;·&nbsp; 15 min &nbsp;·&nbsp; free</span>
+        <span class="meta">15 min &nbsp;·&nbsp; on this site &nbsp;·&nbsp; free</span>
       </div>
     </div>
   </div>
@@ -2388,7 +4859,7 @@
 <div class="pill" role="navigation" aria-label="Quick contact">
   <a href="#build" class="pill-pricing">What I build</a>
   <span class="pill-sep" aria-hidden="true"></span>
-  <a href="#contact" class="pill-cta">
+  <a href="book.html" class="pill-cta">
     <span class="pill-avatar" aria-hidden="true">AG</span>
     <span>Let's chat</span>
     <span>↗</span>
@@ -2454,6 +4925,191 @@
 
     window.addEventListener('scroll', () => { if (active) highlight(); }, { passive: true });
     window.addEventListener('resize', () => { if (active) highlight(); });
+  })();
+
+  // What I build — mobile phone stack (swipe)
+  (function () {
+    const root = document.getElementById('build-phones');
+    if (!root) return;
+    const viewport = root.querySelector('.phone-stack-viewport');
+    const track = document.getElementById('phone-stack-track');
+    const slides = Array.from(root.querySelectorAll('.phone-slide'));
+    const dots = Array.from(root.querySelectorAll('.phone-stack-dot'));
+    const labelEl = document.getElementById('build-phone-label');
+    const inclTrigger = document.getElementById('build-phone-incl');
+    if (!viewport || !track || !slides.length) return;
+
+    function activeInclScreen() {
+      return slides[index] && slides[index].querySelector('.phone-screen-wrap[data-incl]');
+    }
+
+    function closePhoneIncl() {
+      root.querySelectorAll('.phone-screen-wrap[data-incl].is-incl-open').forEach((screen) => {
+        screen.classList.remove('is-incl-open');
+        const overlay = screen.querySelector('.phone-incl-overlay');
+        const panel = screen.querySelector('.phone-incl-panel');
+        if (overlay) overlay.setAttribute('aria-hidden', 'true');
+        if (panel) panel.setAttribute('aria-hidden', 'true');
+      });
+      if (inclTrigger) inclTrigger.setAttribute('aria-expanded', 'false');
+    }
+
+    function openPhoneIncl() {
+      const screen = activeInclScreen();
+      if (!screen) return;
+      closePhoneIncl();
+      screen.classList.add('is-incl-open');
+      const overlay = screen.querySelector('.phone-incl-overlay');
+      const panel = screen.querySelector('.phone-incl-panel');
+      if (inclTrigger) inclTrigger.setAttribute('aria-expanded', 'true');
+      if (overlay) overlay.setAttribute('aria-hidden', 'false');
+      if (panel) panel.setAttribute('aria-hidden', 'false');
+    }
+    track.style.setProperty('--slides', String(slides.length));
+
+    let index = 0;
+    let dragOffset = 0;
+    let dragging = false;
+    let suppressClick = false;
+    let startX = 0;
+    let startY = 0;
+    let axisLock = null;
+    let pointerId = null;
+
+    function updateStates() {
+      slides.forEach((s, i) => {
+        s.classList.toggle('is-active', i === index);
+      });
+      dots.forEach((d, i) => {
+        const on = i === index;
+        d.classList.toggle('is-active', on);
+        d.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      if (labelEl && slides[index]) {
+        labelEl.textContent = slides[index].dataset.label || '';
+      }
+      if (inclTrigger) {
+        closePhoneIncl();
+        inclTrigger.hidden = !activeInclScreen();
+      }
+    }
+
+    function setTransform(animated) {
+      const w = viewport.offsetWidth;
+      const x = -index * w + dragOffset;
+      track.style.transition = animated
+        ? 'transform 420ms cubic-bezier(0.22, 1, 0.36, 1)'
+        : 'none';
+      track.style.transform = `translate3d(${x}px, 0, 0)`;
+      updateStates();
+    }
+
+    function goTo(i, animated) {
+      index = Math.max(0, Math.min(slides.length - 1, i));
+      dragOffset = 0;
+      setTransform(animated !== false);
+    }
+
+    function onPointerDown(e) {
+      if (e.button > 0) return;
+      if (e.target.closest('.phone-shot--site, .phone-incl-overlay, .phone-incl-panel')) return;
+      dragging = true;
+      suppressClick = false;
+      axisLock = null;
+      startX = e.clientX;
+      startY = e.clientY;
+      pointerId = e.pointerId;
+      track.classList.add('is-dragging');
+      track.setPointerCapture(e.pointerId);
+      setTransform(false);
+    }
+
+    function onPointerMove(e) {
+      if (!dragging || e.pointerId !== pointerId) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      if (axisLock === null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+        axisLock = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      }
+      if (axisLock !== 'x') return;
+      e.preventDefault();
+      if (Math.abs(dx) > 10) suppressClick = true;
+      const w = viewport.offsetWidth;
+      const atStart = index === 0 && dx > 0;
+      const atEnd = index === slides.length - 1 && dx < 0;
+      dragOffset = (atStart || atEnd) ? dx * 0.35 : dx;
+      const max = w * 0.55;
+      dragOffset = Math.max(-max, Math.min(max, dragOffset));
+      setTransform(false);
+    }
+
+    function onPointerUp(e) {
+      if (!dragging || e.pointerId !== pointerId) return;
+      dragging = false;
+      track.classList.remove('is-dragging');
+      try { track.releasePointerCapture(e.pointerId); } catch (_) {}
+      const w = viewport.offsetWidth;
+      const threshold = w * 0.18;
+      if (dragOffset < -threshold) goTo(index + 1);
+      else if (dragOffset > threshold) goTo(index - 1);
+      else goTo(index);
+      dragOffset = 0;
+    }
+
+    root.addEventListener('click', (e) => {
+      if (!suppressClick) return;
+      const link = e.target.closest('a.phone');
+      if (!link || !root.contains(link)) return;
+      e.preventDefault();
+      suppressClick = false;
+    }, true);
+
+    root.querySelectorAll('.phone-shot--site').forEach((el) => {
+      el.addEventListener('touchstart', (e) => e.stopPropagation(), { passive: true });
+    });
+
+    if (inclTrigger) {
+      inclTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const screen = activeInclScreen();
+        if (screen && screen.classList.contains('is-incl-open')) closePhoneIncl();
+        else openPhoneIncl();
+      });
+    }
+    root.querySelectorAll('.phone-incl-overlay').forEach((overlay) => {
+      overlay.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closePhoneIncl();
+      });
+    });
+
+    root.querySelectorAll('.phone-site .mk-menu-btn').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        const site = btn.closest('.phone-site');
+        const drawer = site && site.querySelector('.mk-nav-drawer');
+        if (!drawer) return;
+        const open = drawer.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+      });
+    });
+
+    track.addEventListener('pointerdown', onPointerDown);
+    track.addEventListener('pointermove', onPointerMove);
+    track.addEventListener('pointerup', onPointerUp);
+    track.addEventListener('pointercancel', onPointerUp);
+
+    dots.forEach((d) => {
+      d.addEventListener('click', () => goTo(Number(d.dataset.index)));
+    });
+
+    window.addEventListener('resize', () => setTransform(false));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closePhoneIncl();
+    });
+    goTo(0, false);
   })();
 
   // What I build — tab switcher
