@@ -45,3 +45,7 @@ Booking hours are configured in `lib/booking-config.js` (default Mon–Fri 9–5
 ## Before launch
 
 - Compress large PNGs in `assets/` if needed
+
+## Freeform Grounds
+
+The product landing page lives at `/grounds`. The independent landscaping owner application, PostgreSQL schema, tests, and deployment guide are in [`grounds-app/README.md`](grounds-app/README.md). It does not depend on the agency's Google Calendar credentials.

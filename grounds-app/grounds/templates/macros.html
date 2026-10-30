@@ -1,0 +1,3 @@
+{% macro csrf() %}<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">{% endmacro %}
+{% macro field(name,label,type='text',value='',required=true,maxlength=400) %}<label>{{ label }}<input name="{{ name }}" type="{{ type }}" value="{{ value }}" {% if required %}required{% endif %} maxlength="{{ maxlength }}" {% if type=='number' %}step="0.01"{% endif %}></label>{% endmacro %}
+{% macro frequency(value='weekly') %}<label>Service frequency<select name="frequency" required>{% for f in ['once','weekly','biweekly','monthly'] %}<option value="{{ f }}" {% if f==value %}selected{% endif %}>{{ f|title }}</option>{% endfor %}</select></label>{% endmacro %}

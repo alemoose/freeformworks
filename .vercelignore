@@ -1,0 +1,2 @@
+# Grounds is deployed as a separate Python app, never served as static source.
+grounds-app/

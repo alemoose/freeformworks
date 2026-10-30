@@ -6,6 +6,7 @@
     { "source": "/index.html/:path*", "destination": "/:path*", "permanent": true }
   ],
   "rewrites": [
+    { "source": "/grounds", "destination": "/grounds/index.html" },
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/book", "destination": "/book.html" },
     { "source": "/work", "destination": "/index.html" },
