@@ -8,7 +8,7 @@ web
 
 ## Users
 
-Small local business owners in and around Tuscaloosa, AL: barbers, salons, photographers, florists, restaurants, lawn care crews. They are not technical, they run the business themselves, and they are skeptical of agencies after being quoted high prices or sold things they did not need. Today a lot of their customer handling happens by text, phone and memory.
+Local business owners in and around Tuscaloosa, AL. Two groups, and which one leads is an open decision (see below): trades businesses (lawn care, landscaping and other crews), which have more money and the most to gain, and small shops (barbers, salons, photographers, florists, restaurants). They are not technical, they run the business themselves, and they are skeptical of agencies after being quoted high prices or sold things they did not need. Today a lot of their customer handling happens by text, phone and memory.
 
 They arrive at the site wanting to know three things fast: who these people are, what it costs, and whether it will actually fit how their business runs. The job they hire Freeform Works for is "get me a real website and stop me losing customers in my text messages."
 
@@ -18,7 +18,7 @@ Freeform Works is a two-person web studio. We build a small business a custom we
 
 ## Positioning
 
-Two real people, named and pictured, with published prices. One of us builds it (Agustin), one of us makes sure it fits how the business actually runs day to day (María). Agencies in town hide pricing ("starting at $10K, everything else scoped") and show no faces. We show both.
+Two real people, named and pictured, with published prices. One of us builds it (Agustin), one of us makes sure it fits how the business actually runs day to day (María, who built and runs her own business, Amitie Florals in Montgomery). Agencies in town hide pricing ("starting at $10K, everything else scoped") and show no faces. We show both.
 
 ## Operating Context
 
@@ -36,21 +36,20 @@ Deliverable to a client today:
 Not deliverable yet, so never sold or shown as working:
 - AI intake (an assistant that answers new customers). Do not list it as included in setup or in the care plan until it exists. A demo of it may only appear if it is built and clearly labeled as a demo.
 
-Pricing (published on the site, no "contact us for pricing"):
-- Setup: $1,500 to $2,500 one time (website plus booking plus owner dashboard).
-- Care plan: $150 a month (hosting, edits, updates).
+Pricing: published on the site, never "contact us for pricing". The numbers are an open decision (see below). Working numbers from the original brief: $1,500 to $2,500 setup, $150 a month care plan (hosting, edits, updates).
 
 Technical:
 - Static HTML/CSS/JS on Vercel, with serverless functions in `api/` and `lib/` for the Google Calendar booking. `/book` must keep working exactly as it does now.
 - Lighthouse stays at 95 or above. Our speed numbers are part of the pitch.
 
 Open decisions:
+- Who leads and what it costs. The owners lean toward selling to trades businesses first, and are weighing separate prices for small shops and for medium trades businesses. Settle before writing the hero and pricing sections.
 - Freeform Grounds (`/grounds`, landscaping owner software, MVP, with its own proposed $99 and $249 monthly plans) does not have a settled place in the studio offer. Keep it off the homepage until the owners decide.
 
 ## Brand Commitments
 
 - Name: Freeform Works. Location: Tuscaloosa, AL.
-- People: Agustin Lemuz-Juarez and María. Both University of Alabama students, both graduating May 2027.
+- People: Agustin Lemuz-Juarez and María Estrada. Both University of Alabama students, both graduating May 2027. María is an MIS major.
 - Voice: friendly, direct, specific, a little personal. Two real people talking to a barber or a florist. Never an agency.
 - Must keep: the native `/book` calendar flow on our own domain.
 
@@ -66,16 +65,19 @@ Copy rules (binding on every page):
 
 Real and usable:
 - Lemoose Productions, lemooseproductions.com: a portrait photography site we built for Agustin's older brother, Dre Lemuz. Must be described as family ("our first build was for Agustin's brother Dre's photography studio"). Stats: 0.4s largest contentful paint, 99 Lighthouse, 1.2 MB page weight, 9-day build. Screenshots: `assets/lemooseproductions-hero.png`, `assets/lemooseproductions-mobile.png`.
-- Agustin's past work: Student Seats (42,000+ users, $2.8M+ in sales through flows he redesigned); APC website migration to Next.js (deploys cut from 30+ minutes to about 5, live at apc.ua.edu); founding engineer at Autobet.
+- Agustin's past work, with his role stated accurately:
+  - Student Seats: he helped build it. Platform figures from the brief: 42,000+ users, $2.8M+ in sales. Present these as the platform's numbers, never as his personal results, until he confirms which flows he owned.
+  - APC (apc.ua.edu): part-time intern on the migration to Next.js, which cut deploys from 30+ minutes to about 5. Never call it a contract or client project.
+  - Autobet: founding engineer.
 - The `/book` page itself, as a working example of booking on your own domain.
 
 Pending, do not publish until confirmed:
-- Everything about María: how her name is shown, her bio, her photo. She approves it first. Her background (MIS; manufacturing and logistics experience, a Mercedes-Benz co-op and contract work at Parker Towing) is described with "experience at" wording only, never logos or anything implying those companies endorse Freeform. Say nothing about Parker Towing's vendors.
-- Hicks BBQ and Snipes: may appear only as clearly labeled "concept builds", and only once they give permission.
+- Everything about María: how her name is shown, her bio, her photo. She approves it first. Known so far: María Estrada, MIS major, founder and owner of Amitie Florals in Montgomery, AL. Also a Mercedes-Benz co-op and work at Parker Towing, where she may have built AI-assisted dashboards on top of older systems (unconfirmed; she describes it). Employers get "experience at" wording only, never logos or anything implying they endorse Freeform. Say nothing about Parker Towing's vendors.
 - Photos of Agustin and María: real photos only, no AI headshots. Placeholder slots until provided.
 
 Absent, must not be fabricated:
 - Client testimonials. The old "D. Moose" quote is from family and is retired.
+- Hicks BBQ and Snipes: never approved. Never named, and never shown under a made-up business name either. Their designs may only come back as an unnamed sample (for example "sample barbershop booking page"), labeled as a demo on the page itself.
 - Any client other than Lemoose. The six industry mock businesses on the old site (Harry's Ramen, Fades by Paul, Hollis Reid, Bluestem Floral, Red Oak Grounds, Northriver General) are invented and must not return.
 
 ## Product Principles
