@@ -1,0 +1,424 @@
+"""Builds the three livelier homepage options (taste skill kit, dealt heroes and moments).
+Run from the repo root: python3 drafts/live/build.py"""
+from pathlib import Path
+
+OUT = Path(__file__).parent
+
+ARROW = '<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg>'
+CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg>'
+
+PHOTOS = {
+    'barber': ('img/f116285951-1600.webp', 'img/f116285951-800.webp', 1600, 1068, "A barber's hands holding a comb and clippers at the back of a client's head"),
+    'mower': ('img/f193413109-1600.webp', 'img/f193413109-800.webp', 1600, 1065, 'A push mower cutting a lawn in a shady garden, the person pushing it out of frame'),
+    'reel': ('img/f1150505-1600.webp', 'img/f1150505-800.webp', 1600, 1200, 'An old reel mower resting in half-cut grass'),
+    'florist': ('img/florist-1200.webp', 'img/florist-800.webp', 1200, 800, "A florist's hands trimming stems with red scissors over a paper-covered bench"),
+}
+
+def img(key, cls='', extra='', loading='lazy', sizes='(max-width: 1023px) 92vw, 50vw'):
+    big, small, w, h, alt = PHOTOS[key]
+    c = f' class="{cls}"' if cls else ''
+    return (f'<img{c} src="{small}" srcset="{small} 800w, {big} {w}w" sizes="{sizes}" width="{w}" height="{h}" '
+            f'alt="{alt}" data-source="stand-in" loading="{loading}" decoding="async"{extra}>')
+
+HEAD = '''<!doctype html>
+<html lang="en" data-type="service" data-radius="soft" data-buttons="{buttons}" data-motion>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Freeform Works: websites for Tuscaloosa shops and crews ({label})</title>
+<meta name="description" content="Agustin and María build websites, booking and owner dashboards for local shops and trade crews in Tuscaloosa. From $1,200, then $75 a month.">
+<meta name="robots" content="noindex">
+<meta name="site-kind" content="other"><meta name="page-type" content="service">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="../../assets/favicon-32.png">
+<link rel="preload" href="assets/fonts/big-shoulders-display-900-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/public-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/system.css">
+<link rel="stylesheet" href="assets/ui/cards.css">
+<link rel="stylesheet" href="assets/motion/motion.css">
+<link rel="stylesheet" href="assets/layout/layout.css">
+<style>
+@font-face {{ font-family: "Big Shoulders Display"; font-weight: 900; font-display: swap; src: url("assets/fonts/big-shoulders-display-900-latin.woff2") format("woff2"); }}
+@font-face {{ font-family: "Public Sans"; font-weight: 100 900; font-display: swap; src: url("assets/fonts/public-sans-latin.woff2") format("woff2"); }}
+@font-face {{ font-family: "Spline Sans Mono"; font-weight: 300 700; font-display: swap; src: url("assets/fonts/spline-sans-mono-latin.woff2") format("woff2"); }}
+:root {{
+  --p-bg: #ffffff; --p-surface: #f3f2ee; --p-ink: #141414; --p-muted: #4a4a47;
+  --p-accent: #7c2031; --p-accent-ink: #ffffff; --p-action: #7c2031; --p-action-ink: #ffffff;
+  --p-inv-bg: #141414; --p-inv-surface: #212121; --p-inv-ink: #ffffff; --p-inv-muted: #b9b9b4;
+  --p-inv-accent: #ffffff; --p-inv-accent-ink: #141414; --p-inv-action: #ffffff; --p-inv-action-ink: #141414;
+  --font-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --font-text: "Public Sans", system-ui, sans-serif;
+  --display-weight: 900; --display-tracking: 0em; --display-tracking-xl: -0.005em; --ly-scale: 1.12;
+  --mono: "Spline Sans Mono", ui-monospace, monospace;
+}}
+.nav__logo img {{ height: 40px; width: auto; display: block; }}
+.ground-inverse .nav__logo img, .footer--dark .nav__logo img {{ filter: invert(1); }}
+/* receipt (our pricing object) */
+.ticket-wrap {{ position: relative; padding-top: 14px; }}
+.slot-mouth {{ position: absolute; top: 0; left: -14px; right: -14px; height: 18px; background: color-mix(in oklab, var(--ink) 80%, var(--bg)); border-radius: 9px; }}
+.ticket {{ position: relative; background: #fff; color: #141414; font: 400 15px/1.55 var(--mono); font-variant-numeric: tabular-nums; padding: 26px 26px 0; box-shadow: 0 18px 40px rgba(0,0,0,.22); }}
+.ticket::after {{ content: ""; display: block; height: 14px; margin: 22px -26px 0; transform: translateY(13px);
+  background: linear-gradient(135deg, #fff 7px, transparent 0) 0 0 / 14px 14px repeat-x, linear-gradient(225deg, #fff 7px, transparent 0) 0 0 / 14px 14px repeat-x; }}
+.t-head {{ text-align: center; }} .t-head strong {{ display: block; font-weight: 600; font-size: 17px; letter-spacing: .08em; }}
+.rule {{ border: 0; border-top: 2px dashed #141414; margin: 16px 0; }}
+.tabs-tier {{ display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }}
+.tabs-tier button {{ font: 600 15px/1.2 var(--mono); cursor: pointer; min-height: 44px; border: 2px solid #141414; background: #fff; color: #141414; border-radius: 0; }}
+.tabs-tier button[aria-pressed="true"] {{ background: #141414; color: #fff; }}
+.ticket ul {{ list-style: none; padding: 0; margin: 0; }}
+.tline {{ display: flex; justify-content: space-between; gap: 8px; margin: 0; }}
+.ttotal {{ font-weight: 600; font-size: 18px; }} .ttotal .amt {{ color: #7c2031; border-radius: 3px; padding: 0 4px; margin-right: -4px; }}
+.amt.flash {{ animation: flash 700ms ease-out; }} @keyframes flash {{ from {{ background: #f3dde1; }} }}
+.ticket .btn {{ width: 100%; margin-top: 18px; }}
+.barcode {{ display: block; width: 100%; height: 44px; margin-top: 18px; }}
+.thanks {{ text-align: center; font-size: 13px; margin: 6px 0 0; }}
+.for {{ font-size: 14px; margin: 10px 0 0; }}
+.sr {{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }}
+.terms {{ list-style: none; padding: 0; display: grid; gap: var(--s-4); margin-top: var(--s-6); }}
+.terms li {{ display: flex; gap: var(--s-3); }} .terms svg {{ width: 22px; height: 22px; flex: none; color: var(--accent); margin-top: 2px; }}
+@media (prefers-reduced-motion: no-preference) {{
+  .js-print .ticket.waiting {{ clip-path: inset(0 0 100% 0); translate: 0 -24px; }}
+  .js-print .ticket.printed {{ clip-path: inset(0 0 -40px 0); translate: 0 0; transition: clip-path 700ms cubic-bezier(.22,1,.36,1), translate 700ms cubic-bezier(.22,1,.36,1); }}
+}}
+/* name tags (until real photos) */
+.tags {{ display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-5); }}
+.tag {{ background: #fff; color: #141414; border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; box-shadow: 0 14px 32px rgba(0,0,0,.10); container-type: inline-size; }}
+.tag:nth-child(1) {{ rotate: -2deg; }} .tag:nth-child(2) {{ rotate: 1.5deg; margin-top: var(--s-7); }}
+.tag-top {{ background: #7c2031; color: #fff; text-align: center; font: 900 26px/1 var(--font-display); text-transform: uppercase; padding: 14px 10px 12px; margin: 0; }}
+.tag-body {{ padding: var(--s-5); }}
+.tag-name {{ font: 900 min(24cqi, 84px)/.85 var(--font-display); text-transform: uppercase; margin: 0; }}
+.tag-role {{ font-weight: 600; margin: var(--s-3) 0 0; }}
+.tag-facts {{ list-style: none; padding: var(--s-3) 0 0; margin: var(--s-3) 0 0; border-top: 2px dashed var(--line); color: var(--muted); font-size: var(--t-small); }}
+/* proof */
+.specs {{ margin: var(--s-6) 0 0; border-top: 2px solid var(--ink); font-variant-numeric: tabular-nums; max-width: 460px; }}
+.specs div {{ display: flex; justify-content: space-between; gap: var(--s-4); padding: var(--s-3) 0; border-bottom: 1px solid var(--line); }}
+.specs dt {{ color: var(--muted); }} .specs dd {{ margin: 0; font-weight: 600; white-space: nowrap; }}
+.shots {{ position: relative; }}
+.shots .desk {{ border-radius: var(--r-md); border: 1px solid var(--line); box-shadow: 0 20px 44px rgba(0,0,0,.16); width: 100%; height: auto; display: block; }}
+.shots .phone {{ position: absolute; right: -8px; bottom: -40px; width: 26%; border: 6px solid #141414; border-radius: 22px; overflow: hidden; box-shadow: 0 18px 40px rgba(0,0,0,.25); }}
+.shots .phone img {{ display: block; width: 100%; height: auto; }}
+.develop {{ margin: 0; border-radius: var(--r-lg); overflow: hidden; }}
+.develop > img {{ display: block; width: 100%; height: auto; }}
+.credits-list {{ list-style: none; padding: 0; margin: var(--s-6) 0 0; border-top: 1px solid var(--line); }}
+.credits-list li {{ display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,2fr); gap: var(--s-3) var(--s-6); padding: var(--s-4) 0; border-bottom: 1px solid var(--line); }}
+.credits-list b {{ font: 900 24px/1 var(--font-display); text-transform: uppercase; }}
+@media (max-width: 640px) {{ .credits-list li {{ grid-template-columns: 1fr; }} .tags {{ gap: var(--s-3); }} .tag-top {{ font-size: 18px; }} .tag-body {{ padding: var(--s-4); }} }}
+.ly-float__title {{ font-variant-numeric: tabular-nums; }}
+.rows .rows__name small {{ display: block; font-weight: 400; color: var(--muted); font-size: var(--t-body); margin-top: 4px; }}
+.rows .rows__name {{ font-weight: 600; font-size: var(--t-card); }}
+.how-shot {{ margin: 0; border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--line); box-shadow: 0 18px 40px rgba(0,0,0,.12); }} .how-shot img {{ display: block; width: 100%; height: auto; }}
+h1, h2, h3, .t-display {{ text-transform: uppercase; }}
+</style>
+<script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
+<script>document.documentElement.classList.add('mo-js');setTimeout(()=>document.documentElement.classList.add('mo-safe'),2500)</script>
+<link rel="modulepreload" href="assets/moments/moments.js"><link rel="modulepreload" href="assets/moments/lib.js">
+{preloads}
+</head>
+<body>
+<!-- Option {label}. Deal: hero {hero}; moments {moments}; nav {nav}; footer {footer}; close close-type; rhythm {rhythm}; buttons {buttons}.
+     Palette: the client's own (white, wine #7c2031). Faces: the owner's pick (Big Shoulders Display 900, Public Sans), not dealt.
+     Stand-in photographs (Wikimedia Commons): barber, mower, reel mower, florist. Listed in the footer credits as stock, not clients. -->
+'''
+
+def nav(kind):
+    cls = {'nav-centre': 'nav nav--centre', 'nav-split': 'nav nav--split', 'nav-mega': 'nav'}[kind]
+    return f'''<header class="{cls}">
+  <div class="wrap nav__bar">
+    <a class="skip-link" href="#top">Skip to content</a>
+    <a class="nav__logo" href="#top"><img src="../../assets/fw-logo.png" width="61" height="44" alt="Freeform Works"></a>
+    <nav class="nav__links" aria-label="Main">
+      <div class="nav__item"><a class="nav__link" href="#work">Work</a></div>
+      <div class="nav__item"><a class="nav__link" href="#prices">Prices</a></div>
+      <div class="nav__item"><a class="nav__link" href="#us">About</a></div>
+    </nav>
+    <div class="nav__actions"><a class="btn btn--primary" href="/book">Book a call</a></div>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  </div>
+</header>
+<main id="top">
+'''
+
+LEAD = ("We're Agustin and María. One of us builds your site, the other makes sure it fits how you run. "
+        "Shops from $1,200, crews from $2,500.")
+
+def hero_split():
+    return f'''  <section class="hero hero--split" data-enter aria-labelledby="hero-h">
+    <div class="wrap"><div class="hero-text grid hero__grid">
+      <div class="hero__text span-5">
+        <h1 id="hero-h">Websites for Tuscaloosa shops and crews</h1>
+        <p class="hero__lead">{LEAD}</p>
+        <div class="btn-row"><a class="btn btn--primary" href="/book">Book a 15-min call{ARROW}</a><a class="btn btn--secondary" href="#prices">See the prices</a></div>
+      </div>
+      <div class="hero__media span-6 start-7">
+        {img('barber', extra=' style="--ly-pos: 55% 45%" fetchpriority="high"', loading='eager')}
+        <div class="ly-float">
+          <div class="ly-float__row"><span>Next free call</span><span>15 min</span></div>
+          <div class="ly-float__title" data-next-slot>Weekdays, 1 to 5 PM Central</div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+'''
+
+def hero_film():
+    return f'''  <section class="hero hero--film" data-enter aria-labelledby="hero-h">
+    <div class="wrap"><div class="hero-text hero__in">
+      <div class="hero__media hero__fill">
+        {img('mower', extra=' style="--ly-pos: 50% 55%; --ly-pos-phone: 70% 50%" fetchpriority="high"', loading='eager', sizes='100vw')}
+        <div class="hero__over">
+          <div>
+            <h1 id="hero-h">Websites for Tuscaloosa shops and crews</h1>
+            <p class="hero__lead">{LEAD}</p>
+            <div class="btn-row"><a class="btn btn--primary" href="/book">Book a 15-min call</a><a class="btn btn--secondary" href="#prices">See the prices</a></div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+'''
+
+def hero_photo():
+    return f'''  <section class="hero hero--photo" data-enter data-calm="left" aria-labelledby="hero-h">
+    {img('barber', cls='hero__bg', extra=' style="--ly-pos: 70% 45%; --ly-pos-phone: 72% 50%" fetchpriority="high"', loading='eager', sizes='100vw')}
+    <div class="wrap"><div class="hero-text">
+      <div class="hero__text">
+        <h1 id="hero-h">Websites for Tuscaloosa shops and crews</h1>
+        <p class="hero__lead">{LEAD}</p>
+        <div class="btn-row"><a class="btn btn--primary" href="/book">Book a 15-min call</a><a class="btn btn--secondary" href="#prices">See the prices</a></div>
+      </div>
+    </div></div>
+  </section>
+'''
+
+STATEMENT = '''  <section class="section statement" id="why" data-moment="word-highlight" aria-label="Why we do this">
+    <div class="wrap">
+      <p class="mo-wh__text">If your bookings live in your texts and your quotes live in your head, that's the job. We build the website, the booking and the customer list, and <strong>we answer when you text</strong>.</p>
+    </div>
+  </section>
+'''
+
+def proof(develop):
+    pic = ('''<figure class="develop" data-moment="picture-develops"><img src="../../assets/work/lemoose-desktop-960.webp" srcset="../../assets/work/lemoose-desktop-960.webp 960w, ../../assets/work/lemoose-desktop-1440.webp 1440w" sizes="(max-width: 1023px) 92vw, 50vw" width="960" height="600" alt="The Lemoose Productions homepage: a dark red car with LEMOOSE in large dotted letters" loading="lazy"></figure>'''
+           if develop else
+           '''<div class="shots"><img class="desk" src="../../assets/work/lemoose-desktop-960.webp" srcset="../../assets/work/lemoose-desktop-960.webp 960w, ../../assets/work/lemoose-desktop-1440.webp 1440w" sizes="(max-width: 1023px) 92vw, 50vw" width="960" height="600" alt="The Lemoose Productions homepage on a laptop" loading="lazy"><div class="phone"><img src="../../assets/work/lemoose-phone-390.webp" width="390" height="844" alt="The same homepage on a phone" loading="lazy"></div></div>''')
+    return f'''  <section class="section" id="work" aria-labelledby="work-h">
+    <div class="wrap stack-7">
+      <div class="grid grid--top">
+        <div class="span-5">
+          <div class="section-head"><h2 id="work-h">Our first build was for family</h2>
+          <p>Agustin's older brother, Dre Lemuz, runs Lemoose Productions, a portrait, car and sports photography studio in Tuscaloosa. Agustin built his site from scratch.</p></div>
+          <dl class="specs">
+            <div><dt>Build time</dt><dd>9 days</dd></div>
+            <div><dt>Google speed score, laptop</dt><dd>100 / 100</dd></div>
+            <div><dt>Google speed score, phone</dt><dd>94 / 100</dd></div>
+          </dl>
+          <p class="t-small" style="margin-top: var(--s-3)">Scores from Google Lighthouse, tested Nov 24, 2026. <a class="link" href="https://lemooseproductions.com/" target="_blank" rel="noopener">Visit lemooseproductions.com</a></p>
+        </div>
+        <div class="span-6 start-7">{pic}</div>
+      </div>
+      <div>
+        <h3>Before Freeform, Agustin worked on these</h3>
+        <ul class="credits-list">
+          <li><b>Student Seats</b><p>Software engineer. Rebuilt the ticket checkout. More than $2.8M in student ticket sales have gone through it.</p></li>
+          <li><b>Alabama Productivity Center</b><p>IT intern. Moved the center's website onto new code without taking it offline, and made 10 pages work on phones.</p></li>
+          <li><b>Autobet</b><p>Founding engineer. Built the startup's phone app from scratch: 45 screens.</p></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+'''
+
+def who_chapters():
+    ch = [('barber', 'Barbers and salons', 'A site that shows your cuts and prices, and booking on your own domain so clients rebook with you.'),
+          ('florist', 'Florists and shops', 'Your work up front, your hours right on Google, and orders or bookings that land in one place.'),
+          ('mower', 'Lawn and trade crews', 'Quote requests from your site, the week’s jobs on a schedule, and one dashboard for every customer.')]
+    lis = ''.join(f'''
+        <li class="mo-ph__ch">
+          <figure class="mo-ph__pic">{img(k, sizes='100vw')}</figure>
+          <h3>{t}</h3>
+          <p>{p}</p>
+        </li>''' for k, t, p in ch)
+    return f'''  <section class="section" id="who" data-moment="photo-chapters" aria-labelledby="who-h">
+    <div class="wrap mo-ph">
+      <div class="mo-ph__head"><h2 id="who-h">Who we build for</h2><p>Three kinds of business, one way of working: a site you own, booking that works, and two people you can reach.</p></div>
+      <ol class="mo-ph__list">{lis}
+      </ol>
+    </div>
+  </section>
+'''
+
+def how_pinned():
+    steps = [('We talk, 15 minutes', 'Tell us what your business does and what’s bugging you. We say which plan fits and what it costs.', 'img/book-flow.webp', 670, 640, 'The booking calendar on freeformworks.com with a day and a time picked'),
+             ('We build it, about 2 weeks', 'We write the site, set up booking and connect your domain. You get a preview link before anything goes live.', '../../assets/work/lemoose-desktop-960.webp', 960, 600, 'A finished site: the Lemoose Productions homepage'),
+             ('We look after it, monthly', 'We put it live and handle hosting, edits and updates. Send us a change and we make it. Cancel anytime.', 'img/f1150505-1600.webp', 1600, 1200, PHOTOS['reel'][4])]
+    lis = ''.join(f'''
+          <li class="mo-pc__step">
+            <h3>{t}</h3>
+            <p>{p}</p>
+            <figure class="mo-pc__visual"><img src="{s}" width="{w}" height="{h}" alt="{a}" loading="lazy"></figure>
+          </li>''' for t, p, s, w, h, a in steps)
+    return f'''  <section class="section" id="how" style="--h: 2" data-moment="pinned-chapters" aria-labelledby="how-h">
+    <div class="wrap mo-pc__grid">
+      <div class="mo-pc__text">
+        <h2 id="how-h">How it works</h2>
+        <ol class="mo-pc__steps">{lis}
+        </ol>
+      </div>
+      <div class="mo-pc__visuals frame"></div>
+    </div>
+  </section>
+'''
+
+HOW_ROWS = '''  <section class="section" id="how" aria-labelledby="how-h">
+    <div class="wrap grid grid--top">
+      <div class="span-6">
+      <div class="section-head"><h2 id="how-h">How it works</h2><p>Three steps, one price, and you can see each one before it happens.</p></div>
+      <ul class="rows">
+        <li><span class="rows__name">We talk<small>Tell us what your business does. We say which plan fits and what it costs.</small></span><span class="rows__value">15 min, free</span></li>
+        <li><span class="rows__name">We build it<small>Site, booking, your domain. You get a preview link before anything goes live.</small></span><span class="rows__value">About 2 weeks</span></li>
+        <li><span class="rows__name">We look after it<small>Hosting, edits and updates. Send us a change and we make it. Cancel anytime.</small></span><span class="rows__value">Monthly</span></li>
+      </ul>
+      <p style="margin-top: var(--s-5)"><a class="link" href="/book">Try the booking page</a></p>
+      </div>
+      <figure class="span-5 start-8 how-shot"><img src="img/book-flow.webp" width="670" height="640" alt="The booking calendar on freeformworks.com with a day and a time picked" loading="lazy"></figure>
+    </div>
+  </section>
+'''
+
+PRICING = f'''  <section class="section ground-surface" id="prices" aria-labelledby="prices-h">
+    <div class="wrap grid grid--top">
+      <div class="span-5">
+        <div class="section-head"><h2 id="prices-h">Here's the whole price</h2>
+        <p>Pick your kind of business and the ticket updates. What you see is what you pay.</p></div>
+        <ul class="terms">
+          <li>{CHECK}<span>Cancel the monthly plan anytime. No contract.</span></li>
+          <li>{CHECK}<span>Your domain is in your name. We buy it for you if it's under $100.</span></li>
+          <li>{CHECK}<span>Crews get everything shops get, plus quotes, scheduling and a dashboard.</span></li>
+        </ul>
+      </div>
+      <div class="span-5 start-8">
+        <div class="ticket-wrap"><div class="slot-mouth" aria-hidden="true"></div>
+          <div class="ticket" id="ticket" role="group" aria-labelledby="ticket-title">
+            <div class="t-head"><strong id="ticket-title">FREEFORM WORKS</strong>Tuscaloosa, AL</div>
+            <hr class="rule">
+            <div class="tabs-tier" role="group" aria-label="Pick your business"><button type="button" aria-pressed="true" data-tier="shop">Shop</button><button type="button" aria-pressed="false" data-tier="crew">Crew</button></div>
+            <p class="for" id="for">Barbers, salons, photographers, florists, restaurants</p>
+            <hr class="rule">
+            <ul id="items"><li class="tline"><span>Custom website</span><span>incl.</span></li><li class="tline"><span>Booking on your own domain</span><span>incl.</span></li><li class="tline"><span>Google profile cleanup</span><span>incl.</span></li></ul>
+            <hr class="rule">
+            <p class="tline ttotal"><span>Setup, one time</span><span class="amt" id="setup">$1,200</span></p>
+            <p class="tline ttotal"><span>Then monthly</span><span class="amt" id="monthly">$75</span></p>
+            <p style="font-size:14px;margin:8px 0 0" id="t-terms">Hosting, edits and updates included.</p>
+            <p class="sr" id="tier-status" aria-live="polite"></p>
+            <a class="btn btn--primary" href="/book">Book a 15-min call</a>
+            <svg class="barcode" id="barcode" viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true"></svg>
+            <p class="thanks">Thanks for stopping by.</p>
+          </div></div>
+      </div>
+    </div>
+  </section>
+'''
+
+def about():
+    return '''  <section class="section" id="us" aria-labelledby="us-h">
+    <div class="wrap grid grid--top">
+      <div class="span-5">
+        <div class="section-head"><h2 id="us-h">You'll talk to one of us</h2>
+        <p>No account managers. The two people on these tags answer your texts, build your site and keep it running.</p></div>
+        <p><strong>Agustin</strong> is a computer science student at UA, graduating May 2027. He grew up in Montgomery and loves puzzles. A slow website or a messy booking setup is just another one to solve.</p>
+        <p style="margin-top: var(--s-4)"><strong>María</strong> is a management information systems (MIS) student at UA, graduating May 2027. She started Amitie Florals in Montgomery and ran it before college, so she knows what a small business owner's day looks like.</p>
+      </div>
+      <div class="span-6 start-7">
+        <div class="tags" aria-label="Who you'll work with">
+          <article class="tag"><p class="tag-top" aria-hidden="true">Hello, I'm</p><div class="tag-body"><p class="tag-name">Agustin</p><p class="tag-role">Builds it.</p><ul class="tag-facts"><li>Computer science, UA, 2027</li><li>From Montgomery</li></ul></div></article>
+          <article class="tag"><p class="tag-top" aria-hidden="true">Hello, I'm</p><div class="tag-body"><p class="tag-name">María</p><p class="tag-role">Makes it fit your business.</p><ul class="tag-facts"><li>Business systems (MIS), UA, 2027</li><li>Started Amitie Florals</li></ul></div></article>
+        </div>
+      </div>
+    </div>
+  </section>
+'''
+
+
+def footer(kind):
+    cls = {'footer-dark': 'footer closing footer--dark ground-inverse', 'footer-columns': 'footer closing', 'footer-visit': 'footer closing'}[kind]
+    return f'''</main>
+<footer class="{cls}" id="contact" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing__cta close--type">
+      <div class="section-head"><h2 id="close-h">Book a 15-min call</h2><p>Free. Weekdays, 1 to 5 PM Central. You'll talk to Agustin or María.</p></div>
+      <a class="btn btn--primary btn--xl btn--wide" href="/book">Book a 15-min call{ARROW}</a>
+    </div>
+    <div class="closing__links">
+      <div class="grid">
+        <div class="span-4 stack-4">
+          <a class="nav__logo" href="#top"><img src="../../assets/fw-logo.png" width="61" height="44" alt="Freeform Works"></a>
+          <p class="footer__lede">Websites, booking and owner dashboards for shops and crews in Tuscaloosa.</p>
+        </div>
+        <div class="span-2 start-7 footer__col"><h3>Site</h3><ul><li><a href="#work">Work</a></li><li><a href="#prices">Prices</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Us</h3><ul><li><a href="#us">About</a></li><li><a href="/book">Book a call</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Contact</h3><ul><li><a href="mailto:hello@freeformworks.com">Email us</a></li><li>Replies within a day</li></ul></div>
+      </div>
+      <div class="footer__legal">
+        <span>&copy; 2026 Agustin Lemuz-Juarez and María Estrada</span>
+        <details class="credits"><summary>Photos of shops and crews are stock photos, not our clients</summary><p>Barber: Nenad Stojkovic, CC BY 2.0. Lawn mowing: Shixart1985, CC BY 2.0. Reel mower: Halley from Boston, CC BY 2.0. Florist: direct2Florist, CC BY 2.0. All via Wikimedia Commons.</p></details>
+      </div>
+    </div>
+  </div>
+</footer>
+'''
+
+TAIL = '''<script>
+(() => {
+  const tiers = {
+    shop: { for: 'Barbers, salons, photographers, florists, restaurants', items: ['Custom website', 'Booking on your own domain', 'Google profile cleanup'], setup: '$1,200', monthly: '$75', terms: 'Hosting, edits and updates included.', name: 'Shop plan' },
+    crew: { for: 'Lawn care, landscaping, contractors', items: ['Custom website', 'Booking on your own domain', 'Google profile cleanup', 'Quote requests', 'Job scheduling', 'Owner dashboard'], setup: '$2,500', monthly: '$200', terms: 'Hosting, edits, updates and dashboard support included.', name: 'Crew plan' }
+  };
+  const $ = (id) => document.getElementById(id);
+  document.querySelectorAll('.tabs-tier button').forEach((b) => b.addEventListener('click', () => {
+    const t = tiers[b.dataset.tier];
+    $('for').textContent = t.for;
+    $('items').replaceChildren(...t.items.map((x) => { const li = document.createElement('li'); li.className = 'tline'; const a = document.createElement('span'); a.textContent = x; const c = document.createElement('span'); c.textContent = 'incl.'; li.append(a, c); return li; }));
+    $('setup').textContent = t.setup; $('monthly').textContent = t.monthly; $('t-terms').textContent = t.terms;
+    $('tier-status').textContent = `${t.name}: ${t.setup} setup, then ${t.monthly} a month.`;
+    ['setup', 'monthly'].forEach((id) => { const el = $(id); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); });
+    document.querySelectorAll('.tabs-tier button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  }));
+  const w = [2,1,3,1,1,2,1,3,2,1,1,1,3,1,2,2,1,1,3,1,2,1,1,2,3,1,1,2,1,3,1,1,2,1,2,3,1,1,2,1]; let x = 0, s = '';
+  w.forEach((n, i) => { if (i % 2 === 0) s += `<rect x="${x}" y="0" width="${n * 1.6}" height="40" fill="#141414"/>`; x += n * 1.6 + 1; });
+  $('barcode').setAttribute('viewBox', `0 0 ${x} 40`); $('barcode').innerHTML = s;
+  const ticket = $('ticket');
+  if (matchMedia('(prefers-reduced-motion: no-preference)').matches && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('js-print'); ticket.classList.add('waiting');
+    new IntersectionObserver((e, io) => { if (e[0].isIntersecting) { ticket.classList.replace('waiting', 'printed'); io.disconnect(); } }, { threshold: .25 }).observe(ticket.parentElement);
+  }
+  const slot = document.querySelector('[data-next-slot]');
+  if (slot) fetch('/api/slots').then((r) => r.ok ? r.json() : null).then((d) => {
+    if (!d || !d.dates || !d.dates.length) return;
+    return fetch('/api/slots?date=' + d.dates[0]).then((r) => r.ok ? r.json() : null).then((t) => {
+      if (!t || !t.slots || !t.slots.length) return;
+      const day = new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' }).format(Date.parse(d.dates[0] + 'T12:00:00Z'));
+      slot.textContent = `${day}, ${t.slots[0].label} Central`;
+    });
+  }).catch(() => {});
+})();
+</script>
+<script type="module" src="assets/system.js"></script>
+<script type="module" src="assets/motion/motion.js"></script>
+<script type="module" src="assets/layout/layout.js"></script>
+</body>
+</html>
+'''
+
+def page(label, hero, hero_html, moments, nav_kind, footer_kind, rhythm, buttons, body):
+    pre = ''.join(f'<link rel="modulepreload" href="assets/moments/{m}/moment.js">' for m in moments)
+    html = HEAD.format(buttons=buttons, label=label, preloads=pre, hero=hero, moments=', '.join(moments),
+                       nav=nav_kind, footer=footer_kind, rhythm=rhythm)
+    html += nav(nav_kind) + hero_html + body + footer(footer_kind) + TAIL
+    (OUT / f'option-{label.lower()}.html').write_text(html)
+
+page('A', 'split', hero_split(), ['word-highlight', 'picture-develops'], 'nav-centre', 'footer-dark', 'dark-band', 'tonal',
+     STATEMENT + proof(develop=True) + HOW_ROWS + PRICING + about())
+page('B', 'film', hero_film(), ['photo-chapters', 'picture-develops'], 'nav-split', 'footer-columns', 'surface-pairs', 'arrow',
+     who_chapters() + proof(develop=True) + HOW_ROWS + PRICING + about())
+page('C', 'photo', hero_photo(), ['pinned-chapters', 'word-highlight'], 'nav-centre', 'footer-columns', 'surface-pairs', 'tonal',
+     STATEMENT + proof(develop=False) + how_pinned() + PRICING + about())
+print('built option-a, option-b, option-c')

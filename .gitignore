@@ -8,3 +8,4 @@ node_modules/
 
 # Third-party agent skills; restore with: npx skills experimental_install
 .claude/skills/
+.taste-skill/

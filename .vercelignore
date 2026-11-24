@@ -9,7 +9,10 @@ docs/
 audit-before.md
 PRODUCT.md
 .impeccable/
-drafts/
+# Old drafts stay out; drafts/live holds the options under review (remove before merging).
+drafts/*
+!drafts/live/
+drafts/live/build.py
 
 # Old design exports and direction mockups, kept in git, never published.
 site/
