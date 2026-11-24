@@ -69,17 +69,33 @@
   }
   /* motion: one shared curve; movement only for people who allow it */
   @media (prefers-reduced-motion: no-preference) {
-    .btn { transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out); }
-    .btn:active:not(:disabled) { transform: scale(0.97); box-shadow: none; }
-  }
-  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-    .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,.18); }
-    .btn:hover:active:not(:disabled) { transform: translateY(-2px) scale(0.97); box-shadow: 0 4px 10px rgba(0,0,0,.16); }
+    .btn { transition: transform 160ms var(--ease-out); }
+    .btn:active:not(:disabled) { transform: scale(0.97); }
   }
   @media (prefers-reduced-motion: reduce) {
     .btn { transition: opacity 120ms ease; }
     .btn:active:not(:disabled) { opacity: 0.85; }
   }
+  /* button labels roll up to a copy of themselves on hover */
+  .roll { display: inline-block; overflow: clip; vertical-align: top; padding-block: .2em; margin-block: -.2em; }
+  .roll > span { display: block; text-shadow: 0 1.6em 0 currentColor; }
+  @media (prefers-reduced-motion: no-preference) {
+    .roll > span { transition: translate 320ms cubic-bezier(.77, 0, .175, 1); }
+    .btn svg { transition: translate 320ms cubic-bezier(.77, 0, .175, 1); }
+    .btn:focus-visible .roll > span { translate: 0 -1.6em; }
+  }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    a:hover > .roll > span, .btn:hover .roll > span { translate: 0 -1.6em; }
+    .btn:hover svg { translate: 2px -2px; }
+  }
+
+  /* section labels: one grammar for every section */
+  .label { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; font: 600 14px/1.2 var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); }
+  .label::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--wine); flex: none; }
+  .pricing .label { color: var(--on-wine-soft); }
+  .pricing .label::before { background: var(--on-wine); }
+  .close .label { color: var(--on-night-soft); grid-column: 1 / -1; }
+  .close .label::before { background: #e0566f; }
 
   .btn svg { width: 18px; height: 18px; flex: none; }
   .btn-wine { background: var(--wine); color: var(--on-wine); }
@@ -97,6 +113,7 @@
   .bar nav a:hover { color: var(--ink); text-decoration: underline; }
   .bar nav .book { color: var(--on-wine); background: var(--wine); padding: 10px 18px; font-weight: 700; border-radius: 3px; }
   .bar nav .book:hover { color: var(--on-wine); text-decoration: none; }
+  .bar nav .book .roll { padding-block: .3em; margin-block: -.3em; }
 
   /* hero */
   .hero {
@@ -191,11 +208,24 @@
   /* how it works */
   .how { background: var(--page-alt); }
   .steps { list-style: none; padding: 0; margin-top: clamp(40px, 5vw, 64px); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); counter-reset: step; }
-  .steps li { border-top: 6px solid var(--wine); padding-top: 20px; counter-increment: step; }
+  .steps li { position: relative; border-top: 6px solid var(--wine); padding-top: 20px; counter-increment: step; }
   .steps .when { display: block; font: 600 15px/1.3 var(--mono); color: var(--wine); margin-bottom: 10px; }
   .steps h3 { margin-bottom: 12px; }
   .steps h3::before { content: counter(step) ". "; }
   .steps p { max-width: 38ch; }
+  /* the three steps fill in order like a project moving along, then start over */
+  @media (prefers-reduced-motion: no-preference) {
+    .js .steps li { border-top-color: var(--rule); }
+    .js .steps li::before { content: ""; position: absolute; left: 0; right: 0; top: -6px; height: 6px; background: var(--wine); transform-origin: left; transform: scaleX(0); animation: 12s cubic-bezier(.65, 0, .35, 1) infinite paused; }
+    .js .steps.go li::before { animation-play-state: running; }
+    .steps li:nth-child(1)::before { animation-name: fill-1; }
+    .steps li:nth-child(2)::before { animation-name: fill-2; }
+    .steps li:nth-child(3)::before { animation-name: fill-3; }
+    @keyframes fill-1 { 0%, 4% { transform: scaleX(0); } 24%, 94% { transform: scaleX(1); } 100% { transform: scaleX(0); } }
+    @keyframes fill-2 { 0%, 28% { transform: scaleX(0); } 48%, 94% { transform: scaleX(1); } 100% { transform: scaleX(0); } }
+    @keyframes fill-3 { 0%, 52% { transform: scaleX(0); } 72%, 94% { transform: scaleX(1); } 100% { transform: scaleX(0); } }
+    .motion-paused .steps li::before { animation-play-state: paused !important; }
+  }
 
   /* pricing */
   .pricing {
@@ -291,6 +321,17 @@
     .motion-paused .clock-hand, .motion-paused .clock-sweep, .motion-paused .marquee-track, .motion-paused .rot-track, .motion-paused .tag { animation-play-state: paused !important; }
   }
   .close .actions { margin-top: 0; justify-content: flex-start; }
+  /* live local time and call hours */
+  .now { flex-basis: 100%; display: flex; align-items: flex-start; gap: 10px; font: 500 15px/1.4 var(--mono); color: var(--on-night-soft); font-variant-numeric: tabular-nums; }
+  .now[hidden] { display: none; }
+  .now-dot { position: relative; margin-top: .4em; width: 9px; height: 9px; border-radius: 50%; background: #6b6b68; flex: none; }
+  .now.open .now-dot { background: #e0566f; }
+  .now strong { color: var(--on-night); font-weight: 600; }
+  @media (prefers-reduced-motion: no-preference) {
+    .now.open .now-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: inherit; animation: ping 2.4s var(--ease-out) infinite; }
+    @keyframes ping { 0% { transform: scale(1); opacity: .7; } 70%, 100% { transform: scale(3.2); opacity: 0; } }
+    .motion-paused .now-dot::after { animation-play-state: paused; }
+  }
   .close a.email { color: var(--on-night); }
   .close :focus-visible { outline-color: var(--on-night); }
   footer { background: var(--night); color: var(--on-night-soft); border-top: 1px solid #2a2a2a; padding: 24px var(--edge); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; }
@@ -319,11 +360,13 @@
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    /* hero: one entrance, 60ms steps, everything settled by about 0.6s */
-    .js .hero > div:first-child > * { animation: rise 450ms var(--ease-out) both; }
-    .js .hero > div:first-child > :nth-child(2) { animation-delay: 60ms; }
-    .js .hero > div:first-child > :nth-child(3) { animation-delay: 120ms; }
-    .js .hero > div:first-child > :nth-child(n+4) { animation-delay: 160ms; }
+    /* hero: the headline rises word by word out of masks, then the rest follows */
+    .w { display: inline-block; overflow: clip; vertical-align: top; padding-block: .06em .1em; margin-block: -.06em -.1em; }
+    .w > span { display: inline-block; animation: word-up 800ms cubic-bezier(.16, 1, .3, 1) both; animation-delay: calc(var(--i) * 55ms); }
+    @keyframes word-up { from { transform: translateY(110%); } }
+    .js .hero > div:first-child > :not(h1) { animation: rise 500ms var(--ease-out) both 220ms; }
+    .js .hero > div:first-child > :nth-child(n+4) { animation-delay: 280ms; }
+    .js .hero > div:first-child > :nth-child(n+6) { animation-delay: 330ms; }
 
     @keyframes rise { from { opacity: 0; translate: 0 12px; } }
     /* receipt prints once when it scrolls into view */
@@ -344,7 +387,7 @@
     <a href="#work">Our work</a>
     <a href="#prices">Prices</a>
     <a href="#about">About us</a>
-    <a class="book" href="/book">Book a call</a>
+    <a class="book" href="/book"><span class="roll"><span>Book a call</span></span></a>
   </nav>
 </header>
 
@@ -352,6 +395,13 @@
   <section class="hero" aria-labelledby="hero-title">
     <div>
       <h1 id="hero-title">Websites for Tuscaloosa shops and crews.</h1>
+      <script>
+        if (matchMedia('(prefers-reduced-motion: no-preference)').matches) (() => {
+          const h = document.getElementById('hero-title');
+          h.setAttribute('aria-label', h.textContent);
+          h.innerHTML = h.textContent.trim().split(/\s+/).map((w, i) => `<span class="w" aria-hidden="true"><span style="--i:${i}">${w}</span></span>`).join(' ');
+        })();
+      </script>
       <p class="lede">We're <strong>Agustin and María</strong>. We build every site together, so it fits how your business actually runs, with booking on your own domain. Crews also get one place to see every job and customer.</p>
       <dl class="hero-prices">
         <div><dt>Shops</dt><dd>$1,200, then $75 a month</dd></div>
@@ -359,7 +409,7 @@
       </dl>
       <a class="textlink see" href="#prices">See what each plan includes</a>
       <div class="actions">
-        <a class="btn btn-wine" href="/book">Book a 15-min call
+        <a class="btn btn-wine" href="/book"><span class="roll"><span>Book a 15-min call</span></span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
         </a>
       </div>
@@ -387,6 +437,7 @@
   </section>
 
   <section class="statement" id="why" aria-labelledby="why-title">
+    <p class="label">The problem</p>
     <h2 id="why-title" class="statement-big">Right now your bookings live in your <span class="rot" aria-hidden="true"><span class="rot-track"><span>texts.</span><span>voicemail.</span><span>notebook.</span><span>head.</span><span>texts.</span></span></span><span class="sr">texts, your voicemail, a notebook or your head.</span></h2>
     <p class="lede">We put them on your website and your calendar, with one place to see every customer. You deal with the two of us, start to finish.</p>
   </section>
@@ -394,6 +445,7 @@
   <section class="proof" id="work" aria-labelledby="work-title">
     <div class="proof-top">
       <div>
+        <p class="label">Our work</p>
         <h2 id="work-title">Our first build was for family.</h2>
         <p class="lede">Agustin's older brother, <strong>Dre Lemuz</strong>, runs Lemoose Productions, a portrait, car and sports photography studio in Tuscaloosa. Agustin built it from scratch.</p>
         <dl class="specs">
@@ -439,6 +491,7 @@
   </section>
 
   <section class="offer" id="what" aria-labelledby="what-title">
+    <p class="label">What you get</p>
     <div class="offer-head">
       <h2 id="what-title">What we build for you.</h2>
       <p class="lede">Three pieces. Shops get the first two. Crews get all three.</p>
@@ -470,6 +523,7 @@
   </section>
 
   <section class="how" id="how" aria-labelledby="how-title">
+    <p class="label">The process</p>
     <h2 id="how-title">How it works.</h2>
     <ol class="steps">
       <li>
@@ -492,6 +546,7 @@
 
   <section class="pricing" id="prices" aria-labelledby="prices-title">
     <div>
+      <p class="label">Prices</p>
       <h2 id="prices-title">Here's the whole price.</h2>
       <p class="lede">Pick your kind of business and the ticket updates. What you see is what you pay.</p>
       <ul class="terms">
@@ -524,7 +579,7 @@
         <p class="line total"><span>Then monthly</span><span class="amt" id="monthly">$75</span></p>
         <p class="t-terms" id="t-terms">Hosting, edits and updates included.</p>
         <p class="sr" id="tier-status" aria-live="polite"></p>
-        <a class="btn btn-ink" href="/book">Book a 15-min call</a>
+        <a class="btn btn-ink" href="/book"><span class="roll"><span>Book a 15-min call</span></span></a>
         <svg class="barcode" id="barcode" viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true"></svg>
         <p class="thanks">Thanks for stopping by.</p>
       </div>
@@ -532,6 +587,7 @@
   </section>
 
   <section class="about" id="about" aria-labelledby="about-title">
+    <p class="label">Who we are</p>
     <h2 id="about-title">About us.</h2>
     <div class="about-grid">
     <figure class="together" data-moment="picture-develops"><img src="assets/people/together-960.webp" srcset="assets/people/together-960.webp 960w, assets/people/together-1448.webp 1448w" sizes="(max-width: 920px) 92vw, 60vw" width="1448" height="1086" alt="María and Agustin on a sunny sidewalk, both dressed up, María taking the selfie" loading="lazy"></figure>
@@ -552,6 +608,7 @@
   <section class="close" id="book" aria-labelledby="book-title">
     <div class="close-inner">
       <div class="close-head">
+        <p class="label">Book a call</p>
         <div class="clock" aria-hidden="true">
           <svg viewBox="0 0 120 120">
             <circle class="clock-face" cx="60" cy="60" r="56"/>
@@ -565,10 +622,11 @@
         <p class="lede">Pick a time that works for you. It's free, and you'll talk to one of us.</p>
       </div>
       <div class="actions">
-        <a class="btn btn-light" href="/book">Book a 15-min call
+        <a class="btn btn-light" href="/book"><span class="roll"><span>Book a 15-min call</span></span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
         </a>
         <p>Or email <a class="email textlink" href="mailto:hello@freeformworks.com">hello@freeformworks.com</a></p>
+        <p class="now" data-now hidden><span class="now-dot" aria-hidden="true"></span><span data-now-text></span></p>
       </div>
     </div>
     <div class="marquee" aria-hidden="true">
@@ -624,6 +682,11 @@
       if (entries[0].isIntersecting) { ticket.classList.replace('waiting', 'printed'); io.disconnect(); }
     }, { threshold: 0 }).observe(ticket.parentElement);
   }
+  const steps = document.querySelector('.steps');
+  if (steps && 'IntersectionObserver' in window) new IntersectionObserver((entries, io) => {
+    if (entries[0].isIntersecting) { steps.classList.add('go'); io.disconnect(); }
+  }, { threshold: 0.4 }).observe(steps);
+  else if (steps) steps.classList.add('go');
   const slot = document.querySelector('[data-next-slot]');
   if (slot) fetch('/api/slots').then((r) => (r.ok ? r.json() : null)).then((d) => {
     if (!d || !d.dates || !d.dates.length) return null;
@@ -643,6 +706,34 @@
       btn.setAttribute('aria-pressed', String(on));
       btn.textContent = on ? 'Play motion' : 'Pause motion';
     });
+  })();
+  /* live Tuscaloosa time and call hours (weekdays 1 to 5 PM Central, from lib/booking-config.js) */
+  (() => {
+    const el = document.querySelector('[data-now]');
+    if (!el) return;
+    const out = el.querySelector('[data-now-text]');
+    const parts = (d) => Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', weekday: 'short', hour: 'numeric', hourCycle: 'h23' }).formatToParts(d).map((p) => [p.type, p.value]));
+    const clock = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', hour: 'numeric', minute: '2-digit' });
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    function update() {
+      const now = new Date();
+      const p = parts(now), day = days.indexOf(p.weekday), hour = Number(p.hour);
+      const weekday = day >= 1 && day <= 5;
+      const open = weekday && hour >= 13 && hour < 17;
+      let status;
+      if (open) status = 'Call hours now, until 5 PM';
+      else if (weekday && hour < 13) status = 'Call hours start at 1 PM';
+      else {
+        const next = day === 5 || day === 6 ? 'Monday' : 'tomorrow';
+        status = `Call hours start ${next} at 1 PM`;
+      }
+      out.innerHTML = `<strong>${clock.format(now)}</strong> in Tuscaloosa · ${status}`;
+      el.classList.toggle('open', open);
+      el.hidden = false;
+    }
+    update();
+    setInterval(() => { if (!document.hidden) update(); }, 20000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) update(); });
   })();
 </script>
 <script type="module" src="assets/moments/moments.js"></script>
