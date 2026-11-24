@@ -131,13 +131,21 @@
   .tag-photo { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; object-position: 50% 20%; }
   .tag { container-type: inline-size; }
   .tag-name { font: 900 min(25cqi, 88px)/0.85 var(--display); text-transform: uppercase; }
-  .tag-full { margin-top: 8px; font-size: 15px; color: var(--ink-soft); }
+  .tag-major { margin-top: 10px; font-size: 16px; font-weight: 700; line-height: 1.3; }
   .tag-role { margin-top: 14px; font-weight: 700; font-size: 18px; line-height: 1.3; }
   .tag-facts { list-style: none; padding: 12px 0 0; margin-top: 12px; border-top: 2px dashed var(--rule); font-size: 15px; line-height: 1.45; color: var(--ink-soft); }
 
-  /* statement (word-highlight moment) */
-  .statement { padding-top: clamp(72px, 9vw, 140px); padding-bottom: clamp(72px, 9vw, 140px); }
-  .statement .mo-wh__text { text-transform: none; }
+  /* statement: one word turns over on its own */
+  .statement { padding-top: clamp(56px, 6vw, 96px); padding-bottom: clamp(56px, 6vw, 96px); border-top: 1px solid var(--rule); }
+  .statement-big { font-size: clamp(40px, 5.6vw, 88px); line-height: 1; max-width: 22ch; }
+  .statement .lede { margin-top: 20px; max-width: 52ch; }
+  .rot { display: inline-block; height: 1em; overflow: hidden; vertical-align: bottom; color: var(--wine); }
+  .rot-track { display: grid; }
+  .rot-track > span { display: block; height: 1em; line-height: 1; }
+  @media (prefers-reduced-motion: no-preference) {
+    .rot-track { animation: rot 9s cubic-bezier(.77, 0, .175, 1) infinite; }
+    @keyframes rot { 0%, 21% { transform: translateY(0); } 25%, 46% { transform: translateY(-1em); } 50%, 71% { transform: translateY(-2em); } 75%, 96% { transform: translateY(-3em); } 100% { transform: translateY(-4em); } }
+  }
 
   /* proof */
   .proof { background: var(--page-alt); }
@@ -163,6 +171,9 @@
   }
   .before { margin-top: clamp(64px, 7vw, 104px); }
   .before h3 { margin-bottom: 20px; }
+  .before-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(32px, 5vw, 80px); }
+  .before-who { font: 700 16px/1.3 var(--body); color: var(--wine); margin-bottom: 10px; }
+  .before-cols .credits li { grid-template-columns: 1fr; gap: 6px; }
   .credits { list-style: none; padding: 0; border-top: 2px solid var(--ink); }
   .credits li { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 2fr); gap: 8px 32px; padding: 16px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
   .credit-name { display: inline-block; padding: 4px 0; font: 900 26px/1 var(--display); text-transform: uppercase; text-decoration: none; }
@@ -233,9 +244,11 @@
   .thanks { text-align: center; font-size: 13px; margin-top: 6px; }
 
   /* about */
-  .together { margin: clamp(32px, 4vw, 56px) 0 0; border-radius: 6px; overflow: hidden; max-width: 1100px; }
+  .about-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); align-items: start; margin-top: clamp(32px, 4vw, 56px); }
+  .together { margin: 0; border-radius: 6px; overflow: hidden; }
   .together img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: 50% 30%; }
-  .bios { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(32px, 5vw, 80px); margin-top: clamp(40px, 5vw, 64px); }
+  .bios { display: grid; gap: 28px; }
+  .bio-note { color: var(--ink-soft); }
   .bio { border-top: 2px solid var(--ink); padding-top: 20px; }
   .bio .role { margin: 6px 0 16px; color: var(--wine); font-weight: 700; }
   .bio p + p { margin-top: 12px; }
@@ -246,6 +259,37 @@
   .close { background: var(--night); color: var(--on-night); }
   .close-inner { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: end; }
   .close .lede { color: var(--on-night-soft); margin-top: 24px; }
+  .close { overflow: hidden; padding-bottom: 28px; }
+  .close-head { display: grid; grid-template-columns: auto 1fr; column-gap: clamp(20px, 3vw, 40px); align-items: center; }
+  .close-head .lede { grid-column: 1 / -1; }
+  .clock { width: clamp(96px, 11vw, 164px); }
+  .clock svg { display: block; width: 100%; height: auto; }
+  .clock-face { fill: #1c1c1c; stroke: #8a8a86; stroke-width: 2.5; }
+  .clock-ticks line { stroke: #b9b9b4; stroke-width: 2.5; stroke-linecap: round; }
+  .clock-sweep { fill: none; stroke: var(--wine); stroke-width: 54; stroke-dasharray: 25 100; }
+  .clock-hand { stroke: var(--on-night); stroke-width: 4; stroke-linecap: round; transform-origin: 60px 60px; transform: rotate(90deg); }
+  .clock-pin { fill: var(--on-night); }
+  .marquee { margin: clamp(40px, 5vw, 72px) calc(-1 * var(--edge)) 0; border-top: 1px solid #2a2a2a; border-bottom: 1px solid #2a2a2a; padding: 18px 0; }
+  .marquee-track { display: flex; gap: 48px; width: max-content; font: 900 clamp(28px, 3vw, 44px)/1 var(--display); text-transform: uppercase; color: #6b6b68; }
+  .marquee-track span::after { content: "·"; margin-left: 48px; color: var(--wine); }
+  .pause-motion { margin-top: 8px; background: none; border: 0; padding: 8px 0; min-height: 44px; color: var(--on-night-soft); font: 400 15px/1.2 var(--body); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+  .pause-motion:hover { color: var(--on-night); }
+  @media (prefers-reduced-motion: reduce) { .pause-motion { display: none; } }
+  @media (prefers-reduced-motion: no-preference) {
+    /* the hand sweeps a quarter hour, holds, and starts again */
+    .clock-hand { animation: hand 6s cubic-bezier(.65, 0, .35, 1) infinite; }
+    .clock-sweep { animation: sweep 6s cubic-bezier(.65, 0, .35, 1) infinite; }
+    @keyframes hand { 0%, 8% { transform: rotate(0deg); } 62%, 94% { transform: rotate(90deg); } 100% { transform: rotate(0deg); } }
+    @keyframes sweep { 0%, 8% { stroke-dasharray: 0 100; } 62%, 94% { stroke-dasharray: 25 100; } 100% { stroke-dasharray: 0 100; } }
+    .marquee-track { animation: marquee 38s linear infinite; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+    /* the name tags hang and sway a little */
+    .js .tag:nth-child(1) { animation: rise 450ms var(--ease-out) both 120ms, sway-a 7s ease-in-out 600ms infinite; }
+    .js .tag:nth-child(2) { animation: rise 450ms var(--ease-out) both 180ms, sway-b 8s ease-in-out 600ms infinite; }
+    @keyframes sway-a { 0%, 100% { rotate: 0deg; } 50% { rotate: 1.4deg; } }
+    @keyframes sway-b { 0%, 100% { rotate: 0deg; } 50% { rotate: -1.4deg; } }
+    .motion-paused .clock-hand, .motion-paused .clock-sweep, .motion-paused .marquee-track, .motion-paused .rot-track, .motion-paused .tag { animation-play-state: paused !important; }
+  }
   .close .actions { margin-top: 0; justify-content: flex-start; }
   .close a.email { color: var(--on-night); }
   .close :focus-visible { outline-color: var(--on-night); }
@@ -262,10 +306,11 @@
     .ticket-wrap { max-width: 460px; }
     .offer-list li { grid-template-columns: 1fr; gap: 12px; }
     .steps { grid-template-columns: 1fr; gap: 32px; }
-    .bios { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 640px) {
     .credits li { grid-template-columns: 1fr; }
+    .before-cols { grid-template-columns: 1fr; }
   }
   @media (max-width: 420px) {
     .tag-body { padding: 14px 14px 18px; }
@@ -279,8 +324,7 @@
     .js .hero > div:first-child > :nth-child(2) { animation-delay: 60ms; }
     .js .hero > div:first-child > :nth-child(3) { animation-delay: 120ms; }
     .js .hero > div:first-child > :nth-child(n+4) { animation-delay: 160ms; }
-    .js .tag { animation: rise 450ms var(--ease-out) both 120ms; }
-    .js .tag:nth-child(2) { animation-delay: 180ms; }
+
     @keyframes rise { from { opacity: 0; translate: 0 12px; } }
     /* receipt prints once when it scrolls into view */
     .js .ticket.waiting { clip-path: inset(0 0 100% 0); translate: 0 -24px; }
@@ -308,7 +352,7 @@
   <section class="hero" aria-labelledby="hero-title">
     <div>
       <h1 id="hero-title">Websites for Tuscaloosa shops and crews.</h1>
-      <p class="lede">We're <strong>Agustin and María</strong>. One of us builds your site. The other makes sure it fits how your business runs. Every site comes with booking on your own domain. Crews also get one place to see every job and customer.</p>
+      <p class="lede">We're <strong>Agustin and María</strong>. We build every site together, so it fits how your business actually runs, with booking on your own domain. Crews also get one place to see every job and customer.</p>
       <dl class="hero-prices">
         <div><dt>Shops</dt><dd>$1,200, then $75 a month</dd></div>
         <div><dt>Crews</dt><dd>$2,500, then $200 a month</dd></div>
@@ -325,35 +369,26 @@
     <div class="people" aria-label="Who you'll work with">
       <article class="tag">
         <p class="tag-top" aria-hidden="true">Hello, I'm</p>
-        <img class="tag-photo" src="assets/people/agustin-720.webp" width="720" height="900" alt="Agustin Lemuz-Juarez, smiling, in a navy suit and red tie" fetchpriority="high">
+        <img class="tag-photo" src="assets/people/agustin-720.webp" width="720" height="900" alt="Agustin Lemuz-Juarez" fetchpriority="high">
         <div class="tag-body">
           <p class="tag-name">Agustin</p>
-          <p class="tag-full">Agustin Lemuz-Juarez</p>
-          <p class="tag-role">Builds it.</p>
-          <ul class="tag-facts">
-            <li>Computer science, UA, May 2027</li>
-            <li>From Montgomery</li>
-          </ul>
+          <p class="tag-major">Computer science</p>
         </div>
       </article>
       <article class="tag">
         <p class="tag-top" aria-hidden="true">Hello, I'm</p>
-        <img class="tag-photo" src="assets/people/maria-800.webp" width="800" height="800" alt="María Estrada, smiling, in front of a white riverboat and trees">
+        <img class="tag-photo" src="assets/people/maria-800.webp" width="800" height="800" alt="María Estrada">
         <div class="tag-body">
           <p class="tag-name">María</p>
-          <p class="tag-full">María Estrada</p>
-          <p class="tag-role">Makes it fit your business.</p>
-          <ul class="tag-facts">
-            <li>Business systems (MIS), UA, May 2027</li>
-            <li>Started Amitie Florals</li>
-          </ul>
+          <p class="tag-major">Management information systems</p>
         </div>
       </article>
     </div>
   </section>
 
-  <section class="statement" id="why" data-moment="word-highlight" aria-label="Why we do this">
-    <p class="mo-wh__text">If your bookings live in your texts and your quotes live in your head, that's the job. We build the website, the booking and the customer list, and <strong>you deal with the two of us</strong>, start to finish.</p>
+  <section class="statement" id="why" aria-labelledby="why-title">
+    <h2 id="why-title" class="statement-big">Right now your bookings live in your <span class="rot" aria-hidden="true"><span class="rot-track"><span>texts.</span><span>voicemail.</span><span>notebook.</span><span>head.</span><span>texts.</span></span></span><span class="sr">texts, your voicemail, a notebook or your head.</span></h2>
+    <p class="lede">We put them on your website and your calendar, with one place to see every customer. You deal with the two of us, start to finish.</p>
   </section>
 
   <section class="proof" id="work" aria-labelledby="work-title">
@@ -382,12 +417,24 @@
     </div>
 
     <div class="before">
-      <h3>Before Freeform, Agustin worked on these.</h3>
-      <ul class="credits">
-        <li><a class="credit-name" href="https://studentseats.com/" target="_blank" rel="noopener">Student Seats<span aria-hidden="true"> ↗</span></a><p><strong>Software engineer.</strong> Rebuilt the ticket checkout. More than $2.8M in student ticket sales have gone through it.</p></li>
-        <li><a class="credit-name" href="https://apc.ua.edu/" target="_blank" rel="noopener">Alabama Productivity Center<span aria-hidden="true"> ↗</span></a><p><strong>IT intern.</strong> Moved the center's website onto new code without taking it offline, and made 10 pages work on phones.</p></li>
-        <li><span class="credit-name">Autobet</span><p><strong>Founding engineer.</strong> Built the startup's phone app from scratch: 45 screens.</p></li>
-      </ul>
+      <h3>What we did before Freeform.</h3>
+      <div class="before-cols">
+        <div>
+          <h4 class="before-who">Agustin</h4>
+          <ul class="credits">
+            <li><a class="credit-name" href="https://studentseats.com/" target="_blank" rel="noopener">Student Seats<span aria-hidden="true"> ↗</span></a><p><strong>Software engineer.</strong> Rebuilt the ticket checkout. More than $2.8M in student ticket sales have gone through it.</p></li>
+            <li><a class="credit-name" href="https://apc.ua.edu/" target="_blank" rel="noopener">Alabama Productivity Center<span aria-hidden="true"> ↗</span></a><p><strong>IT intern.</strong> Moved the center's website onto new code without taking it offline, and made 10 pages work on phones.</p></li>
+            <li><span class="credit-name">Autobet</span><p><strong>Founding engineer.</strong> Built the startup's phone app from scratch: 45 screens.</p></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="before-who">María</h4>
+          <ul class="credits">
+            <li><span class="credit-name">Amitie Florals</span><p><strong>Founder.</strong> Started and ran her own florist business in Montgomery before college.</p></li>
+            <li><span class="credit-name">Mercedes-Benz</span><p><strong>Co-op.</strong> Hands-on experience in manufacturing and logistics.</p></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -486,25 +533,34 @@
 
   <section class="about" id="about" aria-labelledby="about-title">
     <h2 id="about-title">About us.</h2>
-    <figure class="together" data-moment="picture-develops"><img src="assets/people/together-960.webp" srcset="assets/people/together-960.webp 960w, assets/people/together-1448.webp 1448w" sizes="(max-width: 920px) 92vw, 1100px" width="1448" height="1086" alt="María and Agustin on a sunny sidewalk, both dressed up, María taking the selfie" loading="lazy"></figure>
+    <div class="about-grid">
+    <figure class="together" data-moment="picture-develops"><img src="assets/people/together-960.webp" srcset="assets/people/together-960.webp 960w, assets/people/together-1448.webp 1448w" sizes="(max-width: 920px) 92vw, 60vw" width="1448" height="1086" alt="María and Agustin on a sunny sidewalk, both dressed up, María taking the selfie" loading="lazy"></figure>
     <div class="bios">
       <article class="bio">
         <h3>Agustin Lemuz-Juarez</h3>
-        <p class="role">Builds it</p>
-        <p>Computer science student at UA, graduating May 2027. Agustin writes the code: the site, the booking and the dashboard.</p>
-        <p>He grew up in Montgomery and loves puzzles. A slow website or a messy booking setup is just another one to solve.</p>
+        <p>Grew up in Montgomery and loves puzzles. A slow website or a messy booking setup is just another one to solve.</p>
       </article>
       <article class="bio">
         <h3>María Estrada</h3>
-        <p class="role">Makes it fit your business</p>
-        <p>Management information systems (MIS) student at UA, graduating May 2027. María started Amitie Florals in Montgomery and ran it before college, so she knows what a small business owner's day looks like.</p>
+        <p>Knows what running a small business takes, because she's done it.</p>
       </article>
+      <p class="bio-note">We take on every project together, from the first call to the day it goes live.</p>
+    </div>
     </div>
   </section>
 
   <section class="close" id="book" aria-labelledby="book-title">
     <div class="close-inner">
-      <div>
+      <div class="close-head">
+        <div class="clock" aria-hidden="true">
+          <svg viewBox="0 0 120 120">
+            <circle class="clock-face" cx="60" cy="60" r="56"/>
+            <circle class="clock-sweep" cx="60" cy="60" r="27" pathLength="100" transform="rotate(-90 60 60)"/>
+            <g class="clock-ticks"><line x1="60" y1="6" x2="60" y2="15" transform="rotate(0 60 60)"/><line x1="60" y1="9" x2="60" y2="15" transform="rotate(30 60 60)"/><line x1="60" y1="9" x2="60" y2="15" transform="rotate(60 60 60)"/><line x1="60" y1="6" x2="60" y2="15" transform="rotate(90 60 60)"/><line x1="60" y1="9" x2="60" y2="15" transform="rotate(120 60 60)"/><line x1="60" y1="9" x2="60" y2="15" transform="rotate(150 60 60)"/><line x1="60" y1="6" x2="60" y2="15" transform="rotate(180 60 60)"/><line x1="60" y1="9" x2="60" y2="15" transform="rotate(210 60 60)"/><line x1="60" y1="9" x2="60" y2="15" transform="rotate(240 60 60)"/><line x1="60" y1="6" x2="60" y2="15" transform="rotate(270 60 60)"/><line x1="60" y1="9" x2="60" y2="15" transform="rotate(300 60 60)"/><line x1="60" y1="9" x2="60" y2="15" transform="rotate(330 60 60)"/></g>
+            <line class="clock-hand" x1="60" y1="60" x2="60" y2="16"/>
+            <circle class="clock-pin" cx="60" cy="60" r="4"/>
+          </svg>
+        </div>
         <h2 id="book-title">Got 15 minutes?</h2>
         <p class="lede">Pick a time that works for you. It's free, and you'll talk to one of us.</p>
       </div>
@@ -515,6 +571,10 @@
         <p>Or email <a class="email textlink" href="mailto:hello@freeformworks.com">hello@freeformworks.com</a></p>
       </div>
     </div>
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track"><span>Barbers</span><span>Salons</span><span>Florists</span><span>Photographers</span><span>Lawn crews</span><span>Landscapers</span><span>Contractors</span><span>Restaurants</span><span>Barbers</span><span>Salons</span><span>Florists</span><span>Photographers</span><span>Lawn crews</span><span>Landscapers</span><span>Contractors</span><span>Restaurants</span></div>
+    </div>
+    <button class="pause-motion" type="button" aria-pressed="false">Pause motion</button>
   </section>
 </main>
 
@@ -562,7 +622,7 @@
     ticket.classList.add('waiting');
     new IntersectionObserver((entries, io) => {
       if (entries[0].isIntersecting) { ticket.classList.replace('waiting', 'printed'); io.disconnect(); }
-    }, { threshold: 0.25 }).observe(ticket.parentElement);
+    }, { threshold: 0 }).observe(ticket.parentElement);
   }
   const slot = document.querySelector('[data-next-slot]');
   if (slot) fetch('/api/slots').then((r) => (r.ok ? r.json() : null)).then((d) => {
@@ -573,6 +633,17 @@
       slot.textContent = `Free call. Next open time: ${day}, ${t.slots[0].label} Central.`;
     });
   }).catch(() => {});
+</script>
+<script>
+  (() => {
+    const btn = document.querySelector('.pause-motion');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      const on = document.documentElement.classList.toggle('motion-paused');
+      btn.setAttribute('aria-pressed', String(on));
+      btn.textContent = on ? 'Play motion' : 'Pause motion';
+    });
+  })();
 </script>
 <script type="module" src="assets/moments/moments.js"></script>
 </body>

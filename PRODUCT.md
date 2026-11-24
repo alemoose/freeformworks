@@ -18,7 +18,7 @@ Freeform Works is a two-person web studio. We build a small business a custom we
 
 ## Positioning
 
-Two real people, named and pictured, with published prices. One of us builds it (Agustin), one of us makes sure it fits how the business actually runs day to day (María, who built and runs her own business, Amitie Florals in Montgomery). The big agency in town hides pricing ("$10K minimum"). Published pricing alone is not unique: Tuscaloosa Web Designer leads with "the price on the page" (five-page sites from $2,450, month to month, you own your files). What nobody local shows is the two people you'll work with, the booking and owner dashboard behind the site, and a lower starting price.
+Two real people, named and pictured, with published prices. They take on every project together: Agustin brings computer science and shipped software, María brings management information systems and the experience of starting and running her own business, Amitie Florals in Montgomery. The site never splits the work into "one builds, the other fits"; they both use what they know on every project. The big agency in town hides pricing ("$10K minimum"). Published pricing alone is not unique: Tuscaloosa Web Designer leads with "the price on the page" (five-page sites from $2,450, month to month, you own your files). What nobody local shows is the two people you'll work with, the booking and owner dashboard behind the site, and a lower starting price.
 
 ## Operating Context
 
@@ -57,7 +57,7 @@ Open decisions:
 ## Brand Commitments
 
 - Name: Freeform Works. Location: Tuscaloosa, AL.
-- People: Agustin Lemuz-Juarez and María Estrada. Both University of Alabama students, both graduating May 2027. María is an MIS major.
+- People: Agustin Lemuz-Juarez (computer science) and María Estrada (management information systems), both at the University of Alabama. The site shows majors, not graduation years.
 - Voice: friendly, direct, specific, a little personal. Two real people talking to a barber or a florist. Never an agency.
 - Must keep: the native `/book` calendar flow on our own domain.
 
