@@ -1,16 +1,59 @@
 {
   "redirects": [
-    { "source": "/index.html", "destination": "/", "permanent": true },
-    { "source": "/book.html", "destination": "/book", "permanent": true },
-    { "source": "/index.html/book.html", "destination": "/book", "permanent": true },
-    { "source": "/index.html/:path*", "destination": "/:path*", "permanent": true }
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/book.html",
+      "destination": "/book",
+      "permanent": true
+    },
+    {
+      "source": "/privacy.html",
+      "destination": "/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/index.html/book.html",
+      "destination": "/book",
+      "permanent": true
+    },
+    {
+      "source": "/index.html/:path*",
+      "destination": "/:path*",
+      "permanent": true
+    }
   ],
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/book", "destination": "/book.html" },
-    { "source": "/work", "destination": "/index.html" },
-    { "source": "/build", "destination": "/index.html" },
-    { "source": "/principles", "destination": "/index.html" },
-    { "source": "/contact", "destination": "/index.html" }
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/book",
+      "destination": "/book.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/work",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/build",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/principles",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/index.html"
+    }
   ]
 }
