@@ -36,14 +36,21 @@ Deliverable to a client today:
 Not deliverable yet, so never sold or shown as working:
 - AI intake (an assistant that answers new customers). Do not list it as included in setup or in the care plan until it exists. A demo of it may only appear if it is built and clearly labeled as a demo.
 
-Pricing: published on the site, never "contact us for pricing". The numbers are an open decision (see below). Working numbers from the original brief: $1,500 to $2,500 setup, $150 a month care plan (hosting, edits, updates).
+Pricing: published on the site, never "contact us for pricing". Working prices (adopted for now, from `docs/pricing-research.md`):
+- Shops: $1,200 setup, $75/mo (hosting, edits, updates). Website plus booking on their own domain.
+- Trades and crews: $2,500 setup, $200/mo (hosting, edits, updates, dashboard support). Website, quote requests, scheduling, owner dashboard.
+
+Terms:
+- Monthly plans are cancel anytime. No minimum term.
+- The client owns their domain. We buy it for them when it costs under $100; above that, the client buys it and we set it up.
+- Who owns the site code if a client cancels is undecided. Do not promise "you own your site" until it is settled.
 
 Technical:
 - Static HTML/CSS/JS on Vercel, with serverless functions in `api/` and `lib/` for the Google Calendar booking. `/book` must keep working exactly as it does now.
 - Lighthouse stays at 95 or above. Our speed numbers are part of the pitch.
 
 Open decisions:
-- Prices. Likely two tiers, shops and trades. Research and a recommendation are in `docs/pricing-research.md`. Settle before writing the hero and pricing sections.
+- Final prices (working prices above may change) and site-code ownership on cancel.
 - Freeform Grounds (`/grounds`, landscaping owner software, MVP, with its own proposed $99 and $249 monthly plans) does not have a settled place in the studio offer. Keep it off the homepage until the owners decide.
 
 ## Brand Commitments
