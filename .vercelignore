@@ -1,2 +1,7 @@
 # Grounds is deployed as a separate Python app, never served as static source.
 grounds-app/
+
+# Agent tooling, never part of the site.
+.claude/
+skills-lock.json
+freeform-redesign-brief.md
