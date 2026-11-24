@@ -10,3 +10,8 @@ audit-before.md
 PRODUCT.md
 .impeccable/
 drafts/
+
+# Old design exports and direction mockups, kept in git, never published.
+site/
+freeform-works-extracted/
+audit-after.md
