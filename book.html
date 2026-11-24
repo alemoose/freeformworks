@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Book a call · Freeform Works</title>
-<meta name="description" content="Book a free 15-minute discovery call with Freeform Works." />
+<meta name="description" content="Book a free 15-minute call with Agustin or María at Freeform Works." />
 <meta name="theme-color" content="#ffffff" />
 <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -450,7 +450,7 @@
     const res = await fetch('/api/slots?date=' + encodeURIComponent(d));
     setTimesLoading(false);
     if (!res.ok) {
-      loadMsg.textContent = 'Could not load times.';
+      loadMsg.textContent = "We couldn't load times for this day. Pick another day or refresh the page.";
       loadMsg.classList.remove('hidden');
       return;
     }
@@ -578,7 +578,7 @@
   loadDates().catch((err) => {
     console.error(err);
     setCalLoading(false);
-    loadMsg.textContent = 'Could not load the calendar. Run vercel dev and refresh, or email hello@freeformworks.com.';
+    loadMsg.textContent = "We couldn't load the calendar. Refresh the page, or email hello@freeformworks.com and we'll find a time.";
     loadMsg.classList.remove('hidden');
   });
 })();
