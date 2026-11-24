@@ -8,7 +8,7 @@ web
 
 ## Users
 
-Local business owners in and around Tuscaloosa, AL. Two groups, and which one leads is an open decision (see below): trades businesses (lawn care, landscaping and other crews), which have more money and the most to gain, and small shops (barbers, salons, photographers, florists, restaurants). They are not technical, they run the business themselves, and they are skeptical of agencies after being quoted high prices or sold things they did not need. Today a lot of their customer handling happens by text, phone and memory.
+Local business owners in and around Tuscaloosa, AL. Two groups, given equal weight: trades businesses (lawn care, landscaping and other crews), which have more money and the most to gain, and small shops (barbers, salons, photographers, florists, restaurants). They are not technical, they run the business themselves, and they are skeptical of agencies after being quoted high prices or sold things they did not need. Today a lot of their customer handling happens by text, phone and memory.
 
 They arrive at the site wanting to know three things fast: who these people are, what it costs, and whether it will actually fit how their business runs. The job they hire Freeform Works for is "get me a real website and stop me losing customers in my text messages."
 
@@ -43,7 +43,7 @@ Technical:
 - Lighthouse stays at 95 or above. Our speed numbers are part of the pitch.
 
 Open decisions:
-- Who leads and what it costs. The owners lean toward selling to trades businesses first, and are weighing separate prices for small shops and for medium trades businesses. Settle before writing the hero and pricing sections.
+- Prices. Likely two tiers, shops and trades. Research and a recommendation are in `docs/pricing-research.md`. Settle before writing the hero and pricing sections.
 - Freeform Grounds (`/grounds`, landscaping owner software, MVP, with its own proposed $99 and $249 monthly plans) does not have a settled place in the studio offer. Keep it off the homepage until the owners decide.
 
 ## Brand Commitments
@@ -72,7 +72,7 @@ Real and usable:
 - The `/book` page itself, as a working example of booking on your own domain.
 
 Pending, do not publish until confirmed:
-- Everything about María: how her name is shown, her bio, her photo. She approves it first. Known so far: María Estrada, MIS major, founder and owner of Amitie Florals in Montgomery, AL. Also a Mercedes-Benz co-op and work at Parker Towing, where she may have built AI-assisted dashboards on top of older systems (unconfirmed; she describes it). Employers get "experience at" wording only, never logos or anything implying they endorse Freeform. Say nothing about Parker Towing's vendors.
+- Everything about María: how her name is shown, her bio, her photo. She approves it first. Known so far: María Estrada, MIS major, founded Amitie Florals in Montgomery, AL, a real florist business she ran before college and stepped back from when she started school. It has no website, so it is her owner experience, never a case study of ours. Agustin reports she is fine with naming it. Also a Mercedes-Benz co-op and work at Parker Towing, where she may have built AI-assisted dashboards on top of older systems (unconfirmed; she describes it). Employers get "experience at" wording only, never logos or anything implying they endorse Freeform. Say nothing about Parker Towing's vendors.
 - Photos of Agustin and María: real photos only, no AI headshots. Placeholder slots until provided.
 
 Absent, must not be fabricated:
