@@ -72,7 +72,8 @@
 
   /* header */
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 20px var(--edge); }
-  .mark { font: 900 26px/1 var(--display); text-transform: uppercase; text-decoration: none; letter-spacing: 0.01em; }
+  .mark { display: block; line-height: 0; }
+  .mark img { height: 52px; width: auto; }
   .bar nav { display: flex; align-items: center; gap: 28px; }
   .bar nav a { text-decoration: none; color: var(--ink-soft); padding: 10px 0; }
   .bar nav a:hover { color: var(--ink); text-decoration: underline; }
@@ -88,10 +89,8 @@
   }
   .hero h1 { font-size: clamp(58px, 7.2vw, 124px); line-height: 0.88; letter-spacing: -0.005em; }
   .hero .lede { margin-top: 28px; }
+  .hero .lede.starts { margin-top: 14px; }
   .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; margin-top: 36px; }
-  .price { display: flex; align-items: baseline; gap: 10px; }
-  .price b { font: 900 52px/1 var(--display); }
-  .price span { color: var(--ink-soft); font-size: 16px; line-height: 1.3; }
   .fine { margin-top: 16px; font-size: 16px; color: var(--ink-soft); }
 
   .people { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px, 2vw, 24px); }
@@ -210,6 +209,8 @@
   .close :focus-visible { outline-color: var(--on-night); }
   footer { background: var(--night); color: var(--on-night-soft); border-top: 1px solid #2a2a2a; padding: 24px var(--edge); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; }
   footer a { color: var(--on-night); }
+  .foot-brand { display: inline-flex; align-items: center; gap: 14px; }
+  .foot-brand img { height: 36px; width: auto; }
 
   @media (max-width: 920px) {
     .hero, .pricing, .proof-top, .offer-head, .close-inner { grid-template-columns: 1fr; }
@@ -232,7 +233,6 @@
   }
   @media (max-width: 420px) {
     .person .name { font-size: 24px; }
-    .price b { font-size: 44px; }
     .shots .phone { width: 34%; border-width: 4px; border-radius: 16px; }
   }
 
@@ -253,7 +253,7 @@
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="bar">
-  <a class="mark" href="/">Freeform Works</a>
+  <a class="mark" href="/"><img src="assets/fw-logo.png" width="72" height="52" alt="Freeform Works"></a>
   <nav aria-label="Main">
     <a href="#work">Our work</a>
     <a href="#prices">Prices</a>
@@ -267,11 +267,11 @@
     <div>
       <h1 id="hero-title">Websites for Tuscaloosa shops and crews.</h1>
       <p class="lede">We're <strong>Agustin and María</strong>. One of us builds your site. The other makes sure it fits how your business runs. It comes with booking on your own domain and one place to see every new customer.</p>
+      <p class="lede starts">Plans start at <strong>$1,200</strong>, then <strong>$75 a month</strong>. <a class="textlink" href="#prices">See what's included</a></p>
       <div class="actions">
         <a class="btn btn-wine" href="/book">Book a 15-min call
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
         </a>
-        <p class="price"><b>$1,200</b><span>to start.<br>Then $75 a month.</span></p>
       </div>
       <p class="fine">Free call. Weekdays, 1 to 5 PM Central.</p>
     </div>
@@ -330,18 +330,18 @@
           <tbody>
             <tr>
               <th scope="row">Student Seats<small><a class="textlink" href="https://studentseats.com/" target="_blank" rel="noopener">studentseats.com</a></small></th>
-              <td>Helped build the student ticket marketplace.</td>
-              <td>42,000+ users and $2.8M+ in sales on the platform.</td>
+              <td>Software engineer, 2024 to 2025. Redesigned the ticket listing and checkout, and built the account setup flow.</td>
+              <td>$2.8M+ in ticket sales through the flows he redesigned. 42,000+ users. Account setup completion up 18%.</td>
             </tr>
             <tr>
-              <th scope="row">APC website<small><a class="textlink" href="https://apc.ua.edu/" target="_blank" rel="noopener">apc.ua.edu</a></small></th>
-              <td>Part-time intern on the move to Next.js.</td>
-              <td>Deploys went from 30+ minutes to about 5.</td>
+              <th scope="row">Alabama Productivity Center<small><a class="textlink" href="https://apc.ua.edu/" target="_blank" rel="noopener">apc.ua.edu</a></small></th>
+              <td>IT intern, fall 2025. Moved the center's old website to React while keeping the live site running.</td>
+              <td>10 public pages rebuilt, with mobile layout and accessibility fixed across key pages.</td>
             </tr>
             <tr>
-              <th scope="row">Autobet<small>Startup</small></th>
-              <td>Founding engineer.</td>
-              <td><span class="todo">Add a real number or a link, or leave this blank.</span></td>
+              <th scope="row">Autobet<small>Startup, summer 2025</small></th>
+              <td>Founding engineer. Built the phone app from the first line of code, working with the CEO on how it should flow.</td>
+              <td>45 app screens, with real-time updates between friends.</td>
             </tr>
           </tbody>
         </table>
@@ -391,7 +391,7 @@
       <li>
         <span class="when">About 2 weeks</span>
         <h3>We build it</h3>
-        <p>We write the site, set up booking and connect your domain. <span class="todo">You get a preview link before anything goes live.</span></p>
+        <p>We write the site, set up booking and connect your domain. You get a preview link before anything goes live.</p>
       </li>
       <li>
         <span class="when">Launch day, then monthly</span>
@@ -448,7 +448,7 @@
       <article class="bio">
         <h3>Agustin Lemuz-Juarez</h3>
         <p class="role">Builds it</p>
-        <p>UA student, graduating May 2027. Agustin writes the code: the site, the booking and the dashboard. He helped build Student Seats, interned on the APC website and was the founding engineer at Autobet.</p>
+        <p>Computer science student at UA, graduating May 2027. Agustin writes the code: the site, the booking and the dashboard. Before Freeform he redesigned checkout at Student Seats, rebuilt the Alabama Productivity Center's website as an intern and was the first engineer at a startup called Autobet.</p>
         <p class="todo">Add 1 or 2 sentences in your own words: where you're from and why you started Freeform.</p>
       </article>
       <article class="bio">
@@ -477,7 +477,7 @@
 </main>
 
 <footer>
-  <span>Freeform Works · Tuscaloosa, AL</span>
+  <span class="foot-brand"><img src="assets/fw-logo-light.png" width="50" height="36" alt="Freeform Works"> Tuscaloosa, AL</span>
   <span>© 2026 Agustin Lemuz-Juarez and María Estrada</span>
 </footer>
 

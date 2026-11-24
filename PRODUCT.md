@@ -72,10 +72,11 @@ Copy rules (binding on every page):
 
 Real and usable:
 - Lemoose Productions, lemooseproductions.com: a portrait photography site we built for Agustin's older brother, Dre Lemuz. Must be described as family ("our first build was for Agustin's brother Dre's photography studio"). Stats: 0.4s largest contentful paint, 99 Lighthouse, 1.2 MB page weight, 9-day build. Screenshots: `assets/lemooseproductions-hero.png`, `assets/lemooseproductions-mobile.png`.
-- Agustin's past work, with his role stated accurately:
-  - Student Seats: he helped build it. Platform figures from the brief: 42,000+ users, $2.8M+ in sales. Present these as the platform's numbers, never as his personal results, until he confirms which flows he owned.
-  - APC (apc.ua.edu): part-time intern on the migration to Next.js, which cut deploys from 30+ minutes to about 5. Never call it a contract or client project.
-  - Autobet: founding engineer.
+- Agustin's past work, from his resume (Feb 2026):
+  - Student Seats (studentseats.com): software engineer, Jan 2024 to May 2025. Redesigned the ticket listing and checkout, driving $2.8M+ in sales; built the Trustap onboarding modal, raising account setup completion 18%; 42,000+ users; API work cut response time 35%.
+  - Alabama Productivity Center (apc.ua.edu): IT intern, Oct to Dec 2025. Built 10 client-facing pages migrating the legacy C#/.NET site to React/TypeScript/Tailwind, 7 reusable components, mobile and accessibility fixes, live site kept running. The brief's "deploys 30+ min to ~5 min" claim is not on the resume and is not used until Agustin confirms it.
+  - Autobet (startup): founding engineer, Jun to Sep 2025. Built 45 mobile screens in React Native + Firebase, set up the app foundation, real-time betting workflows.
+- Lemoose Productions, re-tested with Google Lighthouse on Nov 24, 2026 (reports in `docs/`): desktop performance 100, LCP 0.6 s; phone performance 94, LCP 2.3 s. The older 0.4 s / 99 / 1.2 MB figures are retired.
 - The `/book` page itself, as a working example of booking on your own domain.
 
 Pending, do not publish until confirmed:
