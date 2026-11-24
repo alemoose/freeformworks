@@ -27,8 +27,9 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { start, name, email, businessName, businessType, businessTypeOther } =
+    const { start, name, email, phone, businessName, businessType, businessTypeOther } =
       req.body || {};
+    const cleanPhone = typeof phone === 'string' ? phone.replace(/[^\d+()\-.\s]/g, '').trim().slice(0, 30) : '';
     if (!start || !name?.trim() || !email?.trim() || !businessName?.trim()) {
       res.status(400).json({ error: 'Missing name, email, business, or time' });
       return;
@@ -62,6 +63,7 @@ module.exports = async function handler(req, res) {
       end: match.end || slotEndDateTime(match.start),
       name: name.trim().slice(0, 120),
       email: email.trim(),
+      phone: cleanPhone,
       businessName: businessName.trim().slice(0, 160),
       businessType,
       businessTypeOther: businessTypeOther?.trim().slice(0, 200) || '',

@@ -40,6 +40,15 @@
   h1 { font: 900 clamp(48px, 8vw, 88px)/0.9 var(--display); text-transform: uppercase; margin: 0 0 16px; text-wrap: balance; }
   .sub { color: var(--ink-soft); margin: 0 0 40px; max-width: 44ch; font-size: 19px; }
   .panel { border-top: 2px solid var(--ink); padding-top: 32px; }
+  .talk { list-style: none; padding: 0; margin: 0 0 20px; display: flex; flex-wrap: wrap; gap: 14px; }
+  .talk li { display: grid; flex: 1 1 140px; max-width: 220px; background: var(--page); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,.08); }
+  .talk li:nth-child(1) { transform: rotate(-1.5deg); }
+  .talk li:nth-child(2) { transform: rotate(1.5deg); }
+  .talk-top { background: var(--wine); color: var(--on-wine); text-align: center; font: 900 18px/1 var(--display); text-transform: uppercase; padding: 8px 10px 7px; }
+  .talk-name { font: 900 clamp(30px, 8vw, 40px)/0.9 var(--display); text-transform: uppercase; padding: 10px 14px 0; }
+  .talk-role { font-size: 15px; font-weight: 700; padding: 4px 14px 12px; }
+  .hours { color: var(--ink-soft); margin: 0 0 36px; font-size: 16px; }
+  .hours a { color: var(--ink); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
   .step-title { font: 600 15px/1.3 var(--mono); color: var(--wine); margin: 0 0 16px; }
 
   /* calendar */
@@ -64,7 +73,7 @@
   }
   .cal-day.is-empty { visibility: hidden; }
   .cal-day.is-muted { color: #a3a29c; font-weight: 400; }
-  .cal-day.is-open { color: var(--ink); background: var(--wine-tint); cursor: pointer; transition: border-color 140ms ease, background 140ms ease; }
+  .cal-day.is-open { color: var(--ink); background: var(--wine-tint); border-color: #c9a2aa; cursor: pointer; transition: border-color 140ms ease, background 140ms ease; }
   .cal-day.is-open:hover { border-color: var(--wine); }
   .cal-day.is-today.is-open { text-decoration: underline; text-underline-offset: 4px; }
   .cal-day.is-selected, .cal-day.is-selected:hover { background: var(--wine); color: var(--on-wine); border-color: var(--wine); }
@@ -145,7 +154,12 @@
   <main class="wrap">
     <div id="page-head">
       <h1>Book a 15&#8209;minute call</h1>
-      <p class="sub">Pick a day and a time. It's free, and you'll talk to Agustin or María.</p>
+      <p class="sub">Pick a day and a time. It's free. We'll ask what your business does and what's bugging you, then tell you which plan fits and what it costs.</p>
+      <ul class="talk" aria-label="You'll talk to">
+        <li><span class="talk-top" aria-hidden="true">Hello, I'm</span><span class="talk-name">Agustin</span><span class="talk-role">Builds it</span></li>
+        <li><span class="talk-top" aria-hidden="true">Hello, I'm</span><span class="talk-name">María</span><span class="talk-role">Makes it fit your business</span></li>
+      </ul>
+      <p class="hours">Calls run weekdays, 1 to 5 PM Central. None of those work? Email <a href="mailto:hello@freeformworks.com">hello@freeformworks.com</a>.</p>
     </div>
 
     <div id="booking" class="panel">
@@ -208,6 +222,7 @@
         <form id="form" class="form">
           <label>Name <input type="text" name="name" required autocomplete="name" /></label>
           <label>Email <input type="email" name="email" required autocomplete="email" /></label>
+          <label>Phone <span class="opt">(optional, if you'd rather we call you)</span> <input type="tel" name="phone" autocomplete="tel" inputmode="tel" /></label>
           <label>Business name <input type="text" name="businessName" required autocomplete="organization" /></label>
           <label>
             Business type
@@ -227,7 +242,7 @@
             <input type="text" name="businessTypeOther" id="business-type-other" placeholder="e.g. Videography, HVAC, studio" />
           </label>
           <button type="submit" class="btn" id="submit">Confirm booking</button>
-          <p class="msg" id="form-msg"></p>
+          <p class="msg" id="form-msg" role="alert"></p>
         </form>
       </div>
 
@@ -236,7 +251,7 @@
 
     <div id="success" class="done hidden">
       <h1 id="success-greeting" tabindex="-1">See you soon.</h1>
-      <p class="sub" id="success-lead">Check your email for the calendar invite and Meet link.</p>
+      <p class="sub" id="success-lead">Check your email for the calendar invite. It has a video link. If you left a phone number, we'll call you instead.</p>
       <dl class="success-summary" id="success-summary" aria-label="Booking summary"></dl>
       <p style="margin-top:28px"><a href="/">Back to the site</a></p>
     </div>
@@ -441,13 +456,18 @@
       renderCalendar();
     }
 
-    timesLabel.textContent = '2 · Pick a time · ' + fmtDayLong.format(Date.parse(`${d}T12:00:00Z`));
+    timesLabel.textContent = '2 · Pick a time · ' + fmtDayLong.format(Date.parse(`${d}T12:00:00Z`)) + ' · Central time';
     timesWrap.classList.remove('hidden');
     timesEl.innerHTML = '';
     loadMsg.classList.add('hidden');
     setTimesLoading(true);
 
-    const res = await fetch('/api/slots?date=' + encodeURIComponent(d));
+    let res;
+    try {
+      res = await fetch('/api/slots?date=' + encodeURIComponent(d));
+    } catch (err) {
+      res = { ok: false };
+    }
     setTimesLoading(false);
     if (!res.ok) {
       loadMsg.textContent = "We couldn't load times for this day. Pick another day or refresh the page.";
@@ -545,26 +565,35 @@
     e.preventDefault();
     if (!selectedStart) return;
     submitBtn.disabled = true;
+    submitBtn.textContent = 'Booking...';
     formMsg.textContent = '';
     formMsg.className = 'msg';
     const fd = new FormData(form);
-    const res = await fetch('/api/book', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        start: selectedStart,
-        name: fd.get('name'),
-        email: fd.get('email'),
-        businessName: fd.get('businessName'),
-        businessType: fd.get('businessType'),
-        businessTypeOther: fd.get('businessTypeOther'),
-      }),
-    });
-    const data = await res.json().catch(() => ({}));
+    let res, data = {};
+    try {
+      res = await fetch('/api/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          start: selectedStart,
+          name: fd.get('name'),
+          email: fd.get('email'),
+          phone: fd.get('phone'),
+          businessName: fd.get('businessName'),
+          businessType: fd.get('businessType'),
+          businessTypeOther: fd.get('businessTypeOther'),
+        }),
+      });
+      data = await res.json().catch(() => ({}));
+    } catch (err) {
+      res = { ok: false };
+      data = { error: "We couldn't reach the calendar. Check your connection and try again, or email hello@freeformworks.com." };
+    }
     if (!res.ok) {
       formMsg.textContent = data.error || 'Something went wrong. Try again or email hello@freeformworks.com.';
       formMsg.className = 'msg is-error';
       submitBtn.disabled = false;
+      submitBtn.textContent = 'Confirm booking';
       return;
     }
     showSuccessSummary(fd);

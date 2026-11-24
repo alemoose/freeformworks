@@ -37,8 +37,9 @@ Not deliverable yet, so never sold or shown as working:
 - AI intake (an assistant that answers new customers). Do not list it as included in setup or in the care plan until it exists. A demo of it may only appear if it is built and clearly labeled as a demo.
 
 Pricing: published on the site, never "contact us for pricing". Working prices (adopted for now, from `docs/pricing-research.md`):
-- Shops: $1,200 setup, $75/mo (hosting, edits, updates). Website plus booking on their own domain.
-- Trades and crews: $2,500 setup, $200/mo (hosting, edits, updates, dashboard support). Website, quote requests, scheduling, owner dashboard.
+- Shops: $1,200 setup, $75/mo (hosting, edits, updates). Website, booking on their own domain, Google profile cleanup.
+- Crews (trades): $2,500 setup, $200/mo (hosting, edits, updates, dashboard support). Everything in the shop plan (website, booking on their own domain, Google profile cleanup) plus quote requests, job scheduling and the owner dashboard.
+- Plan names on the site are "Shop" and "Crew", nothing else. The receipt's item lists are the single source of truth for what each plan includes.
 
 Terms:
 - Monthly plans are cancel anytime. No minimum term.
@@ -80,7 +81,7 @@ Real and usable:
 - The `/book` page itself, as a working example of booking on your own domain.
 
 Pending, do not publish until confirmed:
-- Everything about María: how her name is shown, her bio, her photo. She approves it first. Known so far: María Estrada, MIS major, founded Amitie Florals in Montgomery, AL, a real florist business she ran before college and stepped back from when she started school. It has no website, so it is her owner experience, never a case study of ours. Agustin reports she is fine with naming it. Also a Mercedes-Benz co-op and work at Parker Towing, where she may have built AI-assisted dashboards on top of older systems (unconfirmed; she describes it). Employers get "experience at" wording only, never logos or anything implying they endorse Freeform. Say nothing about Parker Towing's vendors.
+- Everything about María: how her name is shown, her bio, her photo. She approves it first. Known so far: María Estrada, MIS major, founded Amitie Florals in Montgomery, AL, a real florist business she ran before college and stepped back from when she started school. It has no website, so it is her owner experience, never a case study of ours. Agustin reports she is fine with naming it. Not shown on the site until María approves: a Mercedes-Benz co-op and work at Parker Towing, where she may have built AI-assisted dashboards on top of older systems (unconfirmed; she describes it). Employers get "experience at" wording only, never logos or anything implying they endorse Freeform. Say nothing about Parker Towing's vendors.
 - Photos of Agustin and María: real photos only, no AI headshots. Placeholder slots until provided.
 
 Absent, must not be fabricated:
