@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Draft B: Receipt · Freeform Works</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Spline+Sans+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --counter: #0f5c4d;     /* deli-counter laminate green */
+    --counter-ink: #f4fbf8;
+    --counter-soft: #bfe3d8;
+    --paper: #ffffff;       /* thermal paper */
+    --print: #1b1b1b;
+    --print-red: #b3261e;
+    --edge: clamp(20px, 5vw, 72px);
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--counter);
+    color: var(--counter-ink);
+    font: 400 18px/1.5 "Archivo", system-ui, sans-serif;
+    font-variation-settings: "wdth" 100;
+  }
+  ::selection { background: var(--counter-ink); color: var(--counter); }
+  :focus-visible { outline: 3px solid #ffd54a; outline-offset: 3px; }
+
+  .bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 22px var(--edge);
+  }
+  .mark { font-weight: 800; font-stretch: 125%; font-size: 20px; color: inherit; text-decoration: none; letter-spacing: -0.01em; }
+  .bar nav { display: flex; gap: 28px; }
+  .bar nav a { color: var(--counter-soft); text-decoration: none; padding: 10px 0; }
+  .bar nav a:hover { color: var(--counter-ink); }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 440px);
+    gap: clamp(32px, 6vw, 96px);
+    align-items: start;
+    padding: clamp(24px, 5vw, 64px) var(--edge) 80px;
+  }
+  h1 {
+    font-weight: 850; font-stretch: 112%;
+    font-size: clamp(48px, 7vw, 104px); line-height: 0.95; letter-spacing: -0.03em;
+    max-width: 11ch;
+  }
+  .lede { margin-top: 24px; max-width: 38ch; font-size: clamp(19px, 1.5vw, 21px); color: var(--counter-soft); }
+  .lede strong { color: var(--counter-ink); font-weight: 700; }
+
+  .people { display: flex; gap: 18px; margin-top: 36px; }
+  .person { display: flex; align-items: center; gap: 14px; }
+  .slot {
+    width: 84px; height: 84px; border-radius: 50%;
+    border: 2px dashed var(--counter-soft);
+    display: grid; place-items: center; text-align: center;
+    font-size: 11px; line-height: 1.2; color: var(--counter-soft); padding: 8px;
+  }
+  .person b { display: block; font-weight: 700; }
+  .person span { font-size: 15px; color: var(--counter-soft); }
+
+  /* the ticket */
+  .ticket-wrap { position: relative; padding-top: 14px; }
+  .slot-mouth {
+    position: absolute; top: 0; left: -14px; right: -14px; height: 18px;
+    background: #0a4136; border-radius: 9px;
+  }
+  .ticket {
+    position: relative;
+    background: var(--paper); color: var(--print);
+    font: 400 15px/1.55 "Spline Sans Mono", ui-monospace, monospace;
+    padding: 26px 26px 0;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, .28);
+    font-variant-numeric: tabular-nums;
+  }
+  .ticket::after { /* torn edge */
+    content: ""; display: block; height: 14px; margin: 22px -26px 0;
+    background:
+      linear-gradient(135deg, var(--paper) 7px, transparent 0) 0 0 / 14px 14px repeat-x,
+      linear-gradient(225deg, var(--paper) 7px, transparent 0) 0 0 / 14px 14px repeat-x;
+    transform: translateY(13px);
+  }
+  .t-head { text-align: center; }
+  .t-head strong { display: block; font-weight: 600; font-size: 17px; letter-spacing: 0.08em; }
+  .rule { border: 0; border-top: 2px dashed var(--print); margin: 16px 0; }
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .tabs button {
+    font: inherit; font-weight: 600; cursor: pointer;
+    padding: 10px 8px; min-height: 44px;
+    border: 2px solid var(--print); background: var(--paper); color: var(--print);
+  }
+  .tabs button[aria-pressed="true"] { background: var(--print); color: var(--paper); }
+  .for { margin-top: 10px; font-size: 13px; }
+  ul { list-style: none; padding: 0; }
+  .line { display: flex; gap: 8px; }
+  .line span:first-child { flex: 1; }
+  .line .dots { flex: 1; border-bottom: 2px dotted #8a8a8a; transform: translateY(-6px); }
+  .total { font-weight: 600; font-size: 18px; }
+  .total .amt { color: var(--print-red); }
+  .terms { font-size: 13px; margin-top: 8px; }
+  .cta {
+    display: flex; justify-content: center; align-items: center; gap: 10px;
+    margin-top: 18px; padding: 16px; min-height: 52px;
+    background: var(--print-red); color: #fff; text-decoration: none;
+    font: 700 17px/1 "Archivo", sans-serif; font-stretch: 110%;
+    transition: transform 160ms cubic-bezier(.2,.8,.2,1);
+  }
+  .cta:hover { transform: translateY(-2px); }
+  .cta:active { transform: translateY(1px); }
+  .barcode { display: block; width: 100%; height: 46px; margin-top: 18px; }
+  .thanks { text-align: center; font-size: 13px; margin-top: 6px; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .bar nav { display: none; }
+    .ticket-wrap { max-width: 460px; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .ticket { animation: printout 900ms cubic-bezier(.16,1,.3,1) both 120ms; }
+    @keyframes printout { from { clip-path: inset(0 0 100% 0); transform: translateY(-24px); } to { clip-path: inset(0 0 -40px 0); transform: none; } }
+  }
+</style>
+</head>
+<body>
+  <header class="bar">
+    <a class="mark" href="#">Freeform Works</a>
+    <nav aria-label="Main">
+      <a href="#">Our work</a>
+      <a href="#">How it works</a>
+      <a href="#">About us</a>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <div>
+      <h1>Here's what your website costs.</h1>
+      <p class="lede">We're <strong>Agustin and María</strong>, two UA students in Tuscaloosa. We build local businesses a website plus the booking and customer list behind it. The whole price is on the ticket.</p>
+      <div class="people">
+        <div class="person"><div class="slot">Agustin photo</div><div><b>Agustin</b><span>Builds it</span></div></div>
+        <div class="person"><div class="slot">María photo</div><div><b>María</b><span>Fits it to your business</span></div></div>
+      </div>
+    </div>
+
+    <div class="ticket-wrap">
+      <div class="slot-mouth" aria-hidden="true"></div>
+      <section class="ticket" aria-labelledby="ticket-title">
+        <div class="t-head">
+          <strong id="ticket-title">FREEFORM WORKS</strong>
+          Tuscaloosa, AL
+        </div>
+        <hr class="rule">
+        <div class="tabs" role="group" aria-label="Pick your business">
+          <button type="button" aria-pressed="true" data-tier="shop">Shop</button>
+          <button type="button" aria-pressed="false" data-tier="trade">Trade crew</button>
+        </div>
+        <p class="for" id="for">Barbers, salons, photographers, florists, restaurants</p>
+        <hr class="rule">
+        <ul id="items" aria-live="polite"></ul>
+        <hr class="rule">
+        <p class="line total"><span>Setup, one time</span><span class="amt" id="setup"></span></p>
+        <p class="line total"><span>Then monthly</span><span class="amt" id="monthly"></span></p>
+        <p class="terms">Hosting, edits and updates included. Cancel anytime. Your domain is yours.</p>
+        <a class="cta" href="/book">Book a 15-min call</a>
+        <svg class="barcode" id="barcode" viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <p class="thanks">Thanks for stopping by.</p>
+      </section>
+    </div>
+  </main>
+
+<script>
+  const tiers = {
+    shop: {
+      for: 'Barbers, salons, photographers, florists, restaurants',
+      items: ['Custom website', 'Booking on your own domain', 'Google profile cleanup'],
+      setup: '$1,200', monthly: '$75'
+    },
+    trade: {
+      for: 'Lawn care, landscaping, contractors',
+      items: ['Custom website', 'Quote requests', 'Job scheduling', 'Owner dashboard'],
+      setup: '$2,500', monthly: '$200'
+    }
+  };
+  const $ = (id) => document.getElementById(id);
+  function show(key) {
+    const t = tiers[key];
+    $('for').textContent = t.for;
+    $('items').innerHTML = t.items.map(i => `<li class="line"><span>${i}</span><span>incl.</span></li>`).join('');
+    $('setup').textContent = t.setup;
+    $('monthly').textContent = t.monthly;
+    document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.tier === key)));
+  }
+  document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => show(b.dataset.tier)));
+  show('shop');
+  // barcode: fixed widths, drawn once
+  const widths = [2,1,3,1,1,2,1,3,2,1,1,1,3,1,2,2,1,1,3,1,2,1,1,2,3,1,1,2,1,3,1,1,2,1,2,3,1,1,2,1];
+  let x = 0, svg = '';
+  widths.forEach((w, i) => { if (i % 2 === 0) svg += `<rect x="${x}" y="0" width="${w * 1.6}" height="40" fill="#1b1b1b"/>`; x += w * 1.6 + 1; });
+  $('barcode').setAttribute('viewBox', `0 0 ${x} 40`);
+  $('barcode').innerHTML = svg;
+</script>
+</body>
+</html>
