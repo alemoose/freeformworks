@@ -5,352 +5,146 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Book a call · Freeform Works</title>
 <meta name="description" content="Book a free 15-minute discovery call with Freeform Works." />
-<meta name="theme-color" content="#0E0E10" />
+<meta name="theme-color" content="#ffffff" />
 <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Public+Sans:wght@400;700&family=Spline+Sans+Mono:wght@600&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --paper: #FCFBF9;
-    --ink: #0F0F10;
-    --ox: #7C2031;
-    --ox-tint: #A85063;
-    --d-paper: #0E0E10;
-    --d-ink: #F1ECE2;
-    --d-gray: #6F6B66;
-    --d-rule: rgba(241, 236, 226, 0.10);
-    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --pad-x: clamp(24px, 5vw, 80px);
+    --page: #ffffff;
+    --page-alt: #f3f2ee;
+    --ink: #141414;
+    --ink-soft: #4a4a47;
+    --rule: #d9d8d2;
+    --wine: #7c2031;
+    --wine-tint: #f1e6e8;
+    --on-wine: #ffffff;
+    --error: #a3172b;
+    --display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+    --sans: "Public Sans", system-ui, sans-serif;
+    --mono: "Spline Sans Mono", ui-monospace, monospace;
+    --pad-x: clamp(20px, 5vw, 80px);
   }
   *, *::before, *::after { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--d-paper);
-    color: var(--d-ink);
-    font-family: var(--sans);
-    font-size: 17px;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-  }
-  ::selection { background: var(--ox); color: var(--paper); }
-  a { color: inherit; text-decoration: none; }
-  .wrap {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: clamp(48px, 8vw, 96px) var(--pad-x) 80px;
-  }
-  .back {
-    font-size: 14px;
-    color: var(--d-gray);
-    border-bottom: 1px solid var(--d-rule);
-    padding-bottom: 2px;
-    display: inline-block;
-    margin-bottom: 48px;
-  }
-  .back:hover { color: var(--ox-tint); }
-  .label {
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--ox-tint);
-    margin: 0 0 16px;
-  }
-  h1 {
-    font-size: clamp(32px, 5vw, 48px);
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 1.08;
-    margin: 0 0 12px;
-  }
-  .sub {
-    color: var(--d-gray);
-    margin: 0 0 40px;
-    max-width: 42ch;
-  }
-  .panel {
-    border-top: 1px solid var(--d-rule);
-    padding-top: 32px;
-  }
-  .step-title {
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--d-gray);
-    margin: 0 0 16px;
-  }
+  body { margin: 0; background: var(--page); color: var(--ink); font: 400 17px/1.55 var(--sans); }
+  ::selection { background: var(--wine); color: var(--on-wine); }
+  :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  a { color: inherit; }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px var(--pad-x); border-bottom: 1px solid var(--rule); }
+  .mark { font: 900 24px/1 var(--display); text-transform: uppercase; text-decoration: none; }
+  .back { font-weight: 700; text-decoration: underline; text-underline-offset: 4px; padding: 8px 0; }
+  .back:hover { color: var(--wine); }
+  .wrap { max-width: 760px; margin: 0 auto; padding: clamp(40px, 7vw, 80px) var(--pad-x) 96px; }
+  h1 { font: 900 clamp(48px, 8vw, 88px)/0.9 var(--display); text-transform: uppercase; margin: 0 0 16px; text-wrap: balance; }
+  .sub { color: var(--ink-soft); margin: 0 0 40px; max-width: 44ch; font-size: 19px; }
+  .panel { border-top: 2px solid var(--ink); padding-top: 32px; }
+  .step-title { font: 600 15px/1.3 var(--mono); color: var(--wine); margin: 0 0 16px; }
 
-  /* ── Calendar ── */
-  .cal {
-    margin-bottom: 32px;
-    max-width: 400px;
-  }
-  .cal-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  .cal-month {
-    font-size: 16px;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-  }
+  /* calendar */
+  .cal { margin-bottom: 36px; max-width: 440px; }
+  .cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .cal-month { font: 900 28px/1 var(--display); text-transform: uppercase; }
   .cal-nav-btn {
-    appearance: none;
-    width: 36px;
-    height: 36px;
-    border: 1px solid var(--d-rule);
-    border-radius: 999px;
-    background: transparent;
-    color: var(--d-ink);
-    font-size: 18px;
-    line-height: 1;
-    cursor: pointer;
-    transition: border-color 160ms ease, background 160ms ease;
+    appearance: none; width: 44px; height: 44px; border: 2px solid var(--ink); border-radius: 3px;
+    background: var(--page); color: var(--ink); font-size: 20px; line-height: 1; cursor: pointer;
+    transition: background 160ms ease, color 160ms ease;
   }
-  .cal-nav-btn:hover:not(:disabled) { border-color: var(--ox-tint); }
-  .cal-nav-btn:disabled { opacity: 0.25; cursor: not-allowed; }
-  .cal-weekdays {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-    margin-bottom: 8px;
-  }
-  .cal-weekdays span {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--d-gray);
-    text-align: center;
-    padding: 4px 0;
-  }
-  .cal-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-  }
+  .cal-nav-btn:hover:not(:disabled) { background: var(--ink); color: var(--page); }
+  .cal-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 6px; }
+  .cal-weekdays span { font-size: 13px; font-weight: 700; color: var(--ink-soft); text-align: center; padding: 4px 0; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
   .cal-day {
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: 500;
-    border: none;
-    border-radius: 999px;
-    background: transparent;
-    color: var(--d-gray);
-    cursor: default;
-    padding: 0;
-    font-family: inherit;
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    font: 700 16px/1 var(--sans); font-variant-numeric: tabular-nums;
+    border: 2px solid transparent; border-radius: 3px; background: transparent; color: var(--ink-soft);
+    cursor: default; padding: 0;
   }
   .cal-day.is-empty { visibility: hidden; }
-  .cal-day.is-muted { opacity: 0.28; }
-  .cal-day.is-open {
-    color: var(--d-ink);
-    cursor: pointer;
-    border: 1px solid transparent;
-  }
-  .cal-day.is-open:hover {
-    border-color: var(--ox-tint);
-  }
-  .cal-day.is-today.is-open {
-    box-shadow: inset 0 0 0 1px var(--d-rule);
-  }
-  .cal-day.is-selected {
-    background: var(--d-ink);
-    color: var(--d-paper);
-    border-color: var(--d-ink);
-  }
-  .cal-day.is-selected:hover { border-color: var(--d-ink); }
+  .cal-day.is-muted { color: #a3a29c; font-weight: 400; }
+  .cal-day.is-open { color: var(--ink); background: var(--wine-tint); cursor: pointer; transition: border-color 140ms ease, background 140ms ease; }
+  .cal-day.is-open:hover { border-color: var(--wine); }
+  .cal-day.is-today.is-open { text-decoration: underline; text-underline-offset: 4px; }
+  .cal-day.is-selected, .cal-day.is-selected:hover { background: var(--wine); color: var(--on-wine); border-color: var(--wine); }
 
-  /* ── Skeleton (HeroUI-style shimmer) ── */
-  @keyframes skel-shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .skel::after { animation: none; opacity: 0.35; }
-  }
-  .skel {
-    position: relative;
-    overflow: hidden;
-    background: var(--d-rule);
-    border-radius: 8px;
-  }
+  /* skeletons */
+  @keyframes skel-shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  @media (prefers-reduced-motion: reduce) { .skel::after { animation: none; opacity: 0.35; } }
+  .skel { position: relative; overflow: hidden; background: var(--page-alt); border-radius: 3px; }
   .skel::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(241, 236, 226, 0.14) 45%,
-      rgba(241, 236, 226, 0.22) 55%,
-      transparent 100%
-    );
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.7) 50%, transparent 100%);
     animation: skel-shimmer 1.4s ease-in-out infinite;
   }
   .cal-skeleton .cal-head { pointer-events: none; }
-  .skel-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 999px;
-    flex-shrink: 0;
-  }
-  .skel-title {
-    width: 128px;
-    height: 18px;
-    border-radius: 6px;
-  }
-  .skel-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-  }
-  .skel-day {
-    aspect-ratio: 1;
-    border-radius: 999px;
-  }
-  .times-skel {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 32px;
-  }
-  .skel-chip {
-    width: 72px;
-    height: 40px;
-    border-radius: 999px;
-  }
-  .skel-chip:nth-child(3n) { width: 84px; }
-  .skel-chip:nth-child(4n) { width: 64px; }
+  .skel-btn { width: 44px; height: 44px; flex-shrink: 0; }
+  .skel-title { width: 140px; height: 24px; }
+  .skel-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .skel-day { aspect-ratio: 1; }
+  .times-skel { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 36px; }
+  .skel-chip { width: 96px; height: 48px; }
 
-  .times {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 32px;
-  }
+  /* times */
+  .times { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 36px; }
   .chip {
-    appearance: none;
-    border: 1px solid var(--d-rule);
-    background: transparent;
-    color: var(--d-ink);
-    font: inherit;
-    font-size: 14px;
-    padding: 10px 16px;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+    appearance: none; border: 2px solid var(--ink); background: var(--page); color: var(--ink);
+    font: 700 16px/1 var(--sans); font-variant-numeric: tabular-nums; min-height: 48px; padding: 12px 18px;
+    border-radius: 3px; cursor: pointer; transition: background 140ms ease, color 140ms ease;
   }
-  .chip:hover { border-color: var(--ox-tint); }
-  .chip.is-selected {
-    background: var(--d-ink);
-    color: var(--d-paper);
-    border-color: var(--d-ink);
-  }
-  .form { display: grid; gap: 16px; }
-  label {
-    display: grid;
-    gap: 8px;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--d-gray);
-  }
+  .chip:hover { background: var(--wine-tint); }
+  .chip.is-selected { background: var(--wine); color: var(--on-wine); border-color: var(--wine); }
+
+  /* form */
+  .form { display: grid; gap: 18px; max-width: 520px; }
+  label { display: grid; gap: 8px; font-size: 16px; font-weight: 700; color: var(--ink); }
+  .opt { font-weight: 400; color: var(--ink-soft); }
   input, textarea, select {
-    font: inherit;
-    font-size: 16px;
-    text-transform: none;
-    letter-spacing: 0;
-    color: var(--d-ink);
-    background: var(--d-paper);
-    border: 1px solid var(--d-rule);
-    border-radius: 8px;
-    padding: 12px 14px;
-    width: 100%;
+    font: inherit; font-weight: 400; font-size: 17px; color: var(--ink); background: var(--page);
+    border: 2px solid #8f8e88; border-radius: 3px; padding: 12px 14px; width: 100%; min-height: 50px;
   }
   select {
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236F6B66' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    padding-right: 40px;
+    cursor: pointer; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23141414' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px;
   }
-  input:focus, textarea:focus, select:focus {
-    outline: none;
-    border-color: var(--ox-tint);
-  }
+  input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid var(--wine); outline-offset: 1px; border-color: var(--ink); }
+  input::placeholder { color: #75746e; }
   textarea { min-height: 72px; resize: vertical; }
   .field-other.hidden { display: none; }
   .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 22px;
-    border: none;
-    border-radius: 999px;
-    font: inherit;
-    font-size: 14.5px;
-    font-weight: 500;
-    cursor: pointer;
-    background: var(--d-ink);
-    color: var(--d-paper);
-    transition: background 160ms ease;
-    margin-top: 8px;
-    width: fit-content;
+    display: inline-flex; align-items: center; justify-content: center; min-height: 56px; padding: 16px 28px;
+    border: none; border-radius: 3px; font: 700 18px/1.2 var(--sans); cursor: pointer;
+    background: var(--wine); color: var(--on-wine); margin-top: 6px; width: fit-content;
+    transition: transform 160ms cubic-bezier(.2,.8,.2,1), box-shadow 160ms;
   }
-  .btn:hover:not(:disabled) { background: var(--ox); }
-  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
-  .msg { font-size: 14px; color: var(--d-gray); margin: 0; }
-  .msg.is-error { color: #e8a0a8; }
-  .done a {
-    color: var(--ox-tint);
-    border-bottom: 1px solid var(--d-rule);
-    padding-bottom: 2px;
-  }
-  .success-summary {
-    margin: 28px 0 0;
-    padding: 20px 0 0;
-    border-top: 1px solid var(--d-rule);
-    display: grid;
-    gap: 14px;
-  }
-  .success-row {
-    display: grid;
-    grid-template-columns: 108px 1fr;
-    gap: 12px 20px;
-    font-size: 15px;
-    align-items: baseline;
-  }
-  @media (max-width: 480px) {
-    .success-row { grid-template-columns: 1fr; gap: 4px; }
-  }
-  .success-row dt {
-    margin: 0;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--d-gray);
-  }
-  .success-row dd {
-    margin: 0;
-    color: var(--d-ink);
-    line-height: 1.45;
-  }
+  .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,.18); }
+  .btn:active:not(:disabled) { transform: translateY(1px); box-shadow: none; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .msg { font-size: 16px; color: var(--ink-soft); margin: 0; }
+  .msg.is-error { color: var(--error); font-weight: 700; }
+
+  /* success */
+  .done a { font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+  .done a:hover { color: var(--wine); }
+  .success-summary { margin: 28px 0 0; padding: 20px 0 0; border-top: 2px solid var(--ink); display: grid; gap: 14px; }
+  .success-row { display: grid; grid-template-columns: 120px 1fr; gap: 12px 20px; font-size: 17px; align-items: baseline; }
+  @media (max-width: 480px) { .success-row { grid-template-columns: 1fr; gap: 4px; } }
+  .success-row dt { margin: 0; font-size: 15px; font-weight: 700; color: var(--ink-soft); }
+  .success-row dd { margin: 0; color: var(--ink); line-height: 1.45; }
   .hidden { display: none !important; }
+  @media (prefers-reduced-motion: reduce) { .btn, .chip, .cal-day { transition: none; } }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <a href="/" class="back">← Back</a>
+  <header class="bar">
+    <a class="mark" href="/">Freeform Works</a>
+    <a href="/" class="back">Back to the site</a>
+  </header>
+  <main class="wrap">
     <div id="page-head">
-      <p class="label">Book a call</p>
-      <h1>15-minute call</h1>
+      <h1>Book a 15&#8209;minute call</h1>
+      <p class="sub">Pick a day and a time. It's free, and you'll talk to Agustin or María.</p>
     </div>
 
     <div id="booking" class="panel">
@@ -428,7 +222,7 @@
             </select>
           </label>
           <label class="field-other hidden" id="business-type-other-wrap">
-            Describe your business <span style="text-transform:none;letter-spacing:0">(optional)</span>
+            Describe your business <span class="opt">(optional)</span>
             <input type="text" name="businessTypeOther" id="business-type-other" placeholder="e.g. Videography, HVAC, studio" />
           </label>
           <button type="submit" class="btn" id="submit">Confirm booking</button>
@@ -440,13 +234,12 @@
     </div>
 
     <div id="success" class="done hidden">
-      <p class="label">You're booked</p>
-      <h1 id="success-greeting">See you soon.</h1>
+      <h1 id="success-greeting" tabindex="-1">See you soon.</h1>
       <p class="sub" id="success-lead">Check your email for the calendar invite and Meet link.</p>
       <dl class="success-summary" id="success-summary" aria-label="Booking summary"></dl>
-      <p style="margin-top:28px"><a href="/">Back to site</a></p>
+      <p style="margin-top:28px"><a href="/">Back to the site</a></p>
     </div>
-  </div>
+  </main>
 
 <script>
 (function () {
@@ -567,15 +360,18 @@
       btn.type = 'button';
       btn.className = 'cal-day';
       btn.textContent = day;
+      btn.setAttribute('aria-label', fmtDayLong.format(Date.parse(`${iso}T12:00:00Z`)));
 
       if (availableSet.has(iso)) {
         btn.classList.add('is-open');
         if (iso === meta.today) btn.classList.add('is-today');
+        btn.setAttribute('aria-pressed', String(iso === selectedDate));
         if (iso === selectedDate) btn.classList.add('is-selected');
         btn.addEventListener('click', () => selectDate(iso));
       } else {
         btn.classList.add('is-muted');
         btn.disabled = true;
+        btn.setAttribute('aria-label', fmtDayLong.format(Date.parse(`${iso}T12:00:00Z`)) + ', not available');
       }
       calGrid.appendChild(btn);
     }
@@ -596,6 +392,7 @@
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'chip' + (selected ? ' is-selected' : '');
+    b.setAttribute('aria-pressed', String(!!selected));
     b.textContent = text;
     b.addEventListener('click', onClick);
     return b;
@@ -673,6 +470,7 @@
     formWrap.classList.remove('hidden');
     Array.from(timesEl.children).forEach((c, i) => {
       c.classList.toggle('is-selected', slotsCache[i]?.start === start);
+      c.setAttribute('aria-pressed', String(slotsCache[i]?.start === start));
     });
   }
 
@@ -692,7 +490,7 @@
 
   function formatBusinessTypeLabel(type, other) {
     const label = BUSINESS_TYPE_LABELS[type] || type;
-    if (type === 'other' && other?.trim()) return `${label} — ${other.trim()}`;
+    if (type === 'other' && other?.trim()) return `${label}: ${other.trim()}`;
     return label;
   }
 
@@ -772,6 +570,7 @@
     pageHead.classList.add('hidden');
     booking.classList.add('hidden');
     success.classList.remove('hidden');
+    successGreeting.focus();
   });
 
   setCalLoading(true);
