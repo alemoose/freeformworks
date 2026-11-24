@@ -13,7 +13,7 @@ November 2026. Published prices from web studios and agencies in the three citie
 | | Hulsey Creative Co. (Tuscaloosa page) | "most small businesses" $599 to $1,299 |
 | | Hire The Creatives (Birmingham) | $625 starter, $1,895 business, $4,995 premium |
 | Small studio / freelancer | Vestavia Web Design (Birmingham) | $800 (5 pages), $1,800, $3,300 |
-| | Tuscaloosa Web Designer | from $1,997 |
+| | Tuscaloosa Web Designer | from $1,997 per search listing; homepage on Nov 24 says five-page sites from $2,450, 2 to 3 weeks, month to month, you own every file |
 | | Vaylo Studios (Montgomery) | from $2,000 |
 | | Ridgeway Web (Birmingham) | own-it option from $2,750 |
 | Agency | Phaseable (Birmingham) | from $3,500 |
