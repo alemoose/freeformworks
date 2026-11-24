@@ -39,23 +39,77 @@
   .mark img { height: 44px; width: auto; }
   .back { font-weight: 700; text-decoration: underline; text-underline-offset: 4px; padding: 8px 0; }
   .back:hover { color: var(--wine); }
-  .wrap { max-width: 760px; margin: 0 auto; padding: clamp(40px, 7vw, 80px) var(--pad-x) 96px; }
-  h1 { font: 900 clamp(48px, 8vw, 88px)/0.9 var(--display); text-transform: uppercase; margin: 0 0 16px; text-wrap: balance; }
-  .sub { color: var(--ink-soft); margin: 0 0 40px; max-width: 44ch; font-size: 19px; }
-  .panel { border-top: 2px solid var(--ink); padding-top: 32px; }
-  .talk { list-style: none; padding: 0; margin: 0 0 20px; display: flex; flex-wrap: wrap; gap: 14px; }
-  .talk li { display: grid; flex: 1 1 140px; max-width: 220px; background: var(--page); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,.08); }
-  .talk li:nth-child(1) { transform: rotate(-1.5deg); }
-  .talk li:nth-child(2) { transform: rotate(1.5deg); }
-  .talk-top { background: var(--wine); color: var(--on-wine); text-align: center; font: 900 18px/1 var(--display); text-transform: uppercase; padding: 8px 10px 7px; }
-  .talk-name { font: 900 clamp(30px, 8vw, 40px)/0.9 var(--display); text-transform: uppercase; padding: 10px 14px 0; }
-  .talk-role { font-size: 15px; font-weight: 700; padding: 4px 14px 12px; }
-  .hours { color: var(--ink-soft); margin: 0 0 36px; font-size: 16px; }
+  .wrap { padding: clamp(28px, 5vw, 64px) var(--pad-x) 96px; }
+  h1 { font: 900 clamp(44px, 6vw, 56px)/0.9 var(--display); text-transform: uppercase; margin: 0 0 14px; text-wrap: balance; }
+  .sub { color: var(--ink-soft); margin: 0 0 24px; max-width: 44ch; font-size: 17px; }
+
+  /* booking card: details | calendar | times, like a desk calendar laid open */
+  .card { display: grid; grid-template-columns: minmax(0, 1fr); border: 1px solid var(--rule); border-radius: 8px; background: var(--page); box-shadow: 0 24px 60px rgba(0,0,0,.06); }
+  .pane { padding: clamp(22px, 3vw, 32px); min-width: 0; }
+  .info { background: var(--page-alt); border-radius: 8px 8px 0 0; }
+  .cal-pane, .times-pane, .form-pane { border-top: 1px solid var(--rule); }
+  .card:not(.has-day) .times-pane { display: none; }
+  .card.has-time .cal-pane, .card.has-time .times-pane { display: none; }
+  .card:not(.has-time) .form-pane { display: none; }
+  @media (min-width: 860px) {
+    .card { grid-template-columns: 300px minmax(0, 1fr); max-width: 900px; margin: 0 auto; }
+    .info { grid-row: 1 / span 2; border-radius: 8px 0 0 8px; border-right: 1px solid var(--rule); }
+    .cal-pane { border-top: 0; }
+    .times-pane { grid-column: 2; }
+    .form-pane { grid-column: 2; grid-row: 1 / span 2; border-top: 0; }
+  }
+  @media (min-width: 1180px) {
+    .card { grid-template-columns: 320px 500px 290px; max-width: none; width: max-content; }
+    .info { grid-row: 1; }
+    .card:not(.has-day) .times-pane { display: block; }
+    .times-pane { grid-column: 3; grid-row: 1; border-top: 0; border-left: 1px solid var(--rule); }
+    .form-pane { grid-column: 2 / -1; grid-row: 1; }
+    .times { grid-template-columns: 1fr; max-height: 470px; overflow-y: auto; padding: 2px; margin: -2px; }
+    .form { grid-template-columns: 1fr 1fr; max-width: none; align-items: start; }
+    .form > .full, .form > .btn, .form > .msg { grid-column: 1 / -1; }
+  }
+
+  .label { display: flex; align-items: center; gap: 10px; margin: 0 0 18px; font: 600 14px/1.2 var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); }
+  .label::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--wine); flex: none; }
+
+  .people { list-style: none; padding: 0; margin: 0 0 22px; display: grid; gap: 12px; }
+  .people li { display: grid; grid-template-columns: 52px 1fr; gap: 14px; align-items: center; }
+  .people img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; }
+  .people strong { display: block; font: 900 24px/1 var(--display); text-transform: uppercase; }
+  .people span { display: block; font-size: 15px; color: var(--ink-soft); line-height: 1.3; margin-top: 2px; }
+  .meta { list-style: none; padding: 18px 0 0; margin: 0; border-top: 1px solid var(--rule); display: grid; gap: 10px; font-size: 16px; }
+  .meta li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; }
+  .meta svg { width: 20px; height: 20px; margin-top: 2px; color: var(--wine); }
+  .chosen { margin: 18px 0 0; padding: 14px 16px; border-radius: 4px; background: var(--wine); color: var(--on-wine); font-weight: 700; line-height: 1.35; }
+  .card:not(.has-time) .chosen { display: none; }
+  .hours { color: var(--ink-soft); margin: 20px 0 0; font-size: 15px; }
   .hours a { color: var(--ink); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
-  .step-title { font: 600 15px/1.3 var(--mono); color: var(--wine); margin: 0 0 16px; }
+  @media (max-width: 859px) {
+    h1 { font-size: 40px; }
+    .sub { font-size: 16px; margin-bottom: 18px; }
+    .people { grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .people li { grid-template-columns: 44px 1fr; gap: 10px; align-items: start; }
+    .people img { width: 44px; height: 44px; }
+    .people strong { font-size: 21px; }
+    .people span { font-size: 14px; }
+    .meta { font-size: 15px; gap: 6px 18px; padding-top: 14px; display: flex; flex-wrap: wrap; }
+    .meta li { display: flex; gap: 6px; align-items: center; }
+    .meta svg { margin-top: 0; width: 18px; height: 18px; }
+    .hours { margin-top: 12px; font-size: 14px; }
+  }
+
+  .times-head { margin-bottom: 18px; }
+  .times-head .label { margin: 0 0 12px; }
+  .times-day { margin: 0; font: 900 28px/1 var(--display); text-transform: uppercase; }
+  .times-day:empty { display: none; }
+  .times-hint { color: var(--ink-soft); font-size: 16px; margin: 0; max-width: 24ch; }
+  .back-btn { appearance: none; border: 0; background: none; padding: 10px 0; margin: -10px 0 12px; font: 700 16px/1.2 var(--sans); color: var(--ink); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+  .back-btn:hover { color: var(--wine); }
+  .form-pane h2:focus { outline: none; }
 
   /* calendar */
-  .cal { margin-bottom: 36px; max-width: 440px; }
+  .cal { max-width: 460px; }
+  .cal-pane .msg { margin-top: 18px; }
   .cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
   .cal-month { font: 900 28px/1 var(--display); text-transform: uppercase; }
   .cal-nav-btn {
@@ -95,11 +149,12 @@
   .skel-title { width: 140px; height: 24px; }
   .skel-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
   .skel-day { aspect-ratio: 1; }
-  .times-skel { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 36px; }
-  .skel-chip { width: 96px; height: 48px; }
+  .times-skel { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; }
+  .skel-chip { height: 48px; }
+  @media (min-width: 1180px) { .times-skel { grid-template-columns: 1fr; } }
 
   /* times */
-  .times { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 36px; }
+  .times { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; }
   .chip {
     appearance: none; border: 2px solid var(--ink); background: var(--page); color: var(--ink);
     font: 700 16px/1 var(--sans); font-variant-numeric: tabular-nums; min-height: 48px; padding: 12px 18px;
@@ -110,6 +165,8 @@
 
   /* form */
   .form { display: grid; gap: 18px; max-width: 520px; }
+  .done { max-width: 760px; margin: 0 auto; }
+  .done h1 { font-size: clamp(48px, 8vw, 88px); }
   label { display: grid; gap: 8px; font-size: 16px; font-weight: 700; color: var(--ink); }
   .opt { font-weight: 400; color: var(--ink-soft); }
   input, textarea, select {
@@ -175,77 +232,73 @@
     <a href="/" class="back">Back to the site</a>
   </header>
   <main class="wrap">
-    <div id="page-head">
-      <h1>Book a 15&#8209;minute call</h1>
-      <p class="sub">Pick a day and a time. It's free. We'll ask what your business does and what's bugging you, then tell you which plan fits and what it costs.</p>
-      <ul class="talk" aria-label="You'll talk to">
-        <li><span class="talk-top" aria-hidden="true">Hello, I'm</span><span class="talk-name">Agustin</span><span class="talk-role">Computer science</span></li>
-        <li><span class="talk-top" aria-hidden="true">Hello, I'm</span><span class="talk-name">María</span><span class="talk-role">Management information systems</span></li>
-      </ul>
-      <p class="hours">Calls run weekdays, 1 to 5 PM Central. None of those work? Email <a href="mailto:hello@freeformworks.com">hello@freeformworks.com</a>.</p>
-    </div>
+    <div class="card" id="booking">
+      <aside class="pane info" id="page-head">
+        <h1>Book a 15&#8209;minute call</h1>
+        <p class="sub">It's free. We'll ask what your business does and what's bugging you, then tell you which plan fits and what it costs.</p>
+        <ul class="people" aria-label="You'll talk to">
+          <li><img src="assets/people/agustin-112.webp" width="112" height="112" alt=""><div><strong>Agustin</strong><span>Computer science</span></div></li>
+          <li><img src="assets/people/maria-112.webp" width="112" height="112" alt=""><div><strong>María</strong><span>Management information systems</span></div></li>
+        </ul>
+        <ul class="meta">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>15 minutes</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/></svg><span>Google Meet or a phone call</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3Z"/></svg><span>Weekdays, 1 to 5 PM Central</span></li>
+        </ul>
+        <p class="chosen" id="chosen" aria-live="polite"></p>
+        <p class="hours">None of these times work? Email <a href="mailto:hello@freeformworks.com">hello@freeformworks.com</a>.</p>
+      </aside>
 
-    <div id="booking" class="panel">
-      <p class="step-title">1 · Pick a day</p>
-      <div class="cal" id="cal" aria-busy="true" aria-label="Choose a date">
-        <div id="cal-skeleton" class="cal-skeleton">
-          <div class="cal-head">
-            <div class="skel skel-btn" aria-hidden="true"></div>
-            <div class="skel skel-title" aria-hidden="true"></div>
-            <div class="skel skel-btn" aria-hidden="true"></div>
+      <section class="pane cal-pane" aria-labelledby="cal-title">
+        <h2 class="label" id="cal-title">Pick a day</h2>
+        <div class="cal" id="cal" aria-busy="true" aria-label="Choose a date">
+          <div id="cal-skeleton" class="cal-skeleton">
+            <div class="cal-head">
+              <div class="skel skel-btn" aria-hidden="true"></div>
+              <div class="skel skel-title" aria-hidden="true"></div>
+              <div class="skel skel-btn" aria-hidden="true"></div>
+            </div>
+            <div class="cal-weekdays" aria-hidden="true">
+              <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
+              <span>Thu</span><span>Fri</span><span>Sat</span>
+            </div>
+            <div class="skel-grid" aria-hidden="true"><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div></div>
           </div>
-          <div class="cal-weekdays" aria-hidden="true">
-            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
-            <span>Thu</span><span>Fri</span><span>Sat</span>
-          </div>
-          <div class="skel-grid" aria-hidden="true">
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div>
+          <div id="cal-live" class="cal-live hidden">
+            <div class="cal-head">
+              <button type="button" class="cal-nav-btn" id="cal-prev" aria-label="Previous month">‹</button>
+              <span class="cal-month" id="cal-month-label"></span>
+              <button type="button" class="cal-nav-btn" id="cal-next" aria-label="Next month">›</button>
+            </div>
+            <div class="cal-weekdays" aria-hidden="true">
+              <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
+              <span>Thu</span><span>Fri</span><span>Sat</span>
+            </div>
+            <div class="cal-grid" id="cal-grid"></div>
           </div>
         </div>
-        <div id="cal-live" class="cal-live hidden">
-          <div class="cal-head">
-            <button type="button" class="cal-nav-btn" id="cal-prev" aria-label="Previous month">‹</button>
-            <span class="cal-month" id="cal-month-label"></span>
-            <button type="button" class="cal-nav-btn" id="cal-next" aria-label="Next month">›</button>
-          </div>
-          <div class="cal-weekdays" aria-hidden="true">
-            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
-            <span>Thu</span><span>Fri</span><span>Sat</span>
-          </div>
-          <div class="cal-grid" id="cal-grid"></div>
-        </div>
-      </div>
+        <p class="msg hidden" id="load-msg" role="status"></p>
+      </section>
 
-      <div id="times-wrap" class="reveal hidden">
-        <p class="step-title" id="times-label">2 · Pick a time</p>
+      <section class="pane times-pane" id="times-wrap" aria-labelledby="times-label">
+        <div class="times-head">
+          <h2 class="label" id="times-label">Pick a time</h2>
+          <p class="times-day" id="times-day"></p>
+        </div>
+        <p class="times-hint" id="times-hint">Pick a day and its open times show up here.</p>
         <div id="times-skeleton" class="times-skel hidden" aria-hidden="true">
           <div class="skel skel-chip"></div><div class="skel skel-chip"></div><div class="skel skel-chip"></div>
           <div class="skel skel-chip"></div><div class="skel skel-chip"></div><div class="skel skel-chip"></div>
-          <div class="skel skel-chip"></div><div class="skel skel-chip"></div>
         </div>
         <div id="times" class="times reveal" aria-live="polite"></div>
-      </div>
+      </section>
 
-      <div id="form-wrap" class="reveal hidden">
-        <p class="step-title">3 · Your details</p>
+      <section class="pane form-pane reveal" id="form-wrap" aria-labelledby="form-title">
+        <button type="button" class="back-btn" id="change-time">‹ Change the time</button>
+        <h2 class="label" id="form-title" tabindex="-1">Your details</h2>
         <form id="form" class="form">
           <label>Name <input type="text" name="name" required autocomplete="name" /></label>
           <label>Email <input type="email" name="email" required autocomplete="email" /></label>
-          <label>Phone <span class="opt">(optional, if you'd rather we call you)</span> <input type="tel" name="phone" autocomplete="tel" inputmode="tel" /></label>
           <label>Business name <input type="text" name="businessName" required autocomplete="organization" /></label>
           <label>
             Business type
@@ -260,16 +313,15 @@
               <option value="other">Other</option>
             </select>
           </label>
-          <label class="field-other hidden" id="business-type-other-wrap">
+          <label class="field-other full hidden" id="business-type-other-wrap">
             Describe your business <span class="opt">(optional)</span>
             <input type="text" name="businessTypeOther" id="business-type-other" placeholder="e.g. Videography, HVAC, studio" />
           </label>
+          <label class="full">Phone <span class="opt">(optional, if you'd rather we call you)</span> <input type="tel" name="phone" autocomplete="tel" inputmode="tel" /></label>
           <button type="submit" class="btn" id="submit">Confirm booking</button>
           <p class="msg" id="form-msg" role="alert"></p>
         </form>
-      </div>
-
-      <p class="msg hidden" id="load-msg" role="status"></p>
+      </section>
     </div>
 
     <div id="success" class="done reveal done-reveal hidden">
@@ -292,7 +344,13 @@
   const calNext = document.getElementById('cal-next');
   const timesSkeleton = document.getElementById('times-skeleton');
   const timesWrap = document.getElementById('times-wrap');
-  const timesLabel = document.getElementById('times-label');
+  const timesDay = document.getElementById('times-day');
+  const timesHint = document.getElementById('times-hint');
+  const chosen = document.getElementById('chosen');
+  const changeTime = document.getElementById('change-time');
+  const formTitle = document.getElementById('form-title');
+  const stacked = matchMedia('(max-width: 1179px)');
+  const fmtShort = () => new Intl.DateTimeFormat('en-US', { timeZone: tz, weekday: 'short', month: 'short', day: 'numeric' });
   const timesEl = document.getElementById('times');
   const formWrap = document.getElementById('form-wrap');
   const form = document.getElementById('form');
@@ -469,7 +527,8 @@
   async function selectDate(d) {
     selectedDate = d;
     selectedStart = null;
-    formWrap.classList.add('hidden');
+    booking.classList.remove('has-time');
+    booking.classList.add('has-day');
     renderCalendar();
 
     const p = parseIso(d);
@@ -479,9 +538,13 @@
       renderCalendar();
     }
 
-    timesLabel.textContent = '2 · Pick a time · ' + fmtDayLong.format(Date.parse(`${d}T12:00:00Z`)) + ' · Central time';
-    timesWrap.classList.remove('hidden');
+    timesDay.textContent = fmtShort().format(Date.parse(`${d}T12:00:00Z`));
+    timesHint.classList.add('hidden');
     timesEl.innerHTML = '';
+    if (stacked.matches) {
+      const top = timesWrap.getBoundingClientRect().top;
+      if (top > innerHeight - 120) timesWrap.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    }
     loadMsg.classList.add('hidden');
     setTimesLoading(true);
 
@@ -505,18 +568,29 @@
       return;
     }
     slotsCache.forEach((s) => {
-      timesEl.appendChild(chip(s.label, false, () => selectTime(s.start)));
+      const c = chip(s.label, false, () => selectTime(s.start));
+      c.setAttribute('aria-label', s.label + ' Central');
+      timesEl.appendChild(c);
     });
   }
 
   function selectTime(start) {
     selectedStart = start;
-    formWrap.classList.remove('hidden');
     Array.from(timesEl.children).forEach((c, i) => {
       c.classList.toggle('is-selected', slotsCache[i]?.start === start);
       c.setAttribute('aria-pressed', String(slotsCache[i]?.start === start));
     });
+    chosen.textContent = formatSlotWhen(start).replace(' CT', ' Central');
+    booking.classList.add('has-time');
+    if (stacked.matches) booking.scrollIntoView({ block: 'start' });
+    formTitle.focus({ preventScroll: stacked.matches });
   }
+
+  changeTime.addEventListener('click', () => {
+    booking.classList.remove('has-time');
+    const sel = timesEl.querySelector('.is-selected');
+    if (sel) sel.focus();
+  });
 
   calPrev.addEventListener('click', () => {
     if (!canGoPrev()) return;
