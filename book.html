@@ -556,15 +556,13 @@
     }
     setTimesLoading(false);
     if (!res.ok) {
-      loadMsg.textContent = "We couldn't load times for this day. Pick another day or refresh the page.";
-      loadMsg.classList.remove('hidden');
+      timesNote("We couldn't load times right now. Email hello@freeformworks.com and we'll find a time with you.");
       return;
     }
     const data = await res.json();
     slotsCache = data.slots || [];
     if (!slotsCache.length) {
-      loadMsg.textContent = 'No times left this day. Pick another.';
-      loadMsg.classList.remove('hidden');
+      timesNote('No times left this day. Pick another day.');
       return;
     }
     slotsCache.forEach((s) => {
@@ -572,6 +570,11 @@
       c.setAttribute('aria-label', s.label + ' Central');
       timesEl.appendChild(c);
     });
+  }
+
+  function timesNote(text) {
+    timesHint.textContent = text;
+    timesHint.classList.remove('hidden');
   }
 
   function selectTime(start) {

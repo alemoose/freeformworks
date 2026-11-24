@@ -38,7 +38,14 @@ module.exports = async function handler(req, res) {
 
     res.status(200).json({ date, slots });
   } catch (err) {
-    console.error(err);
+    // Name the cause in the Vercel logs: missing env vars, or Google refusing the refresh token.
+    const google = err?.response?.data;
+    const reason = err?.message === 'Missing Google OAuth env vars'
+      ? 'missing_env_vars'
+      : google?.error === 'invalid_grant'
+        ? 'refresh_token_expired_or_revoked'
+        : google?.error || err?.code || 'unknown';
+    console.error('[slots] calendar lookup failed:', reason, google || err?.message);
     res.status(500).json({ error: 'Could not load availability' });
   }
 };
