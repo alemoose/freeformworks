@@ -6,6 +6,7 @@
 <title>Freeform Works · Websites for Tuscaloosa shops and crews</title>
 <meta name="description" content="Agustin and María build websites, booking and owner dashboards for local shops and trade crews in Tuscaloosa. From $1,200, then $75 a month.">
 <meta name="theme-color" content="#ffffff">
+<meta name="site-kind" content="other">
 <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="assets/favicon-16.png" sizes="16x16" type="image/png">
 <meta property="og:title" content="Freeform Works · Websites for Tuscaloosa shops and crews">
@@ -35,6 +36,9 @@
     --edge: clamp(20px, 5vw, 80px);
     --section: clamp(72px, 9vw, 136px);
     --display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+    /* read by the moments (assets/moments) */
+    --bg: var(--page); --surface: var(--page-alt); --accent: var(--wine); --line: var(--rule);
+    --font-display: var(--display); --display-weight: 900; --display-tracking: 0em; --t-h2: clamp(34px, 4.4vw, 64px);
     --body: "Public Sans", system-ui, sans-serif;
     --mono: "Spline Sans Mono", ui-monospace, monospace;
   }
@@ -123,12 +127,17 @@
     font: 900 clamp(26px, 2.4vw, 36px)/1 var(--display); text-transform: uppercase; letter-spacing: 0.02em;
     padding: 14px 12px 12px;
   }
-  .tag-body { padding: 18px 20px 22px; }
+  .tag-body { padding: 16px 18px 18px; }
+  .tag-photo { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; object-position: 50% 20%; }
   .tag { container-type: inline-size; }
   .tag-name { font: 900 min(25cqi, 88px)/0.85 var(--display); text-transform: uppercase; }
   .tag-full { margin-top: 8px; font-size: 15px; color: var(--ink-soft); }
   .tag-role { margin-top: 14px; font-weight: 700; font-size: 18px; line-height: 1.3; }
   .tag-facts { list-style: none; padding: 12px 0 0; margin-top: 12px; border-top: 2px dashed var(--rule); font-size: 15px; line-height: 1.45; color: var(--ink-soft); }
+
+  /* statement (word-highlight moment) */
+  .statement { padding-top: clamp(72px, 9vw, 140px); padding-bottom: clamp(72px, 9vw, 140px); }
+  .statement .mo-wh__text { text-transform: none; }
 
   /* proof */
   .proof { background: var(--page-alt); }
@@ -141,6 +150,11 @@
   .specs-note { margin-top: 12px; font-size: 15px; color: var(--ink-soft); max-width: 48ch; }
   .proof .textlink { display: inline-block; margin-top: 24px; }
   .shots { position: relative; padding-bottom: 48px; }
+  .shot-link { display: block; border-radius: 4px; overflow: hidden; }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .shot-link .desk { transition: scale 600ms var(--ease-out); }
+    .shot-link:hover .desk { scale: 1.02; }
+  }
   .shots .desk { border: 1px solid var(--rule); box-shadow: 0 20px 44px rgba(0,0,0,.18); background: #000; }
   .shots .phone {
     position: absolute; right: -8px; bottom: 0; width: 26%;
@@ -219,6 +233,8 @@
   .thanks { text-align: center; font-size: 13px; margin-top: 6px; }
 
   /* about */
+  .together { margin: clamp(32px, 4vw, 56px) 0 0; border-radius: 6px; overflow: hidden; max-width: 1100px; }
+  .together img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: 50% 30%; }
   .bios { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(32px, 5vw, 80px); margin-top: clamp(40px, 5vw, 64px); }
   .bio { border-top: 2px solid var(--ink); padding-top: 20px; }
   .bio .role { margin: 6px 0 16px; color: var(--wine); font-weight: 700; }
@@ -271,6 +287,8 @@
     .js .ticket.printed { clip-path: inset(0 0 -40px 0); translate: 0 0; transition: clip-path 700ms var(--ease-out), translate 700ms var(--ease-out); }
   }
 </style>
+<script>document.documentElement.classList.add('mo-js');setTimeout(()=>document.documentElement.classList.add('mo-safe'),2500)</script>
+<link rel="modulepreload" href="assets/moments/moments.js"><link rel="modulepreload" href="assets/moments/lib.js">
 </head>
 <body>
 <script>document.documentElement.classList.add('js')</script>
@@ -301,12 +319,13 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
         </a>
       </div>
-      <p class="fine">Free call. Weekdays, 1 to 5 PM Central.</p>
+      <p class="fine" data-next-slot>Free call. Weekdays, 1 to 5 PM Central.</p>
     </div>
 
     <div class="people" aria-label="Who you'll work with">
       <article class="tag">
         <p class="tag-top" aria-hidden="true">Hello, I'm</p>
+        <img class="tag-photo" src="assets/people/agustin-720.webp" width="720" height="900" alt="Agustin Lemuz-Juarez, smiling, in a navy suit and red tie" fetchpriority="high">
         <div class="tag-body">
           <p class="tag-name">Agustin</p>
           <p class="tag-full">Agustin Lemuz-Juarez</p>
@@ -319,6 +338,7 @@
       </article>
       <article class="tag">
         <p class="tag-top" aria-hidden="true">Hello, I'm</p>
+        <img class="tag-photo" src="assets/people/maria-640.webp" width="568" height="710" alt="María Estrada, smiling, outdoors with trees behind her">
         <div class="tag-body">
           <p class="tag-name">María</p>
           <p class="tag-full">María Estrada</p>
@@ -330,6 +350,10 @@
         </div>
       </article>
     </div>
+  </section>
+
+  <section class="statement" id="why" data-moment="word-highlight" aria-label="Why we do this">
+    <p class="mo-wh__text">If your bookings live in your texts and your quotes live in your head, that's the job. We build the website, the booking and the customer list, and <strong>you deal with the two of us</strong>, start to finish.</p>
   </section>
 
   <section class="proof" id="work" aria-labelledby="work-title">
@@ -346,10 +370,10 @@
         <a class="textlink" href="https://lemooseproductions.com/" target="_blank" rel="noopener">Visit lemooseproductions.com<span aria-hidden="true"> ↗</span></a>
       </div>
       <div class="shots">
-        <picture>
+        <a class="shot-link" href="https://lemooseproductions.com/" target="_blank" rel="noopener" aria-label="Open lemooseproductions.com"><picture>
           <source type="image/webp" srcset="assets/work/lemoose-desktop-960.webp 960w, assets/work/lemoose-desktop-1440.webp 1440w" sizes="(max-width: 920px) 92vw, 52vw">
           <img class="desk" src="assets/work/lemoose-desktop-960.webp" width="960" height="600" loading="lazy" decoding="async" alt="The Lemoose Productions homepage on a laptop: a dark red car with LEMOOSE in large dotted letters.">
-        </picture>
+        </picture></a>
         <picture class="phone">
           <source type="image/webp" srcset="assets/work/lemoose-phone-390.webp 390w, assets/work/lemoose-phone-780.webp 780w" sizes="(max-width: 420px) 34vw, 14vw">
           <img src="assets/work/lemoose-phone-390.webp" width="390" height="844" loading="lazy" decoding="async" alt="The same homepage on a phone.">
@@ -462,6 +486,7 @@
 
   <section class="about" id="about" aria-labelledby="about-title">
     <h2 id="about-title">About us.</h2>
+    <figure class="together" data-moment="picture-develops"><img src="assets/people/together-960.webp" srcset="assets/people/together-960.webp 960w, assets/people/together-1448.webp 1448w" sizes="(max-width: 920px) 92vw, 1100px" width="1448" height="1086" alt="María and Agustin on a sunny sidewalk, both dressed up, María taking the selfie" loading="lazy"></figure>
     <div class="bios">
       <article class="bio">
         <h3>Agustin Lemuz-Juarez</h3>
@@ -539,6 +564,16 @@
       if (entries[0].isIntersecting) { ticket.classList.replace('waiting', 'printed'); io.disconnect(); }
     }, { threshold: 0.25 }).observe(ticket.parentElement);
   }
+  const slot = document.querySelector('[data-next-slot]');
+  if (slot) fetch('/api/slots').then((r) => (r.ok ? r.json() : null)).then((d) => {
+    if (!d || !d.dates || !d.dates.length) return null;
+    return fetch('/api/slots?date=' + encodeURIComponent(d.dates[0])).then((r) => (r.ok ? r.json() : null)).then((t) => {
+      if (!t || !t.slots || !t.slots.length) return;
+      const day = new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' }).format(Date.parse(d.dates[0] + 'T12:00:00Z'));
+      slot.textContent = `Free call. Next open time: ${day}, ${t.slots[0].label} Central.`;
+    });
+  }).catch(() => {});
 </script>
+<script type="module" src="assets/moments/moments.js"></script>
 </body>
 </html>
