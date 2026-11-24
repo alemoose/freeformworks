@@ -12,6 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Public+Sans:wght@400;700&family=Spline+Sans+Mono:wght@600&display=swap" rel="stylesheet" />
 <style>
   :root {
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
     --page: #ffffff;
     --page-alt: #f3f2ee;
     --ink: #141414;
@@ -85,7 +86,7 @@
   .skel::after {
     content: ""; position: absolute; inset: 0;
     background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.7) 50%, transparent 100%);
-    animation: skel-shimmer 1.4s ease-in-out infinite;
+    animation: skel-shimmer 1.4s linear infinite;
   }
   .cal-skeleton .cal-head { pointer-events: none; }
   .skel-btn { width: 44px; height: 44px; flex-shrink: 0; }
@@ -126,10 +127,31 @@
     display: inline-flex; align-items: center; justify-content: center; min-height: 56px; padding: 16px 28px;
     border: none; border-radius: 3px; font: 700 18px/1.2 var(--sans); cursor: pointer;
     background: var(--wine); color: var(--on-wine); margin-top: 6px; width: fit-content;
-    transition: transform 160ms cubic-bezier(.2,.8,.2,1), box-shadow 160ms;
   }
-  .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,.18); }
-  .btn:active:not(:disabled) { transform: translateY(1px); box-shadow: none; }
+  /* motion: one shared curve; movement only for people who allow it */
+  @media (prefers-reduced-motion: no-preference) {
+    .btn { transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out); }
+    .btn:active:not(:disabled) { transform: scale(0.97); box-shadow: none; }
+  }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,.18); }
+    .btn:hover:active:not(:disabled) { transform: translateY(-2px) scale(0.97); box-shadow: 0 4px 10px rgba(0,0,0,.16); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn { transition: opacity 120ms ease; }
+    .btn:active:not(:disabled) { opacity: 0.85; }
+  }
+
+  /* each step fades up as it appears; reduced motion keeps the fade, drops the rise */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal { transition: opacity 200ms var(--ease-out), translate 200ms var(--ease-out); }
+    .reveal.done-reveal { transition-duration: 300ms; }
+    @starting-style { .reveal { opacity: 0; translate: 0 6px; } }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { transition: opacity 150ms ease; }
+    @starting-style { .reveal { opacity: 0; } }
+  }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
   .msg { font-size: 16px; color: var(--ink-soft); margin: 0; }
   .msg.is-error { color: var(--error); font-weight: 700; }
@@ -143,7 +165,6 @@
   .success-row dt { margin: 0; font-size: 15px; font-weight: 700; color: var(--ink-soft); }
   .success-row dd { margin: 0; color: var(--ink); line-height: 1.45; }
   .hidden { display: none !important; }
-  @media (prefers-reduced-motion: reduce) { .btn, .chip, .cal-day { transition: none; } }
 </style>
 </head>
 <body>
@@ -207,17 +228,17 @@
         </div>
       </div>
 
-      <div id="times-wrap" class="hidden">
+      <div id="times-wrap" class="reveal hidden">
         <p class="step-title" id="times-label">2 · Pick a time</p>
         <div id="times-skeleton" class="times-skel hidden" aria-hidden="true">
           <div class="skel skel-chip"></div><div class="skel skel-chip"></div><div class="skel skel-chip"></div>
           <div class="skel skel-chip"></div><div class="skel skel-chip"></div><div class="skel skel-chip"></div>
           <div class="skel skel-chip"></div><div class="skel skel-chip"></div>
         </div>
-        <div id="times" class="times" aria-live="polite"></div>
+        <div id="times" class="times reveal" aria-live="polite"></div>
       </div>
 
-      <div id="form-wrap" class="hidden">
+      <div id="form-wrap" class="reveal hidden">
         <p class="step-title">3 · Your details</p>
         <form id="form" class="form">
           <label>Name <input type="text" name="name" required autocomplete="name" /></label>
@@ -249,7 +270,7 @@
       <p class="msg hidden" id="load-msg" role="status"></p>
     </div>
 
-    <div id="success" class="done hidden">
+    <div id="success" class="done reveal done-reveal hidden">
       <h1 id="success-greeting" tabindex="-1">See you soon.</h1>
       <p class="sub" id="success-lead">Check your email for the calendar invite. It has a video link. If you left a phone number, we'll call you instead.</p>
       <dl class="success-summary" id="success-summary" aria-label="Booking summary"></dl>

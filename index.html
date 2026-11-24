@@ -17,6 +17,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Public+Sans:wght@400;700&family=Spline+Sans+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
     --page: #ffffff;
     --page-alt: #f3f2ee;
     --ink: #141414;
@@ -36,7 +37,8 @@
     --mono: "Spline Sans Mono", ui-monospace, monospace;
   }
   * { box-sizing: border-box; margin: 0; }
-  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 96px; }
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 96px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
   body { background: var(--page); color: var(--ink); font: 400 18px/1.55 var(--body); }
   ::selection { background: var(--wine); color: var(--on-wine); }
   :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
@@ -58,10 +60,21 @@
     display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 56px;
     padding: 16px 26px; border-radius: 3px; border: 0;
     font: 700 19px/1.2 var(--body); text-decoration: none; cursor: pointer;
-    transition: transform 160ms cubic-bezier(.2,.8,.2,1), box-shadow 160ms;
   }
-  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,.18); }
-  .btn:active { transform: translateY(1px); box-shadow: none; }
+  /* motion: one shared curve; movement only for people who allow it */
+  @media (prefers-reduced-motion: no-preference) {
+    .btn { transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out); }
+    .btn:active:not(:disabled) { transform: scale(0.97); box-shadow: none; }
+  }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,.18); }
+    .btn:hover:active:not(:disabled) { transform: translateY(-2px) scale(0.97); box-shadow: 0 4px 10px rgba(0,0,0,.16); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn { transition: opacity 120ms ease; }
+    .btn:active:not(:disabled) { opacity: 0.85; }
+  }
+
   .btn svg { width: 18px; height: 18px; flex: none; }
   .btn-wine { background: var(--wine); color: var(--on-wine); }
   .btn-ink { background: var(--ink); color: var(--page); }
@@ -194,7 +207,9 @@
   .ticket ul { list-style: none; padding: 0; }
   .line { display: flex; gap: 8px; justify-content: space-between; }
   .total { font-weight: 600; font-size: 18px; }
-  .total .amt { color: var(--wine); }
+  .total .amt { color: var(--wine); padding: 0 4px; margin-right: -4px; border-radius: 3px; }
+  .total .amt.flash { animation: flash 700ms ease-out; }
+  @keyframes flash { from { background: #f3dde1; } }
   .t-terms { font-size: 14px; margin-top: 8px; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .ticket .btn { width: 100%; margin-top: 18px; min-height: 52px; font-size: 17px; border-radius: 0; }
@@ -241,14 +256,17 @@
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .js .hero h1, .js .hero .lede, .js .hero .actions { animation: rise 640ms cubic-bezier(.16,1,.3,1) both; }
-    .js .hero .lede { animation-delay: 80ms; }
-    .js .hero .actions { animation-delay: 140ms; }
-    .js .tag { animation: rise 720ms cubic-bezier(.16,1,.3,1) both 120ms; }
-    .js .tag:nth-child(2) { animation-delay: 220ms; }
-    @keyframes rise { from { opacity: 0; translate: 0 16px; } to { opacity: 1; translate: 0 0; } }
+    /* hero: one entrance, 60ms steps, everything settled by about 0.6s */
+    .js .hero > div:first-child > * { animation: rise 450ms var(--ease-out) both; }
+    .js .hero > div:first-child > :nth-child(2) { animation-delay: 60ms; }
+    .js .hero > div:first-child > :nth-child(3) { animation-delay: 120ms; }
+    .js .hero > div:first-child > :nth-child(n+4) { animation-delay: 160ms; }
+    .js .tag { animation: rise 450ms var(--ease-out) both 120ms; }
+    .js .tag:nth-child(2) { animation-delay: 180ms; }
+    @keyframes rise { from { opacity: 0; translate: 0 12px; } }
+    /* receipt prints once when it scrolls into view */
     .js .ticket.waiting { clip-path: inset(0 0 100% 0); translate: 0 -24px; }
-    .js .ticket.printed { clip-path: inset(0 0 -40px 0); translate: 0 0; transition: clip-path 900ms cubic-bezier(.16,1,.3,1), translate 900ms cubic-bezier(.16,1,.3,1); }
+    .js .ticket.printed { clip-path: inset(0 0 -40px 0); translate: 0 0; transition: clip-path 700ms var(--ease-out), translate 700ms var(--ease-out); }
   }
 </style>
 </head>
@@ -500,6 +518,7 @@
     $('setup').textContent = t.setup;
     $('monthly').textContent = t.monthly;
     $('t-terms').textContent = t.terms;
+    if (announce) ['setup', 'monthly'].forEach((id) => { const el = $(id); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); });
     if (announce) $('tier-status').textContent = `${t.name}: ${t.setup} setup, then ${t.monthly} a month. ${t.items.length} items included.`;
     document.querySelectorAll('.tabs button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.tier === key)));
   }
