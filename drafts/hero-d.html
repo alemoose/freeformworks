@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Draft D · Freeform Works</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Atkinson+Hyperlegible:wght@400;700&family=Spline+Sans+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #0f5c4d;        /* counter green */
+    --green-deep: #0a4136;
+    --on-green: #f4fbf8;
+    --on-green-soft: #c4e6dc;
+    --paper: #ffffff;
+    --print: #1b1b1b;
+    --red: #b3261e;
+    --edge: clamp(20px, 5vw, 80px);
+    --display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+    --body: "Atkinson Hyperlegible", system-ui, sans-serif;
+    --mono: "Spline Sans Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body { background: var(--green); color: var(--on-green); font: 400 18px/1.55 var(--body); }
+  ::selection { background: var(--on-green); color: var(--green); }
+  :focus-visible { outline: 3px solid #ffd54a; outline-offset: 3px; }
+  a { color: inherit; }
+
+  /* header */
+  .bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    padding: 20px var(--edge);
+  }
+  .mark { font: 900 26px/1 var(--display); text-transform: uppercase; text-decoration: none; letter-spacing: 0.01em; }
+  .bar nav { display: flex; align-items: center; gap: 28px; }
+  .bar nav a { text-decoration: none; color: var(--on-green-soft); padding: 10px 0; }
+  .bar nav a:hover { color: var(--on-green); }
+  .bar nav .book {
+    color: var(--green); background: var(--on-green); padding: 10px 18px; font-weight: 700; border-radius: 3px;
+  }
+  .bar nav .book:hover { color: var(--green); }
+
+  /* hero */
+  .hero {
+    display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 80px); align-items: center;
+    padding: clamp(16px, 3vw, 36px) var(--edge) clamp(56px, 7vw, 96px);
+    min-height: calc(100svh - 76px);
+  }
+  h1 {
+    font: 900 clamp(58px, 7.2vw, 124px)/0.88 var(--display);
+    text-transform: uppercase; letter-spacing: -0.005em;
+    text-wrap: balance;
+  }
+  .lede { margin-top: 28px; max-width: 40ch; font-size: clamp(19px, 1.5vw, 21px); color: var(--on-green-soft); }
+  .lede strong { color: var(--on-green); }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; margin-top: 36px; }
+  .cta {
+    display: inline-flex; align-items: center; gap: 12px; min-height: 56px;
+    padding: 16px 26px; border-radius: 3px;
+    background: var(--on-green); color: var(--green);
+    font-weight: 700; font-size: 19px; text-decoration: none;
+    transition: transform 160ms cubic-bezier(.2,.8,.2,1), box-shadow 160ms;
+  }
+  .cta:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,.22); }
+  .cta:active { transform: translateY(1px); box-shadow: none; }
+  .cta svg { width: 18px; height: 18px; }
+  .price { display: flex; align-items: baseline; gap: 10px; }
+  .price b { font: 900 52px/1 var(--display); }
+  .price span { color: var(--on-green-soft); font-size: 16px; line-height: 1.3; }
+  .fine { margin-top: 16px; font-size: 16px; color: var(--on-green-soft); }
+
+  .people { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px, 2vw, 24px); }
+  .person { margin: 0; }
+  .person:nth-child(2) { margin-top: clamp(40px, 6vw, 88px); }
+  .frame { background: var(--paper); padding: 10px 10px 0; box-shadow: 0 16px 36px rgba(0,0,0,.28); }
+  .slot {
+    aspect-ratio: 4 / 5; background: #dfe9e5; color: #234a40;
+    border: 2px dashed #7da397;
+    display: grid; place-items: center; text-align: center; padding: 16px;
+    font-weight: 700; font-size: 15px; line-height: 1.3;
+  }
+  .person figcaption { padding: 12px 4px 14px; color: var(--print); }
+  .person .name { display: block; font: 900 30px/0.95 var(--display); text-transform: uppercase; }
+  .person .role { display: block; margin-top: 6px; font-size: 16px; line-height: 1.35; color: #3c3c3c; }
+
+  /* pricing */
+  .pricing {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 460px);
+    gap: clamp(32px, 6vw, 110px); align-items: start;
+    padding: clamp(64px, 8vw, 120px) var(--edge);
+    background: var(--green-deep);
+  }
+  h2 {
+    font: 900 clamp(48px, 6.6vw, 104px)/0.9 var(--display);
+    text-transform: uppercase; text-wrap: balance;
+  }
+  .pricing .lede { max-width: 38ch; }
+  .terms { list-style: none; padding: 0; margin-top: 32px; display: grid; gap: 14px; max-width: 40ch; }
+  .terms li { display: flex; gap: 14px; align-items: flex-start; }
+  .terms svg { flex: none; width: 22px; height: 22px; margin-top: 3px; color: var(--on-green); }
+
+  .ticket-wrap { position: relative; padding-top: 14px; }
+  .slot-mouth { position: absolute; top: 0; left: -14px; right: -14px; height: 18px; background: #062c24; border-radius: 9px; }
+  .ticket {
+    position: relative; background: var(--paper); color: var(--print);
+    font: 400 15px/1.55 var(--mono); font-variant-numeric: tabular-nums;
+    padding: 26px 26px 0; box-shadow: 0 18px 40px rgba(0,0,0,.3);
+  }
+  .ticket::after {
+    content: ""; display: block; height: 14px; margin: 22px -26px 0;
+    background:
+      linear-gradient(135deg, var(--paper) 7px, transparent 0) 0 0 / 14px 14px repeat-x,
+      linear-gradient(225deg, var(--paper) 7px, transparent 0) 0 0 / 14px 14px repeat-x;
+    transform: translateY(13px);
+  }
+  .t-head { text-align: center; }
+  .t-head strong { display: block; font-weight: 600; font-size: 17px; letter-spacing: 0.08em; }
+  .rule { border: 0; border-top: 2px dashed var(--print); margin: 16px 0; }
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .tabs button {
+    font: 600 15px/1.2 var(--mono); cursor: pointer; min-height: 44px; padding: 10px 8px;
+    border: 2px solid var(--print); background: var(--paper); color: var(--print);
+  }
+  .tabs button[aria-pressed="true"] { background: var(--print); color: var(--paper); }
+  .tabs button:focus-visible { outline-color: var(--red); }
+  .for { margin-top: 10px; font-size: 13px; }
+  .ticket ul { list-style: none; padding: 0; }
+  .line { display: flex; gap: 8px; justify-content: space-between; }
+  .total { font-weight: 600; font-size: 18px; }
+  .total .amt { color: var(--red); }
+  .t-terms { font-size: 13px; margin-top: 8px; }
+  .ticket .cta-red {
+    display: flex; justify-content: center; align-items: center; min-height: 52px; margin-top: 18px;
+    background: var(--red); color: #fff; text-decoration: none; font: 700 17px/1 var(--body);
+    transition: transform 160ms cubic-bezier(.2,.8,.2,1);
+  }
+  .ticket .cta-red:hover { transform: translateY(-2px); }
+  .ticket .cta-red:active { transform: translateY(1px); }
+  .ticket .cta-red:focus-visible { outline-color: var(--print); }
+  .barcode { display: block; width: 100%; height: 46px; margin-top: 18px; }
+  .thanks { text-align: center; font-size: 13px; margin-top: 6px; }
+
+  @media (max-width: 920px) {
+    .hero, .pricing { grid-template-columns: 1fr; min-height: 0; }
+    .bar nav a:not(.book) { display: none; }
+    .people { max-width: 520px; }
+    .ticket-wrap { max-width: 460px; }
+  }
+  @media (max-width: 420px) {
+    .person .name { font-size: 24px; }
+    .price b { font-size: 44px; }
+  }
+
+  /* motion: content is visible by default; JS opts in */
+  @media (prefers-reduced-motion: no-preference) {
+    .js h1, .js .lede, .js .actions { animation: rise 640ms cubic-bezier(.16,1,.3,1) both; }
+    .js .hero .lede { animation-delay: 80ms; }
+    .js .actions { animation-delay: 140ms; }
+    .js .person { animation: rise 720ms cubic-bezier(.16,1,.3,1) both 120ms; }
+    .js .person:nth-child(2) { animation-delay: 220ms; }
+    @keyframes rise { from { opacity: 0; translate: 0 16px; } to { opacity: 1; translate: 0 0; } }
+    .js .ticket.waiting { clip-path: inset(0 0 100% 0); translate: 0 -24px; }
+    .js .ticket.printed { clip-path: inset(0 0 -40px 0); translate: 0 0; transition: clip-path 900ms cubic-bezier(.16,1,.3,1), translate 900ms cubic-bezier(.16,1,.3,1); }
+  }
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
+  <header class="bar">
+    <a class="mark" href="#">Freeform Works</a>
+    <nav aria-label="Main">
+      <a href="#prices">Prices</a>
+      <a href="#">Our work</a>
+      <a href="#">About us</a>
+      <a class="book" href="/book">Book a call</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <h1 id="hero-title">Websites for Tuscaloosa shops and crews.</h1>
+        <p class="lede">We're <strong>Agustin and María</strong>. One of us builds your site. The other makes sure it fits how your business runs. It comes with booking on your own domain and one place to see every new customer.</p>
+        <div class="actions">
+          <a class="cta" href="/book">Book a 15-min call
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </a>
+          <p class="price"><b>$1,200</b><span>to start.<br>Then $75 a month.</span></p>
+        </div>
+        <p class="fine">Free call. Weekdays, 1 to 5 PM Central.</p>
+      </div>
+
+      <div class="people">
+        <figure class="person">
+          <div class="frame">
+            <div class="slot">Real photo of Agustin goes here</div>
+            <figcaption><span class="name">Agustin Lemuz-Juarez</span><span class="role">Builds it</span></figcaption>
+          </div>
+        </figure>
+        <figure class="person">
+          <div class="frame">
+            <div class="slot">Real photo of María goes here</div>
+            <figcaption><span class="name">María Estrada</span><span class="role">Started her own florist business. Makes it fit yours.</span></figcaption>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pricing" id="prices" aria-labelledby="prices-title">
+      <div>
+        <h2 id="prices-title">Here's the whole price.</h2>
+        <p class="lede">Pick your kind of business and the ticket updates. What you see is what you pay.</p>
+        <ul class="terms">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span>Cancel the monthly plan anytime. No contract.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span>Your domain is in your name. We buy it for you if it's under $100.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m4 12 5 5L20 6"/></svg><span>About two weeks from our first call to your site going live.</span></li>
+        </ul>
+      </div>
+
+      <div class="ticket-wrap">
+        <div class="slot-mouth" aria-hidden="true"></div>
+        <div class="ticket" id="ticket" role="group" aria-labelledby="ticket-title">
+          <div class="t-head">
+            <strong id="ticket-title">FREEFORM WORKS</strong>
+            Tuscaloosa, AL
+          </div>
+          <hr class="rule">
+          <div class="tabs" role="group" aria-label="Pick your business">
+            <button type="button" aria-pressed="true" data-tier="shop">Shop</button>
+            <button type="button" aria-pressed="false" data-tier="trade">Trade crew</button>
+          </div>
+          <p class="for" id="for">Barbers, salons, photographers, florists, restaurants</p>
+          <hr class="rule">
+          <ul id="items" aria-live="polite">
+            <li class="line"><span>Custom website</span><span>incl.</span></li>
+            <li class="line"><span>Booking on your own domain</span><span>incl.</span></li>
+            <li class="line"><span>Google profile cleanup</span><span>incl.</span></li>
+          </ul>
+          <hr class="rule">
+          <p class="line total"><span>Setup, one time</span><span class="amt" id="setup">$1,200</span></p>
+          <p class="line total"><span>Then monthly</span><span class="amt" id="monthly">$75</span></p>
+          <p class="t-terms">Hosting, edits and updates included.</p>
+          <a class="cta-red" href="/book">Book a 15-min call</a>
+          <svg class="barcode" id="barcode" viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <p class="thanks">Thanks for stopping by.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<script>
+  const tiers = {
+    shop: { for: 'Barbers, salons, photographers, florists, restaurants',
+            items: ['Custom website', 'Booking on your own domain', 'Google profile cleanup'],
+            setup: '$1,200', monthly: '$75' },
+    trade: { for: 'Lawn care, landscaping, contractors',
+             items: ['Custom website', 'Quote requests', 'Job scheduling', 'Owner dashboard'],
+             setup: '$2,500', monthly: '$200' }
+  };
+  const $ = (id) => document.getElementById(id);
+  function show(key) {
+    const t = tiers[key];
+    $('for').textContent = t.for;
+    $('items').replaceChildren(...t.items.map((label) => {
+      const li = document.createElement('li'); li.className = 'line';
+      const a = document.createElement('span'); a.textContent = label;
+      const b = document.createElement('span'); b.textContent = 'incl.';
+      li.append(a, b); return li;
+    }));
+    $('setup').textContent = t.setup;
+    $('monthly').textContent = t.monthly;
+    document.querySelectorAll('.tabs button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.tier === key)));
+  }
+  document.querySelectorAll('.tabs button').forEach((b) => b.addEventListener('click', () => show(b.dataset.tier)));
+
+  const widths = [2,1,3,1,1,2,1,3,2,1,1,1,3,1,2,2,1,1,3,1,2,1,1,2,3,1,1,2,1,3,1,1,2,1,2,3,1,1,2,1];
+  let x = 0, bars = '';
+  widths.forEach((w, i) => { if (i % 2 === 0) bars += `<rect x="${x}" y="0" width="${w * 1.6}" height="40" fill="#1b1b1b"/>`; x += w * 1.6 + 1; });
+  $('barcode').setAttribute('viewBox', `0 0 ${x} 40`);
+  $('barcode').innerHTML = bars;
+
+  // the ticket prints once when it scrolls into view
+  const ticket = $('ticket');
+  if (matchMedia('(prefers-reduced-motion: no-preference)').matches && 'IntersectionObserver' in window) {
+    ticket.classList.add('waiting');
+    new IntersectionObserver((entries, io) => {
+      if (entries[0].isIntersecting) { ticket.classList.replace('waiting', 'printed'); io.disconnect(); }
+    }, { threshold: 0.25 }).observe(ticket);
+  }
+</script>
+</body>
+</html>
