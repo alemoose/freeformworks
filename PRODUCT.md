@@ -52,7 +52,7 @@ Technical:
 
 Open decisions:
 - Final prices (working prices above may change) and site-code ownership on cancel.
-- Freeform Grounds (`/grounds`, landscaping owner software, MVP, with its own proposed $99 and $249 monthly plans) does not have a settled place in the studio offer. Keep it off the homepage until the owners decide.
+- Decided: Freeform Grounds is no longer a separate product. Its public page and its $99 / $249 plans are gone. The `grounds-app/` code stays as the owner dashboard delivered with the Crew plan. A clearly labeled demo screenshot of it can go in the "One place to see every customer" section once a demo account exists.
 
 ## Brand Commitments
 

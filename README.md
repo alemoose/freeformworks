@@ -42,10 +42,6 @@ Booking hours are configured in `lib/booking-config.js` (default Mon–Fri 9–5
 - `lib/` — calendar + slot logic
 - `scripts/google-oauth/` — one-time refresh token setup
 
-## Before launch
+## Crew dashboard (`grounds-app/`)
 
-- Compress large PNGs in `assets/` if needed
-
-## Freeform Grounds
-
-The product landing page lives at `/grounds`. The independent landscaping owner application, PostgreSQL schema, tests, and deployment guide are in [`grounds-app/README.md`](grounds-app/README.md). It does not depend on the agency's Google Calendar credentials.
+`grounds-app/` is the owner dashboard behind the Crew plan: request intake, estimates, recurring jobs and follow-ups for landscaping and other trade crews. It is a separate Flask app with its own PostgreSQL schema, tests and deployment guide ([`grounds-app/README.md`](grounds-app/README.md)), is never uploaded with this static site, and does not use the studio's Google Calendar credentials. There is no public product page for it; it is sold as part of the Crew plan.
