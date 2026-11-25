@@ -5,7 +5,8 @@ import open from 'open';
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const REDIRECT = 'http://localhost:3333/oauth/callback';
-const SCOPES = ['https://www.googleapis.com/auth/calendar'];
+// calendar: read busy times and add bookings. gmail.send: email the owner about each new booking.
+const SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/gmail.send'];
 
 if (!CLIENT_ID || !CLIENT_SECRET) {
   console.error('\nMissing env vars. Run:\n');

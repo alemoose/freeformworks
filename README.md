@@ -32,6 +32,10 @@ Open http://localhost:3000/book.html
    - optional: `BOOKING_NOTIFY_EMAIL` (defaults to `hello@freeformworks.com`). Every address here gets a calendar invite on every booking; separate several with commas. Don't list the calendar's own Google account: Google never emails the organizer.
 4. Deploy. Point `freeformworks.com` at the Vercel project.
 
+Booking notifications:
+- Every booking emails the calendar owner's Gmail ("New booking: ..."), sent through the Gmail API. The refresh token needs both scopes in `scripts/google-oauth/get-refresh-token.mjs` (calendar and gmail.send). Set `BOOKING_ALERT_EMAIL` to send it somewhere else.
+- If the alert can't be sent, the booking still goes through and the Vercel log says `[book] booking alert email failed`.
+
 Booking hours are configured in `lib/booking-config.js` (default Mon–Fri 9–5 CT, 15 min).
 
 ## Files

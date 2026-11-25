@@ -1,4 +1,4 @@
-const { getBusyBlocks, createDiscoveryCall } = require('../lib/google-calendar');
+const { getBusyBlocks, createDiscoveryCall, sendBookingAlert, formatBusinessType } = require('../lib/google-calendar');
 const {
   parseDateOnly,
   buildCandidateStarts,
@@ -29,6 +29,7 @@ module.exports = async function handler(req, res) {
   try {
     const { start, name, email, phone, businessName, businessType, businessTypeOther } =
       req.body || {};
+    const oneLine = (v, max) => (typeof v === 'string' ? v.replace(/\s+/g, ' ').trim().slice(0, max) : '');
     const cleanPhone = typeof phone === 'string' ? phone.replace(/[^\d+()\-.\s]/g, '').trim().slice(0, 30) : '';
     if (!start || !name?.trim() || !email?.trim() || !businessName?.trim()) {
       res.status(400).json({ error: 'Missing name, email, business, or time' });
@@ -61,13 +62,32 @@ module.exports = async function handler(req, res) {
     const event = await createDiscoveryCall({
       start: match.start,
       end: match.end || slotEndDateTime(match.start),
-      name: name.trim().slice(0, 120),
+      name: oneLine(name, 120),
       email: email.trim(),
       phone: cleanPhone,
-      businessName: businessName.trim().slice(0, 160),
+      businessName: oneLine(businessName, 160),
       businessType,
-      businessTypeOther: businessTypeOther?.trim().slice(0, 200) || '',
+      businessTypeOther: oneLine(businessTypeOther, 200),
     });
+
+    // Tell the studio. A failed alert never fails the booking; the event is already on the calendar.
+    try {
+      const day = new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' })
+        .format(Date.parse(`${date}T12:00:00Z`));
+      await sendBookingAlert({
+        when: `${day}, ${match.label} Central`,
+        name: oneLine(name, 120),
+        email: email.trim(),
+        phone: cleanPhone,
+        businessName: oneLine(businessName, 160),
+        typeLine: formatBusinessType(businessType, oneLine(businessTypeOther, 200)),
+        event,
+      });
+    } catch (alertErr) {
+      const g = alertErr?.response?.data?.error;
+      console.error('[book] booking alert email failed:', g?.status || g || alertErr?.message,
+        '(if insufficient permissions: re-run scripts/google-oauth/get-refresh-token.mjs so the token includes gmail.send)');
+    }
 
     res.status(200).json({
       ok: true,
