@@ -96,7 +96,7 @@ const actions = {
     const items = (req.body?.items || []).slice(0, 12);
     const results = await mapLimit(items, 6, async (raw) => {
       const lead = pickLead(raw);
-      const site = await checkSite(lead.website);
+      const site = await checkSite(lead.website, { name: lead.name });
       const speed = typeof raw?.speed === 'number' ? raw.speed : undefined;
       return { id: lead.id, site, ...scoreLead(lead, { site, speed, chain: !!raw?.chain }) };
     });
