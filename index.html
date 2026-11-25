@@ -195,15 +195,22 @@
 
   /* sample owner dashboard: where the texts and voicemails go instead */
   .dash { background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; box-shadow: 0 30px 60px rgba(0,0,0,.10), 0 2px 6px rgba(0,0,0,.04); overflow: hidden; font: 400 14px/1.35 var(--body); }
-  .dash-chrome { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--page-alt); border-bottom: 1px solid var(--rule); }
-  .dash-dots { display: flex; gap: 6px; }
-  .dash-dots i { width: 10px; height: 10px; border-radius: 50%; background: #d1cfc8; }
-  .dash-url { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; font: 500 12px/1 var(--mono); color: var(--ink-soft); background: var(--paper); border: 1px solid var(--rule); border-radius: 5px; padding: 6px 10px; }
+  /* a real-looking browser window: white toolbar, traffic lights, nav, address field */
+  .dash-chrome { display: flex; align-items: center; gap: 14px; padding: 10px 14px; background: #fff; border-bottom: 1px solid #e6e6e6; }
+  .dash-dots { display: flex; gap: 7px; }
+  .dash-dots i { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.12); }
+  .dash-dots i:nth-child(2) { background: #febc2e; }
+  .dash-dots i:nth-child(3) { background: #28c840; }
+  .dash-nav { display: flex; gap: 10px; color: #8a8a86; }
+  .dash-chrome svg { width: 15px; height: 15px; flex: none; }
+  .dash-url { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; gap: 6px; overflow: hidden; white-space: nowrap; font: 400 12.5px/1 var(--body); color: #3c3c3a; background: #f1f1f0; border-radius: 8px; padding: 7px 12px; }
+  .dash-url svg { width: 11px; height: 11px; color: #6b6b68; }
+  .dash-url span { overflow: hidden; text-overflow: ellipsis; }
+  .dash-reload { color: #8a8a86; }
   .dash-tag { font: 600 11px/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--wine); border: 1px solid #c9a2aa; border-radius: 4px; padding: 4px 6px; white-space: nowrap; }
   .dash-body { padding: 16px; display: grid; gap: 14px; }
-  .dash-title { display: flex; justify-content: space-between; align-items: baseline; }
+  .dash-title { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
   .dash-title b { font: 900 24px/1 var(--display); text-transform: uppercase; }
-  .dash-title span { font-size: 13px; color: var(--ink-soft); }
   .dash-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .dash-metrics div { background: var(--page-alt); border-radius: 6px; padding: 10px 12px; }
   .dash-metrics span { display: block; font-size: 12px; color: var(--ink-soft); }
@@ -228,7 +235,7 @@
     @keyframes bump { 40% { transform: translateY(-3px); } }
   }
   @media (max-width: 920px) { .statement { grid-template-columns: 1fr; } .dash { max-width: 520px; } }
-  @media (max-width: 420px) { .dash-metrics strong { font-size: 24px; } .dash-url { font-size: 11px; } .dash-dots { display: none; } .dash-chrome { gap: 8px; padding: 10px; } }
+  @media (max-width: 420px) { .dash-metrics strong { font-size: 24px; } .dash-url { font-size: 11px; } .dash-nav, .dash-reload { display: none; } .dash-chrome { gap: 10px; padding: 10px; } }
   .rot { display: inline-block; height: 1em; overflow: hidden; vertical-align: bottom; color: var(--wine); }
   .rot-track { display: grid; }
   .rot-track > span { display: block; height: 1em; line-height: 1; }
@@ -397,7 +404,13 @@
   .val .no { color: #6b6b68; }
   [data-tier="shop"] .val .yes { translate: 0 110%; }
   [data-tier="trade"] .val .no { translate: 0 -110%; }
-  .for { transition: opacity 160ms ease; min-height: calc(2 * 1.55em); }
+  .for { transition: opacity 160ms ease; min-height: calc(2 * 1.55em); display: flex; align-items: center; gap: 14px; }
+  .for svg { width: 26px; height: 26px; flex: none; fill: none; stroke: var(--ink); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  @media (prefers-reduced-motion: no-preference) {
+    .for svg { animation: for-pop 380ms var(--ease-out) both; }
+    .for svg:nth-child(2) { animation-delay: 40ms; } .for svg:nth-child(3) { animation-delay: 80ms; } .for svg:nth-child(4) { animation-delay: 120ms; }
+    @keyframes for-pop { from { opacity: 0; transform: translateY(4px) scale(.92); } }
+  }
   .t-terms { min-height: calc(2 * 1.55em); }
   .for.swap { opacity: 0; }
   @media (prefers-reduced-motion: no-preference) {
@@ -608,9 +621,9 @@
     <p class="lede">We put them on your website and your calendar, with one place to see every customer. You deal with the two of us, start to finish.</p>
     </div>
     <div class="dash" role="img" aria-label="Sample owner dashboard with sample data: new quote requests from your website, upcoming visits and estimates waiting for approval, all in one place.">
-      <div class="dash-chrome" aria-hidden="true"><span class="dash-dots"><i></i><i></i><i></i></span><span class="dash-url">dashboard.yourbusiness.com</span><span class="dash-tag">Sample data</span></div>
+      <div class="dash-chrome" aria-hidden="true"><span class="dash-dots"><i></i><i></i><i></i></span><span class="dash-nav"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3 5 8l5 5"/></svg><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="opacity:.45"><path d="m6 3 5 5-5 5"/></svg></span><span class="dash-url"><svg viewBox="0 0 12 12" fill="currentColor"><path d="M3.5 5V3.6a2.5 2.5 0 0 1 5 0V5h.5a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1 0h3V3.6a1.5 1.5 0 0 0-3 0z"/></svg><span>dashboard.yourbusiness.com</span></span><svg class="dash-reload" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2.5v3h-3"/></svg></div>
       <div class="dash-body" aria-hidden="true">
-        <div class="dash-title"><b>Owner dashboard</b><span>Today</span></div>
+        <div class="dash-title"><b>Owner dashboard</b><span class="dash-tag">Sample data</span></div>
         <div class="dash-metrics">
           <div class="hot"><span>New requests</span><strong data-dash-new>2</strong></div>
           <div><span>Upcoming visits</span><strong>6</strong></div>
@@ -756,7 +769,7 @@
           <button type="button" aria-pressed="true" data-tier="shop">Shop</button>
           <button type="button" aria-pressed="false" data-tier="trade">Crew</button>
         </div>
-        <p class="for" id="for">Barbers, salons, photographers, florists, restaurants</p>
+        <p class="for" id="for" role="img" aria-label="For barbers, salons, photographers, florists and restaurants"><svg viewBox="0 0 24 24" aria-hidden="true"><title>Barbers and salons</title><circle cx="6" cy="6.5" r="2.7"/><circle cx="6" cy="17.5" r="2.7"/><path d="M8.2 8.1 20 18M8.2 15.9 20 6"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><title>Photographers</title><rect x="3" y="7" width="18" height="13" rx="2"/><path d="m8.5 7 1.5-2.5h4L15.5 7"/><circle cx="12" cy="13.5" r="3.4"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><title>Florists</title><circle cx="12" cy="5.5" r="2.4"/><circle cx="15.8" cy="9" r="2.4"/><circle cx="12" cy="12.5" r="2.4"/><circle cx="8.2" cy="9" r="2.4"/><path d="M12 15v6.5M12 19c-2.6 0-4-1.4-4.4-3.2 2.4 0 3.9 1.1 4.4 3.2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><title>Restaurants</title><path d="M6 3v6a2 2 0 0 0 4 0V3M8 3v18M17 3c-2.2 1.8-2.6 6.4-.4 9H17v9"/></svg></p>
         <hr class="rule">
         <ul id="items">
           <li class="line"><span>Custom website</span><span>incl.</span></li>
@@ -834,10 +847,10 @@
 
 <script>
   const tiers = {
-    shop: { for: 'Barbers, salons, photographers, florists, restaurants',
+    shop: { for: 'For barbers, salons, photographers, florists and restaurants', icons: '<svg viewBox="0 0 24 24" aria-hidden="true"><title>Barbers and salons</title><circle cx="6" cy="6.5" r="2.7"/><circle cx="6" cy="17.5" r="2.7"/><path d="M8.2 8.1 20 18M8.2 15.9 20 6"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><title>Photographers</title><rect x="3" y="7" width="18" height="13" rx="2"/><path d="m8.5 7 1.5-2.5h4L15.5 7"/><circle cx="12" cy="13.5" r="3.4"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><title>Florists</title><circle cx="12" cy="5.5" r="2.4"/><circle cx="15.8" cy="9" r="2.4"/><circle cx="12" cy="12.5" r="2.4"/><circle cx="8.2" cy="9" r="2.4"/><path d="M12 15v6.5M12 19c-2.6 0-4-1.4-4.4-3.2 2.4 0 3.9 1.1 4.4 3.2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><title>Restaurants</title><path d="M6 3v6a2 2 0 0 0 4 0V3M8 3v18M17 3c-2.2 1.8-2.6 6.4-.4 9H17v9"/></svg>',
             items: ['Custom website', 'Booking on your own domain', 'Google profile cleanup'],
             setup: '$1,200', monthly: '$75', terms: 'Hosting, edits and updates included.', name: 'Shop plan' },
-    trade: { for: 'Lawn care, landscaping, contractors',
+    trade: { for: 'For lawn care, landscaping and contractors', icons: '<svg viewBox="0 0 24 24" aria-hidden="true"><title>Lawn care</title><path d="M3.5 14.5h12l2.2-3.5M17.7 11 21 3.5"/><circle cx="6.5" cy="18" r="2.4"/><circle cx="14.5" cy="18" r="2.4"/><path d="M3.5 14.5V12h9v2.5"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><title>Landscaping</title><path d="M5 19.5C5 11 10.5 5 19.5 4.5 19 13 13 19 5 19.5z"/><path d="M5 19.5 13 11.5"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><title>Contractors</title><g transform="rotate(-35 12 12)"><rect x="5.5" y="3.5" width="12" height="5" rx="1"/><path d="M17.5 5h2.5M10.5 8.5v12a1.5 1.5 0 0 0 3 0v-12"/></g></svg>',
              items: ['Custom website', 'Booking on your own domain', 'Google profile cleanup', 'Quote requests', 'Job scheduling', 'Owner dashboard'],
              setup: '$2,500', monthly: '$200', terms: 'Hosting, edits, updates and dashboard support included.', name: 'Crew plan' }
   };
@@ -863,7 +876,7 @@
     $('ticket').dataset.tier = key;
     const forEl = $('for');
     forEl.classList.add('swap');
-    setTimeout(() => { forEl.textContent = t.for; forEl.classList.remove('swap'); }, moving ? 160 : 0);
+    setTimeout(() => { forEl.innerHTML = t.icons; forEl.setAttribute('aria-label', t.for); forEl.classList.remove('swap'); }, moving ? 160 : 0);
     document.querySelectorAll('.crew-only').forEach((li) => {
       li.querySelector('.yes').setAttribute('aria-hidden', String(key !== 'trade'));
       li.querySelector('.no').setAttribute('aria-hidden', String(key === 'trade'));
