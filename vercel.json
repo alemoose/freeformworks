@@ -16,6 +16,11 @@
       "permanent": true
     },
     {
+      "source": "/terms.html",
+      "destination": "/terms",
+      "permanent": true
+    },
+    {
       "source": "/index.html/book.html",
       "destination": "/book",
       "permanent": true
@@ -38,6 +43,10 @@
     {
       "source": "/privacy",
       "destination": "/privacy.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms.html"
     },
     {
       "source": "/work",
