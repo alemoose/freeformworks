@@ -16,3 +16,6 @@ drafts/
 site/
 freeform-works-extracted/
 audit-after.md
+
+# One-time setup script (Google refresh token); never part of the site.
+scripts/
