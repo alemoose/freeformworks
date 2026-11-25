@@ -318,6 +318,11 @@
   .steps { list-style: none; padding: 0; margin-top: clamp(40px, 5vw, 64px); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); counter-reset: step; }
   .steps li { position: relative; border-top: 6px solid var(--wine); padding-top: 20px; counter-increment: step; }
   .steps .when { display: block; font: 600 15px/1.3 var(--mono); color: var(--wine); margin-bottom: 10px; }
+  .si { display: block; width: 76px; height: 57px; margin-bottom: 14px; overflow: visible; }
+  .si .ink { stroke: var(--ink); stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .si .wine { fill: var(--wine); }
+  .si .grey { fill: #d1cfc8; }
+  .si .check { stroke: #fff; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .steps h3 { margin-bottom: 12px; }
   .steps h3::before { content: counter(step) ". "; }
   .steps p { max-width: 38ch; }
@@ -332,6 +337,21 @@
     @keyframes fill-1 { 0%, 4% { transform: scaleX(0); } 24%, 94% { transform: scaleX(1); } 100% { transform: scaleX(0); } }
     @keyframes fill-2 { 0%, 28% { transform: scaleX(0); } 48%, 94% { transform: scaleX(1); } 100% { transform: scaleX(0); } }
     @keyframes fill-3 { 0%, 52% { transform: scaleX(0); } 72%, 94% { transform: scaleX(1); } 100% { transform: scaleX(0); } }
+    /* each step's icon acts out its step while that step's bar fills, on the same 12s clock */
+    .js .steps .si .act { animation-duration: 12s; animation-iteration-count: infinite; animation-play-state: paused; }
+    .js .steps.go .si .act { animation-play-state: running; }
+    .si .ring { animation-name: si-ring; animation-timing-function: ease-in-out; transform-box: fill-box; transform-origin: 50% 90%; }
+    .si .bubble { animation-name: si-bubble; animation-timing-function: var(--ease-out); transform-box: fill-box; transform-origin: 0% 100%; }
+    .si .b1 { animation-name: si-b1; animation-timing-function: var(--ease-out); }
+    .si .b2 { animation-name: si-b2; animation-timing-function: var(--ease-out); }
+    .si .b3 { animation-name: si-b3; animation-timing-function: var(--ease-out); }
+    .si .check { stroke-dasharray: 26; animation-name: si-check; animation-timing-function: var(--ease-out); }
+    @keyframes si-ring { 0%, 4%, 15%, 100% { rotate: 0deg; } 6%, 10% { rotate: -9deg; } 8%, 12% { rotate: 9deg; } }
+    @keyframes si-bubble { 0%, 9% { opacity: 0; transform: scale(.85); } 15%, 94% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(.85); } }
+    @keyframes si-b1 { 0%, 29% { opacity: 0; transform: translateY(-8px); } 34%, 94% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; } }
+    @keyframes si-b2 { 0%, 35% { opacity: 0; transform: translateY(-8px); } 40%, 94% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; } }
+    @keyframes si-b3 { 0%, 41% { opacity: 0; transform: translateY(-8px); } 46%, 94% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; } }
+    @keyframes si-check { 0%, 56% { stroke-dashoffset: 26; } 66%, 94% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 26; } }
   }
 
   /* pricing */
@@ -448,7 +468,7 @@
       .statement-big:hover .rot-track,
       .close-head:hover .clock-hand, .close-head:hover .clock-sweep,
       .marquee:hover .marquee-track,
-      .steps:hover li::before,
+      .steps:hover li::before, .steps:hover .si .act,
       .now:hover .now-dot::after,
       .hero-prices div:hover .pi .sign, .hero-prices div:hover .pi .wheel, .hero-prices div:hover .pi .road, .hero-prices div:hover .pi .truck-body { animation-play-state: paused !important; }
     }
@@ -693,16 +713,19 @@
     <h2 id="how-title">How it works.</h2>
     <ol class="steps">
       <li>
+        <svg class="si" viewBox="0 0 64 48" aria-hidden="true"><g class="act ring"><rect class="ink" x="8" y="8" width="20" height="36" rx="4"/><path class="ink" d="M15 38h6"/></g><g class="act bubble"><path class="wine" d="M34 6h22a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H42l-6 5v-5h-2a4 4 0 0 1-4-4V10a4 4 0 0 1 4-4z"/><circle cx="39" cy="15" r="1.8" fill="#fff"/><circle cx="45" cy="15" r="1.8" fill="#fff"/><circle cx="51" cy="15" r="1.8" fill="#fff"/></g></svg>
         <span class="when">15 minutes, free</span>
         <h3>We talk</h3>
         <p>Tell us what your business does and what's annoying you. We tell you which plan fits and exactly what it costs.</p>
       </li>
       <li>
+        <svg class="si" viewBox="0 0 64 48" aria-hidden="true"><rect class="ink" x="4" y="4" width="56" height="40" rx="4"/><path class="ink" d="M4 13h56"/><circle cx="10" cy="8.5" r="1.6" fill="#141414"/><circle cx="15" cy="8.5" r="1.6" fill="#141414"/><rect class="act b1 wine" x="10" y="18" width="44" height="8" rx="1.5"/><rect class="act b2 grey" x="10" y="29" width="20" height="10" rx="1.5"/><rect class="act b3 grey" x="34" y="29" width="20" height="10" rx="1.5"/></svg>
         <span class="when">About 2 weeks</span>
         <h3>We build it</h3>
         <p>We write the site, set up booking and connect your domain. You get a preview link before anything goes live.</p>
       </li>
       <li>
+        <svg class="si" viewBox="0 0 64 48" aria-hidden="true"><path class="wine" d="M32 4l18 6v12c0 11-8 18-18 22-10-4-18-11-18-22V10z"/><path class="act check" d="M24 24l6 6 11-12"/></svg>
         <span class="when">Launch day, then monthly</span>
         <h3>We look after it</h3>
         <p>We put it live and handle hosting, edits and updates. Send us a change and we make it. Cancel anytime.</p>
