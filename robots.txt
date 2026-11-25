@@ -2,4 +2,8 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
+# Keep personal photos out of Google Images and search thumbnails; they still show on the site.
+User-agent: Googlebot-Image
+Disallow: /assets/people/
+
 Sitemap: https://www.freeformworks.com/sitemap.xml
