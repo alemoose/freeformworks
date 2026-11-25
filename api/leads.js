@@ -172,8 +172,9 @@ module.exports = async function handler(req, res) {
     if (wantsPost && req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
     await fn(req, res, who);
   } catch (err) {
-    const [status, message] = MESSAGES[err.code] || [502, err.code === 'places_error' || err.code === 'speed_error'
-      ? `Google said: ${err.message}` : 'Something went wrong. Check the Vercel logs for [leads].'];
+    const [status, message] = MESSAGES[err.code] || [502, err.code === 'places_error' && err.fixed ? err.message
+      : err.code === 'places_error' || err.code === 'speed_error'
+        ? `Google said: ${err.message}` : 'Something went wrong. Check the Vercel logs for [leads].'];
     console.error(`[leads] ${action} failed:`, err.code || '', err.message);
     res.status(status).json({ error: message });
   }
