@@ -155,7 +155,6 @@
     @keyframes truck-bob { to { translate: 0 -0.8px; } }
     .odo > span { animation: odo-roll 900ms var(--ease-out) both; animation-delay: calc(320ms + var(--i) * 35ms); }
     @keyframes odo-roll { from { transform: translateY(0); } }
-    .motion-paused .pi .sign, .motion-paused .pi .wheel, .motion-paused .pi .road, .motion-paused .pi .truck-body { animation-play-state: paused !important; }
   }
   .hero .see { display: inline-block; margin-top: 12px; padding: 4px 0; }
   .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; margin-top: 28px; }
@@ -260,7 +259,6 @@
     @keyframes fill-1 { 0%, 4% { transform: scaleX(0); } 24%, 94% { transform: scaleX(1); } 100% { transform: scaleX(0); } }
     @keyframes fill-2 { 0%, 28% { transform: scaleX(0); } 48%, 94% { transform: scaleX(1); } 100% { transform: scaleX(0); } }
     @keyframes fill-3 { 0%, 52% { transform: scaleX(0); } 72%, 94% { transform: scaleX(1); } 100% { transform: scaleX(0); } }
-    .motion-paused .steps li::before { animation-play-state: paused !important; }
   }
 
   /* pricing */
@@ -316,7 +314,7 @@
     /* while it plays by itself, the active tab fills like a timer */
     .tabs button { position: relative; }
     .tabs.auto button[aria-pressed="true"]::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: #e0566f; transform-origin: left; animation: tab-timer 5.5s linear both; }
-    .tabs.auto.hold button::after, .motion-paused .tabs button::after { animation-play-state: paused !important; }
+    .tabs.auto.hold button::after { animation-play-state: paused !important; }
     @keyframes tab-timer { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   }
   .line { display: flex; gap: 8px; justify-content: space-between; }
@@ -346,7 +344,7 @@
   .close { background: var(--night); color: var(--on-night); }
   .close-inner { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: end; }
   .close .lede { color: var(--on-night-soft); margin-top: 24px; }
-  .close { overflow: hidden; padding-bottom: 28px; }
+  .close { overflow: hidden; padding-bottom: 0; }
   .close-head { display: grid; grid-template-columns: auto 1fr; column-gap: clamp(20px, 3vw, 40px); align-items: center; }
   .close-head .lede { grid-column: 1 / -1; }
   .clock { width: clamp(96px, 11vw, 164px); }
@@ -356,12 +354,9 @@
   .clock-sweep { fill: none; stroke: var(--wine); stroke-width: 54; stroke-dasharray: 25 100; }
   .clock-hand { stroke: var(--on-night); stroke-width: 4; stroke-linecap: round; transform-origin: 60px 60px; transform: rotate(90deg); }
   .clock-pin { fill: var(--on-night); }
-  .marquee { margin: clamp(40px, 5vw, 72px) calc(-1 * var(--edge)) 0; border-top: 1px solid #2a2a2a; border-bottom: 1px solid #2a2a2a; padding: 18px 0; }
+  .marquee { margin: clamp(40px, 5vw, 72px) calc(-1 * var(--edge)) 0; border-top: 1px solid #2a2a2a; padding: 18px 0; }
   .marquee-track { display: flex; gap: 48px; width: max-content; font: 900 clamp(28px, 3vw, 44px)/1 var(--display); text-transform: uppercase; color: #6b6b68; }
   .marquee-track span::after { content: "·"; margin-left: 48px; color: var(--wine); }
-  .pause-motion { margin-top: 8px; background: none; border: 0; padding: 8px 0; min-height: 44px; color: var(--on-night-soft); font: 400 15px/1.2 var(--body); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
-  .pause-motion:hover { color: var(--on-night); }
-  @media (prefers-reduced-motion: reduce) { .pause-motion { display: none; } }
   @media (prefers-reduced-motion: no-preference) {
     /* the hand sweeps a quarter hour, holds, and starts again */
     .clock-hand { animation: hand 6s cubic-bezier(.65, 0, .35, 1) infinite; }
@@ -375,7 +370,15 @@
     .js .tag:nth-child(2) { animation: rise 450ms var(--ease-out) both 180ms, sway-b 8s ease-in-out 600ms infinite; }
     @keyframes sway-a { 0%, 100% { rotate: 0deg; } 50% { rotate: 1.4deg; } }
     @keyframes sway-b { 0%, 100% { rotate: 0deg; } 50% { rotate: -1.4deg; } }
-    .motion-paused .clock-hand, .motion-paused .clock-sweep, .motion-paused .marquee-track, .motion-paused .rot-track, .motion-paused .tag { animation-play-state: paused !important; }
+    /* anything that loops holds still while the pointer is over it */
+    @media (hover: hover) {
+      .statement-big:hover .rot-track,
+      .close-head:hover .clock-hand, .close-head:hover .clock-sweep,
+      .marquee:hover .marquee-track,
+      .steps:hover li::before,
+      .now:hover .now-dot::after,
+      .hero-prices div:hover .pi .sign, .hero-prices div:hover .pi .wheel, .hero-prices div:hover .pi .road, .hero-prices div:hover .pi .truck-body { animation-play-state: paused !important; }
+    }
   }
   .close .actions { margin-top: 0; justify-content: flex-start; }
   /* live local time and call hours */
@@ -387,7 +390,6 @@
   @media (prefers-reduced-motion: no-preference) {
     .now.open .now-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: inherit; animation: ping 2.4s var(--ease-out) infinite; }
     @keyframes ping { 0% { transform: scale(1); opacity: .7; } 70%, 100% { transform: scale(3.2); opacity: 0; } }
-    .motion-paused .now-dot::after { animation-play-state: paused; }
   }
   .close a.email { color: var(--on-night); }
   .close :focus-visible { outline-color: var(--on-night); }
@@ -706,7 +708,6 @@
     <div class="marquee" aria-hidden="true">
       <div class="marquee-track"><span>Barbers</span><span>Salons</span><span>Florists</span><span>Photographers</span><span>Lawn crews</span><span>Landscapers</span><span>Contractors</span><span>Restaurants</span><span>Barbers</span><span>Salons</span><span>Florists</span><span>Photographers</span><span>Lawn crews</span><span>Landscapers</span><span>Contractors</span><span>Restaurants</span></div>
     </div>
-    <button class="pause-motion" type="button" aria-pressed="false">Pause motion</button>
   </section>
 </main>
 
@@ -764,7 +765,7 @@
     show(b.dataset.tier);
   }));
   /* the receipt flips between the two plans by itself until someone picks one.
-     It holds while it's off screen or under the pointer, and the page's Pause motion stops it. */
+     It holds while it's off screen or under the pointer. */
   if (moving && 'IntersectionObserver' in window) {
     const wrap = tabsEl.closest('.ticket-wrap');
     let onScreen = false, near = false;
@@ -816,15 +817,6 @@
   })();
 </script>
 <script>
-  (() => {
-    const btn = document.querySelector('.pause-motion');
-    if (!btn) return;
-    btn.addEventListener('click', () => {
-      const on = document.documentElement.classList.toggle('motion-paused');
-      btn.setAttribute('aria-pressed', String(on));
-      btn.textContent = on ? 'Play motion' : 'Pause motion';
-    });
-  })();
   /* name tags tilt toward the pointer while it's over them */
   (() => {
     if (!matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) return;
