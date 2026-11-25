@@ -55,8 +55,9 @@
   .login { max-width: 420px; margin: 8vh auto 0; background: var(--page); border: 1px solid var(--rule); border-radius: 12px; padding: 32px; }
   .login h1 { font: 900 44px/0.95 var(--display); text-transform: uppercase; }
   .login p.sub { color: var(--ink-soft); margin: 8px 0 24px; }
-  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--rule-strong); border-radius: 8px; overflow: hidden; margin: 6px 0 18px; padding: 0; }
-  .seg legend { font-weight: 700; font-size: 14px; padding: 0; margin-bottom: 6px; float: left; width: 100%; }
+  .seg { border: 0; margin: 0 0 18px; padding: 0; min-width: 0; }
+  .seg legend { font-weight: 700; font-size: 14px; padding: 0; margin-bottom: 6px; }
+  .seg-opts { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule-strong); border-radius: 8px; overflow: hidden; }
   .seg label { position: relative; text-align: center; padding: 11px 8px; font-weight: 700; cursor: pointer; }
   .seg label + label { border-left: 1px solid var(--rule-strong); }
   .seg input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
@@ -160,8 +161,10 @@
     <form id="login-form">
       <fieldset class="seg">
         <legend>Who's this?</legend>
-        <label><input type="radio" name="who" value="Agustin" required> Agustin</label>
-        <label><input type="radio" name="who" value="Maria"> Maria</label>
+        <div class="seg-opts">
+          <label><input type="radio" name="who" value="Agustin" required> Agustin</label>
+          <label><input type="radio" name="who" value="Maria"> Maria</label>
+        </div>
       </fieldset>
       <label class="field"><span>Password</span><input class="input" type="password" name="password" autocomplete="current-password" required></label>
       <button class="btn" type="submit">Sign in</button>
@@ -328,7 +331,8 @@
 
   /* ---------- search ---------- */
   function renderKinds() {
-    const picked = new Set(store.get('kinds', DEFAULT_KINDS));
+    const remembered = store.get('kinds', null);
+    const picked = new Set(Array.isArray(remembered) && remembered.length ? remembered : DEFAULT_KINDS);
     $('city').value = store.get('city', 'Tuscaloosa, AL');
     $('kinds').replaceChildren(...Object.entries(state.types).map(([k, label]) =>
       el('label', { class: 'chip' }, el('input', { type: 'checkbox', name: 'kind', value: k, checked: picked.has(k) }), label)));
