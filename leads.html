@@ -402,7 +402,7 @@
     node.addEventListener('change', () => { store.set(id, node.type === 'checkbox' ? node.checked : node.value); renderResults(); });
   });
 
-  const weak = (l) => l.site && (l.site.kind === 'down' || l.site.kind === 'booking-only'
+  const weak = (l) => l.site && (l.site.kind === 'down' || l.site.kind === 'booking-only' || l.site.kind === 'not-theirs'
     || (l.site.kind === 'site' && (!l.site.phoneReady || !l.site.https || l.site.booking || (typeof l.speed === 'number' && l.speed < 50))));
 
   function sortLeads(list, how) {
