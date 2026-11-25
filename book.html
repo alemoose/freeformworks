@@ -61,10 +61,11 @@
   @media (min-width: 1180px) {
     .card { grid-template-columns: 320px 500px 290px; max-width: none; width: max-content; }
     .info { grid-row: 1; }
-    .card:not(.has-day) .times-pane { display: block; }
+    .card:not(.has-day) .times-pane, .times-pane { display: flex; flex-direction: column; }
     .times-pane { grid-column: 3; grid-row: 1; border-top: 0; border-left: 1px solid var(--rule); }
     .form-pane { grid-column: 2 / -1; grid-row: 1; }
-    .times { grid-template-columns: 1fr; max-height: 470px; overflow-y: auto; padding: 2px; margin: -2px; }
+    /* the list fills the column and scrolls inside it, so it never makes the card taller */
+    .times { grid-template-columns: 1fr; align-content: start; flex: 1 1 0; min-height: 0; contain: size; overflow-y: auto; padding: 2px; margin: -2px; }
     .form { grid-template-columns: 1fr 1fr; max-width: none; align-items: start; }
     .form > .full, .form > .btn, .form > .msg { grid-column: 1 / -1; }
   }
@@ -223,6 +224,8 @@
   @media (max-width: 480px) { .success-row { grid-template-columns: 1fr; gap: 4px; } }
   .success-row dt { margin: 0; font-size: 15px; font-weight: 700; color: var(--ink-soft); }
   .success-row dd { margin: 0; color: var(--ink); line-height: 1.45; }
+  #success-greeting:focus { outline: none; }
+  .change-note { margin-top: 28px; color: var(--ink-soft); }
   .hidden { display: none !important; }
 </style>
 </head>
@@ -329,7 +332,7 @@
       <h1 id="success-greeting" tabindex="-1">See you soon.</h1>
       <p class="sub" id="success-lead">Check your email for the calendar invite. It has a video link. If you left a phone number, we'll call you instead.</p>
       <dl class="success-summary" id="success-summary" aria-label="Booking summary"></dl>
-      <p style="margin-top:28px"><a href="/">Back to the site</a></p>
+      <p class="change-note">Need a different time? Email <a href="mailto:hello@freeformworks.com">hello@freeformworks.com</a> and we'll move it.</p>
     </div>
   </main>
 
@@ -584,7 +587,7 @@
       c.classList.toggle('is-selected', slotsCache[i]?.start === start);
       c.setAttribute('aria-pressed', String(slotsCache[i]?.start === start));
     });
-    chosen.textContent = formatSlotWhen(start).replace(' CT', ' Central');
+    chosen.textContent = formatSlotWhen(start);
     booking.classList.add('has-time');
     if (stacked.matches) booking.scrollIntoView({ block: 'start' });
     formTitle.focus({ preventScroll: stacked.matches });
@@ -621,7 +624,7 @@
     const when = fmtDayLong.format(Date.parse(`${date}T12:00:00Z`));
     const slot = slotsCache.find((s) => s.start === startIso);
     const time = slot?.label || startIso.slice(11, 16);
-    return `${when} · ${time} CT`;
+    return `${when} · ${time} Central`;
   }
 
   function addSummaryRow(term, detail) {

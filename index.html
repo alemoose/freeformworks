@@ -688,14 +688,20 @@
   }, { threshold: 0.4 }).observe(steps);
   else if (steps) steps.classList.add('go');
   const slot = document.querySelector('[data-next-slot]');
-  if (slot) fetch('/api/slots').then((r) => (r.ok ? r.json() : null)).then((d) => {
-    if (!d || !d.dates || !d.dates.length) return null;
-    return fetch('/api/slots?date=' + encodeURIComponent(d.dates[0])).then((r) => (r.ok ? r.json() : null)).then((t) => {
-      if (!t || !t.slots || !t.slots.length) return;
-      const day = new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' }).format(Date.parse(d.dates[0] + 'T12:00:00Z'));
-      slot.textContent = `Free call. Next open time: ${day}, ${t.slots[0].label} Central.`;
-    });
-  }).catch(() => {});
+  /* walk forward from today until a day still has open times (today is often past the 4-hour notice) */
+  if (slot) (async () => {
+    try {
+      const d = await fetch('/api/slots').then((r) => (r.ok ? r.json() : null));
+      for (const date of (d && d.dates ? d.dates.slice(0, 4) : [])) {
+        const t = await fetch('/api/slots?date=' + encodeURIComponent(date)).then((r) => (r.ok ? r.json() : null));
+        if (!t) return;
+        if (!t.slots || !t.slots.length) continue;
+        const day = new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' }).format(Date.parse(date + 'T12:00:00Z'));
+        slot.textContent = `Free call. Next open time: ${day}, ${t.slots[0].label} Central.`;
+        return;
+      }
+    } catch (e) {}
+  })();
 </script>
 <script>
   (() => {
