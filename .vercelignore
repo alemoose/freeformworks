@@ -1,2 +1,18 @@
 # Grounds is deployed as a separate Python app, never served as static source.
 grounds-app/
+
+# Agent tooling, never part of the site.
+.claude/
+skills-lock.json
+freeform-redesign-brief.md
+docs/
+audit-before.md
+PRODUCT.md
+.impeccable/
+# Design drafts and option pages stay in git, never published.
+drafts/
+
+# Old design exports and direction mockups, kept in git, never published.
+site/
+freeform-works-extracted/
+audit-after.md

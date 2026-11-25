@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Draft A: Poster · Freeform Works</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #ffd23f;      /* show-poster yellow stock */
+    --ink: #141414;        /* black ink */
+    --red: #c8102e;        /* second ink, display sizes only */
+    --edge: clamp(20px, 5vw, 72px);
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 18px/1.5 "Atkinson Hyperlegible", system-ui, sans-serif;
+  }
+  ::selection { background: var(--ink); color: var(--paper); }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+
+  .bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px var(--edge);
+    border-bottom: 3px solid var(--ink);
+    font-weight: 700;
+  }
+  .mark {
+    font: 900 26px/1 "Big Shoulders Display", sans-serif;
+    letter-spacing: 0.01em; text-transform: uppercase; text-decoration: none;
+  }
+  .bar nav { display: flex; gap: 28px; }
+  .bar nav a { text-decoration: none; padding: 10px 0; }
+  .bar nav a:hover { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 3px; }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: clamp(28px, 4vw, 64px);
+    padding: clamp(32px, 6vw, 72px) var(--edge) clamp(40px, 6vw, 80px);
+    min-height: calc(100svh - 72px);
+    align-items: center;
+  }
+  h1 {
+    font: 900 clamp(64px, 10.5vw, 168px)/0.86 "Big Shoulders Display", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    position: relative;
+  }
+  /* two-ink print: the red pass lands a hair off register */
+  h1 .print { position: relative; display: block; }
+  h1 .print::before {
+    content: attr(data-ink);
+    position: absolute; inset: 0;
+    color: var(--red);
+    transform: translate(5px, 4px);
+    z-index: -1;
+  }
+  h1 .red { color: var(--red); }
+  .lede {
+    margin-top: 28px;
+    max-width: 34ch;
+    font-size: clamp(19px, 1.6vw, 22px);
+  }
+  .lede strong { font-weight: 700; }
+  .price {
+    display: inline-flex; align-items: baseline; gap: 10px;
+    margin-top: 28px;
+    padding: 8px 14px 10px;
+    border: 3px solid var(--ink);
+    transform: rotate(-2deg);
+    font-weight: 700;
+  }
+  .price b { font: 900 44px/1 "Big Shoulders Display", sans-serif; }
+  .cta {
+    display: inline-flex; align-items: center; gap: 12px;
+    margin-top: 32px; margin-left: 4px;
+    padding: 18px 28px;
+    background: var(--ink); color: var(--paper);
+    font-weight: 700; font-size: 19px; text-decoration: none;
+    border-radius: 2px;
+    transition: transform 160ms cubic-bezier(.2,.8,.2,1);
+  }
+  .cta:hover { transform: translateY(-2px); }
+  .cta:active { transform: translateY(1px); }
+  .cta svg { width: 18px; height: 18px; }
+  .fine { margin-top: 14px; font-size: 16px; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0 24px; }
+
+  .people {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+    align-self: stretch; align-content: center;
+  }
+  .person { margin: 0; }
+  .person:nth-child(1) { transform: rotate(-2.5deg); }
+  .person:nth-child(2) { transform: rotate(2deg) translateY(36px); }
+  .slot {
+    aspect-ratio: 4 / 5;
+    border: 3px solid var(--ink);
+    background:
+      radial-gradient(circle at 1px 1px, rgba(20,20,20,.28) 1.2px, transparent 1.6px) 0 0 / 7px 7px,
+      #f2c230;
+    display: grid; place-items: center; text-align: center;
+    padding: 16px; font-weight: 700; font-size: 15px;
+  }
+  .name {
+    margin-top: 12px;
+    font: 900 30px/0.95 "Big Shoulders Display", sans-serif;
+    text-transform: uppercase;
+  }
+  .role { font-size: 16px; margin-top: 4px; }
+
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; min-height: 0; }
+    h1 { line-height: 0.94; }
+    h1 .print::before { transform: translate(3px, 3px); }
+    .bar nav { display: none; }
+    .people { max-width: 460px; }
+    .person:nth-child(2) { transform: rotate(2deg) translateY(18px); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    h1 .print { animation: press 520ms cubic-bezier(.16,1,.3,1) both; }
+    h1 .print:nth-child(2) { animation-delay: 70ms; }
+    h1 .print:nth-child(3) { animation-delay: 140ms; }
+    @keyframes press { from { opacity: 0; transform: scale(1.04); } to { opacity: 1; transform: none; } }
+  }
+</style>
+</head>
+<body>
+  <header class="bar">
+    <a class="mark" href="#">Freeform Works</a>
+    <nav aria-label="Main">
+      <a href="#">Our work</a>
+      <a href="#">Prices</a>
+      <a href="#">About us</a>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <div>
+      <h1>
+        <span class="print" data-ink="Websites">Websites</span>
+        <span class="print" data-ink="for shops">for shops</span>
+        <span class="print red" data-ink="and crews.">and crews.</span>
+      </h1>
+      <p class="lede">We're <strong>Agustin and María</strong>, two UA students in Tuscaloosa. We build your website, booking on your own domain, and one place to see every new customer.</p>
+      <div class="actions">
+        <p class="price"><span>From</span> <b>$1,200</b></p>
+        <a class="cta" href="/book">Book a 15-min call
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
+      </div>
+      <p class="fine">Free call. Weekdays, 1 to 5 PM Central.</p>
+    </div>
+
+    <div class="people" aria-label="Who you'll work with">
+      <figure class="person">
+        <div class="slot">Photo of Agustin goes here</div>
+        <p class="name">Agustin Lemuz-Juarez</p>
+        <p class="role">Builds it</p>
+      </figure>
+      <figure class="person">
+        <div class="slot">Photo of María goes here</div>
+        <p class="name">María Estrada</p>
+        <p class="role">Makes it fit your business</p>
+      </figure>
+    </div>
+  </main>
+</body>
+</html>

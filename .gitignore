@@ -5,3 +5,7 @@ node_modules/
 .env.*
 !.env.example
 .vercel
+
+# Third-party agent skills; restore with: npx skills experimental_install
+.claude/skills/
+.taste-skill/

@@ -4,412 +4,299 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Book a call · Freeform Works</title>
-<meta name="description" content="Book a free 15-minute discovery call with Freeform Works." />
-<meta name="theme-color" content="#0E0E10" />
+<meta name="description" content="Book a free 15-minute call with Agustin or María at Freeform Works." />
+<meta name="theme-color" content="#ffffff" />
 <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="preload" href="assets/fonts/big-shoulders-display-900-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/public-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+  @font-face { font-family: "Big Shoulders Display"; font-style: normal; font-weight: 900; font-display: swap; src: url("assets/fonts/big-shoulders-display-900-latin.woff2") format("woff2"); }
+  @font-face { font-family: "Public Sans"; font-style: normal; font-weight: 100 900; font-display: swap; src: url("assets/fonts/public-sans-latin.woff2") format("woff2"); }
+  @font-face { font-family: "Spline Sans Mono"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("assets/fonts/spline-sans-mono-latin.woff2") format("woff2"); }
   :root {
-    --paper: #FCFBF9;
-    --ink: #0F0F10;
-    --ox: #7C2031;
-    --ox-tint: #A85063;
-    --d-paper: #0E0E10;
-    --d-ink: #F1ECE2;
-    --d-gray: #6F6B66;
-    --d-rule: rgba(241, 236, 226, 0.10);
-    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --pad-x: clamp(24px, 5vw, 80px);
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --page: #ffffff;
+    --page-alt: #f3f2ee;
+    --ink: #141414;
+    --ink-soft: #4a4a47;
+    --rule: #d9d8d2;
+    --wine: #7c2031;
+    --wine-tint: #f1e6e8;
+    --on-wine: #ffffff;
+    --error: #a3172b;
+    --display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+    --sans: "Public Sans", system-ui, sans-serif;
+    --mono: "Spline Sans Mono", ui-monospace, monospace;
+    --pad-x: clamp(20px, 5vw, 80px);
   }
   *, *::before, *::after { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--d-paper);
-    color: var(--d-ink);
-    font-family: var(--sans);
-    font-size: 17px;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
+  body { margin: 0; background: var(--page); color: var(--ink); font: 400 17px/1.55 var(--sans); }
+  ::selection { background: var(--wine); color: var(--on-wine); }
+  :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  a { color: inherit; }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px var(--pad-x); border-bottom: 1px solid var(--rule); }
+  .mark { display: block; line-height: 0; }
+  .mark img { height: 44px; width: auto; }
+  .back { font-weight: 700; text-decoration: underline; text-underline-offset: 4px; padding: 8px 0; }
+  .back:hover { color: var(--wine); }
+  .wrap { padding: clamp(28px, 5vw, 64px) var(--pad-x) 96px; }
+  h1 { font: 900 clamp(44px, 6vw, 56px)/0.9 var(--display); text-transform: uppercase; margin: 0 0 14px; text-wrap: balance; }
+  .sub { color: var(--ink-soft); margin: 0 0 24px; max-width: 44ch; font-size: 17px; }
+
+  /* booking card: details | calendar | times, like a desk calendar laid open */
+  .card { display: grid; grid-template-columns: minmax(0, 1fr); border: 1px solid var(--rule); border-radius: 8px; background: var(--page); box-shadow: 0 24px 60px rgba(0,0,0,.06); }
+  .pane { padding: clamp(22px, 3vw, 32px); min-width: 0; }
+  .info { background: var(--page-alt); border-radius: 8px 8px 0 0; }
+  .cal-pane, .times-pane, .form-pane { border-top: 1px solid var(--rule); }
+  .card:not(.has-day) .times-pane { display: none; }
+  .card.has-time .cal-pane, .card.has-time .times-pane { display: none; }
+  .card:not(.has-time) .form-pane { display: none; }
+  @media (min-width: 860px) {
+    .card { grid-template-columns: 300px minmax(0, 1fr); max-width: 900px; margin: 0 auto; }
+    .info { grid-row: 1 / span 2; border-radius: 8px 0 0 8px; border-right: 1px solid var(--rule); }
+    .cal-pane { border-top: 0; }
+    .times-pane { grid-column: 2; }
+    .form-pane { grid-column: 2; grid-row: 1 / span 2; border-top: 0; }
   }
-  ::selection { background: var(--ox); color: var(--paper); }
-  a { color: inherit; text-decoration: none; }
-  .wrap {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: clamp(48px, 8vw, 96px) var(--pad-x) 80px;
-  }
-  .back {
-    font-size: 14px;
-    color: var(--d-gray);
-    border-bottom: 1px solid var(--d-rule);
-    padding-bottom: 2px;
-    display: inline-block;
-    margin-bottom: 48px;
-  }
-  .back:hover { color: var(--ox-tint); }
-  .label {
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--ox-tint);
-    margin: 0 0 16px;
-  }
-  h1 {
-    font-size: clamp(32px, 5vw, 48px);
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 1.08;
-    margin: 0 0 12px;
-  }
-  .sub {
-    color: var(--d-gray);
-    margin: 0 0 40px;
-    max-width: 42ch;
-  }
-  .panel {
-    border-top: 1px solid var(--d-rule);
-    padding-top: 32px;
-  }
-  .step-title {
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--d-gray);
-    margin: 0 0 16px;
+  @media (min-width: 1180px) {
+    .card { grid-template-columns: 320px 500px 290px; max-width: none; width: max-content; }
+    .info { grid-row: 1; }
+    .card:not(.has-day) .times-pane { display: block; }
+    .times-pane { grid-column: 3; grid-row: 1; border-top: 0; border-left: 1px solid var(--rule); }
+    .form-pane { grid-column: 2 / -1; grid-row: 1; }
+    .times { grid-template-columns: 1fr; max-height: 470px; overflow-y: auto; padding: 2px; margin: -2px; }
+    .form { grid-template-columns: 1fr 1fr; max-width: none; align-items: start; }
+    .form > .full, .form > .btn, .form > .msg { grid-column: 1 / -1; }
   }
 
-  /* ── Calendar ── */
-  .cal {
-    margin-bottom: 32px;
-    max-width: 400px;
+  .label { display: flex; align-items: center; gap: 10px; margin: 0 0 18px; font: 600 14px/1.2 var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); }
+  .label::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--wine); flex: none; }
+
+  .people { list-style: none; padding: 0; margin: 0 0 22px; display: grid; gap: 12px; }
+  .people li { display: grid; grid-template-columns: 52px 1fr; gap: 14px; align-items: center; }
+  .people img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; }
+  .people strong { display: block; font: 900 24px/1 var(--display); text-transform: uppercase; }
+  .people span { display: block; font-size: 15px; color: var(--ink-soft); line-height: 1.3; margin-top: 2px; }
+  .meta { list-style: none; padding: 18px 0 0; margin: 0; border-top: 1px solid var(--rule); display: grid; gap: 10px; font-size: 16px; }
+  .meta li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; }
+  .meta svg { width: 20px; height: 20px; margin-top: 2px; color: var(--wine); }
+  .chosen { margin: 18px 0 0; padding: 14px 16px; border-radius: 4px; background: var(--wine); color: var(--on-wine); font-weight: 700; line-height: 1.35; }
+  .card:not(.has-time) .chosen { display: none; }
+  .hours { color: var(--ink-soft); margin: 20px 0 0; font-size: 15px; }
+  .hours a { color: var(--ink); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 859px) {
+    h1 { font-size: 40px; }
+    .sub { font-size: 16px; margin-bottom: 18px; }
+    .people { grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .people li { grid-template-columns: 44px 1fr; gap: 10px; align-items: start; }
+    .people img { width: 44px; height: 44px; }
+    .people strong { font-size: 21px; }
+    .people span { font-size: 14px; }
+    .meta { font-size: 15px; gap: 6px 18px; padding-top: 14px; display: flex; flex-wrap: wrap; }
+    .meta li { display: flex; gap: 6px; align-items: center; }
+    .meta svg { margin-top: 0; width: 18px; height: 18px; }
+    .hours { margin-top: 12px; font-size: 14px; }
   }
-  .cal-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  .cal-month {
-    font-size: 16px;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-  }
+
+  .times-head { margin-bottom: 18px; }
+  .times-head .label { margin: 0 0 12px; }
+  .times-day { margin: 0; font: 900 28px/1 var(--display); text-transform: uppercase; }
+  .times-day:empty { display: none; }
+  .times-hint { color: var(--ink-soft); font-size: 16px; margin: 0; max-width: 24ch; }
+  .back-btn { appearance: none; border: 0; background: none; padding: 10px 0; margin: -10px 0 12px; font: 700 16px/1.2 var(--sans); color: var(--ink); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+  .back-btn:hover { color: var(--wine); }
+  .form-pane h2:focus { outline: none; }
+
+  /* calendar */
+  .cal { max-width: 460px; }
+  .cal-pane .msg { margin-top: 18px; }
+  .cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .cal-month { font: 900 28px/1 var(--display); text-transform: uppercase; }
   .cal-nav-btn {
-    appearance: none;
-    width: 36px;
-    height: 36px;
-    border: 1px solid var(--d-rule);
-    border-radius: 999px;
-    background: transparent;
-    color: var(--d-ink);
-    font-size: 18px;
-    line-height: 1;
-    cursor: pointer;
-    transition: border-color 160ms ease, background 160ms ease;
+    appearance: none; width: 44px; height: 44px; border: 2px solid var(--ink); border-radius: 3px;
+    background: var(--page); color: var(--ink); font-size: 20px; line-height: 1; cursor: pointer;
+    transition: background 160ms ease, color 160ms ease;
   }
-  .cal-nav-btn:hover:not(:disabled) { border-color: var(--ox-tint); }
-  .cal-nav-btn:disabled { opacity: 0.25; cursor: not-allowed; }
-  .cal-weekdays {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-    margin-bottom: 8px;
-  }
-  .cal-weekdays span {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--d-gray);
-    text-align: center;
-    padding: 4px 0;
-  }
-  .cal-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-  }
+  .cal-nav-btn:hover:not(:disabled) { background: var(--ink); color: var(--page); }
+  .cal-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 6px; }
+  .cal-weekdays span { font-size: 13px; font-weight: 700; color: var(--ink-soft); text-align: center; padding: 4px 0; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
   .cal-day {
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: 500;
-    border: none;
-    border-radius: 999px;
-    background: transparent;
-    color: var(--d-gray);
-    cursor: default;
-    padding: 0;
-    font-family: inherit;
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    font: 700 16px/1 var(--sans); font-variant-numeric: tabular-nums;
+    border: 2px solid transparent; border-radius: 3px; background: transparent; color: var(--ink-soft);
+    cursor: default; padding: 0;
   }
   .cal-day.is-empty { visibility: hidden; }
-  .cal-day.is-muted { opacity: 0.28; }
-  .cal-day.is-open {
-    color: var(--d-ink);
-    cursor: pointer;
-    border: 1px solid transparent;
-  }
-  .cal-day.is-open:hover {
-    border-color: var(--ox-tint);
-  }
-  .cal-day.is-today.is-open {
-    box-shadow: inset 0 0 0 1px var(--d-rule);
-  }
-  .cal-day.is-selected {
-    background: var(--d-ink);
-    color: var(--d-paper);
-    border-color: var(--d-ink);
-  }
-  .cal-day.is-selected:hover { border-color: var(--d-ink); }
+  .cal-day.is-muted { color: #a3a29c; font-weight: 400; }
+  .cal-day.is-open { color: var(--ink); background: var(--wine-tint); border-color: #c9a2aa; cursor: pointer; transition: border-color 140ms ease, background 140ms ease; }
+  .cal-day.is-open:hover { border-color: var(--wine); }
+  .cal-day.is-today.is-open { text-decoration: underline; text-underline-offset: 4px; }
+  .cal-day.is-selected, .cal-day.is-selected:hover { background: var(--wine); color: var(--on-wine); border-color: var(--wine); }
 
-  /* ── Skeleton (HeroUI-style shimmer) ── */
-  @keyframes skel-shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .skel::after { animation: none; opacity: 0.35; }
-  }
-  .skel {
-    position: relative;
-    overflow: hidden;
-    background: var(--d-rule);
-    border-radius: 8px;
-  }
+  /* skeletons */
+  @keyframes skel-shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  @media (prefers-reduced-motion: reduce) { .skel::after { animation: none; opacity: 0.35; } }
+  .skel { position: relative; overflow: hidden; background: var(--page-alt); border-radius: 3px; }
   .skel::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(241, 236, 226, 0.14) 45%,
-      rgba(241, 236, 226, 0.22) 55%,
-      transparent 100%
-    );
-    animation: skel-shimmer 1.4s ease-in-out infinite;
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.7) 50%, transparent 100%);
+    animation: skel-shimmer 1.4s linear infinite;
   }
   .cal-skeleton .cal-head { pointer-events: none; }
-  .skel-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 999px;
-    flex-shrink: 0;
-  }
-  .skel-title {
-    width: 128px;
-    height: 18px;
-    border-radius: 6px;
-  }
-  .skel-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-  }
-  .skel-day {
-    aspect-ratio: 1;
-    border-radius: 999px;
-  }
-  .times-skel {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 32px;
-  }
-  .skel-chip {
-    width: 72px;
-    height: 40px;
-    border-radius: 999px;
-  }
-  .skel-chip:nth-child(3n) { width: 84px; }
-  .skel-chip:nth-child(4n) { width: 64px; }
+  .skel-btn { width: 44px; height: 44px; flex-shrink: 0; }
+  .skel-title { width: 140px; height: 24px; }
+  .skel-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .skel-day { aspect-ratio: 1; }
+  .times-skel { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; }
+  .skel-chip { height: 48px; }
+  @media (min-width: 1180px) { .times-skel { grid-template-columns: 1fr; } }
 
-  .times {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 32px;
-  }
+  /* times */
+  .times { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; }
   .chip {
-    appearance: none;
-    border: 1px solid var(--d-rule);
-    background: transparent;
-    color: var(--d-ink);
-    font: inherit;
-    font-size: 14px;
-    padding: 10px 16px;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+    appearance: none; border: 2px solid var(--ink); background: var(--page); color: var(--ink);
+    font: 700 16px/1 var(--sans); font-variant-numeric: tabular-nums; min-height: 48px; padding: 12px 18px;
+    border-radius: 3px; cursor: pointer; transition: background 140ms ease, color 140ms ease;
   }
-  .chip:hover { border-color: var(--ox-tint); }
-  .chip.is-selected {
-    background: var(--d-ink);
-    color: var(--d-paper);
-    border-color: var(--d-ink);
-  }
-  .form { display: grid; gap: 16px; }
-  label {
-    display: grid;
-    gap: 8px;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--d-gray);
-  }
+  .chip:hover { background: var(--wine-tint); }
+  .chip.is-selected { background: var(--wine); color: var(--on-wine); border-color: var(--wine); }
+
+  /* form */
+  .form { display: grid; gap: 18px; max-width: 520px; }
+  .done { max-width: 760px; margin: 0 auto; }
+  .done h1 { font-size: clamp(48px, 8vw, 88px); }
+  label { display: grid; gap: 8px; font-size: 16px; font-weight: 700; color: var(--ink); }
+  .opt { font-weight: 400; color: var(--ink-soft); }
   input, textarea, select {
-    font: inherit;
-    font-size: 16px;
-    text-transform: none;
-    letter-spacing: 0;
-    color: var(--d-ink);
-    background: var(--d-paper);
-    border: 1px solid var(--d-rule);
-    border-radius: 8px;
-    padding: 12px 14px;
-    width: 100%;
+    font: inherit; font-weight: 400; font-size: 17px; color: var(--ink); background: var(--page);
+    border: 2px solid #8f8e88; border-radius: 3px; padding: 12px 14px; width: 100%; min-height: 50px;
   }
   select {
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236F6B66' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    padding-right: 40px;
+    cursor: pointer; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23141414' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px;
   }
-  input:focus, textarea:focus, select:focus {
-    outline: none;
-    border-color: var(--ox-tint);
-  }
+  input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid var(--wine); outline-offset: 1px; border-color: var(--ink); }
+  input::placeholder { color: #75746e; }
   textarea { min-height: 72px; resize: vertical; }
   .field-other.hidden { display: none; }
   .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 22px;
-    border: none;
-    border-radius: 999px;
-    font: inherit;
-    font-size: 14.5px;
-    font-weight: 500;
-    cursor: pointer;
-    background: var(--d-ink);
-    color: var(--d-paper);
-    transition: background 160ms ease;
-    margin-top: 8px;
-    width: fit-content;
+    display: inline-flex; align-items: center; justify-content: center; min-height: 56px; padding: 16px 28px;
+    border: none; border-radius: 3px; font: 700 18px/1.2 var(--sans); cursor: pointer;
+    background: var(--wine); color: var(--on-wine); margin-top: 6px; width: fit-content;
   }
-  .btn:hover:not(:disabled) { background: var(--ox); }
-  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
-  .msg { font-size: 14px; color: var(--d-gray); margin: 0; }
-  .msg.is-error { color: #e8a0a8; }
-  .done a {
-    color: var(--ox-tint);
-    border-bottom: 1px solid var(--d-rule);
-    padding-bottom: 2px;
+  /* motion: one shared curve; movement only for people who allow it */
+  @media (prefers-reduced-motion: no-preference) {
+    .btn { transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out); }
+    .btn:active:not(:disabled) { transform: scale(0.97); box-shadow: none; }
   }
-  .success-summary {
-    margin: 28px 0 0;
-    padding: 20px 0 0;
-    border-top: 1px solid var(--d-rule);
-    display: grid;
-    gap: 14px;
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,.18); }
+    .btn:hover:active:not(:disabled) { transform: translateY(-2px) scale(0.97); box-shadow: 0 4px 10px rgba(0,0,0,.16); }
   }
-  .success-row {
-    display: grid;
-    grid-template-columns: 108px 1fr;
-    gap: 12px 20px;
-    font-size: 15px;
-    align-items: baseline;
+  @media (prefers-reduced-motion: reduce) {
+    .btn { transition: opacity 120ms ease; }
+    .btn:active:not(:disabled) { opacity: 0.85; }
   }
-  @media (max-width: 480px) {
-    .success-row { grid-template-columns: 1fr; gap: 4px; }
+
+  /* each step fades up as it appears; reduced motion keeps the fade, drops the rise */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal { transition: opacity 200ms var(--ease-out), translate 200ms var(--ease-out); }
+    .reveal.done-reveal { transition-duration: 300ms; }
+    @starting-style { .reveal { opacity: 0; translate: 0 6px; } }
   }
-  .success-row dt {
-    margin: 0;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--d-gray);
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { transition: opacity 150ms ease; }
+    @starting-style { .reveal { opacity: 0; } }
   }
-  .success-row dd {
-    margin: 0;
-    color: var(--d-ink);
-    line-height: 1.45;
-  }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .msg { font-size: 16px; color: var(--ink-soft); margin: 0; }
+  .msg.is-error { color: var(--error); font-weight: 700; }
+
+  /* success */
+  .done a { font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+  .done a:hover { color: var(--wine); }
+  .success-summary { margin: 28px 0 0; padding: 20px 0 0; border-top: 2px solid var(--ink); display: grid; gap: 14px; }
+  .success-row { display: grid; grid-template-columns: 120px 1fr; gap: 12px 20px; font-size: 17px; align-items: baseline; }
+  @media (max-width: 480px) { .success-row { grid-template-columns: 1fr; gap: 4px; } }
+  .success-row dt { margin: 0; font-size: 15px; font-weight: 700; color: var(--ink-soft); }
+  .success-row dd { margin: 0; color: var(--ink); line-height: 1.45; }
   .hidden { display: none !important; }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <a href="/" class="back">← Back</a>
-    <div id="page-head">
-      <p class="label">Book a call</p>
-      <h1>15-minute call</h1>
-    </div>
+  <header class="bar">
+    <a class="mark" href="/"><img src="assets/fw-logo.png" width="61" height="44" alt="Freeform Works"></a>
+    <a href="/" class="back">Back to the site</a>
+  </header>
+  <main class="wrap">
+    <div class="card" id="booking">
+      <aside class="pane info" id="page-head">
+        <h1>Book a 15&#8209;minute call</h1>
+        <p class="sub">It's free. We'll ask what your business does and what's bugging you, then tell you which plan fits and what it costs.</p>
+        <ul class="people" aria-label="You'll talk to">
+          <li><img src="assets/people/agustin-112.webp" width="112" height="112" alt=""><div><strong>Agustin</strong><span>Computer science</span></div></li>
+          <li><img src="assets/people/maria-112.webp" width="112" height="112" alt=""><div><strong>María</strong><span>Management information systems</span></div></li>
+        </ul>
+        <ul class="meta">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>15 minutes</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/></svg><span>Google Meet or a phone call</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3Z"/></svg><span>Weekdays, 1 to 5 PM Central</span></li>
+        </ul>
+        <p class="chosen" id="chosen" aria-live="polite"></p>
+        <p class="hours">None of these times work? Email <a href="mailto:hello@freeformworks.com">hello@freeformworks.com</a>.</p>
+        <p class="hours"><a href="/privacy">How we handle your details</a></p>
+      </aside>
 
-    <div id="booking" class="panel">
-      <p class="step-title">1 · Pick a day</p>
-      <div class="cal" id="cal" aria-busy="true" aria-label="Choose a date">
-        <div id="cal-skeleton" class="cal-skeleton">
-          <div class="cal-head">
-            <div class="skel skel-btn" aria-hidden="true"></div>
-            <div class="skel skel-title" aria-hidden="true"></div>
-            <div class="skel skel-btn" aria-hidden="true"></div>
+      <section class="pane cal-pane" aria-labelledby="cal-title">
+        <h2 class="label" id="cal-title">Pick a day</h2>
+        <div class="cal" id="cal" aria-busy="true" aria-label="Choose a date">
+          <div id="cal-skeleton" class="cal-skeleton">
+            <div class="cal-head">
+              <div class="skel skel-btn" aria-hidden="true"></div>
+              <div class="skel skel-title" aria-hidden="true"></div>
+              <div class="skel skel-btn" aria-hidden="true"></div>
+            </div>
+            <div class="cal-weekdays" aria-hidden="true">
+              <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
+              <span>Thu</span><span>Fri</span><span>Sat</span>
+            </div>
+            <div class="skel-grid" aria-hidden="true"><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div></div>
           </div>
-          <div class="cal-weekdays" aria-hidden="true">
-            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
-            <span>Thu</span><span>Fri</span><span>Sat</span>
-          </div>
-          <div class="skel-grid" aria-hidden="true">
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div><div class="skel skel-day"></div><div class="skel skel-day"></div>
-            <div class="skel skel-day"></div>
+          <div id="cal-live" class="cal-live hidden">
+            <div class="cal-head">
+              <button type="button" class="cal-nav-btn" id="cal-prev" aria-label="Previous month">‹</button>
+              <span class="cal-month" id="cal-month-label"></span>
+              <button type="button" class="cal-nav-btn" id="cal-next" aria-label="Next month">›</button>
+            </div>
+            <div class="cal-weekdays" aria-hidden="true">
+              <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
+              <span>Thu</span><span>Fri</span><span>Sat</span>
+            </div>
+            <div class="cal-grid" id="cal-grid"></div>
           </div>
         </div>
-        <div id="cal-live" class="cal-live hidden">
-          <div class="cal-head">
-            <button type="button" class="cal-nav-btn" id="cal-prev" aria-label="Previous month">‹</button>
-            <span class="cal-month" id="cal-month-label"></span>
-            <button type="button" class="cal-nav-btn" id="cal-next" aria-label="Next month">›</button>
-          </div>
-          <div class="cal-weekdays" aria-hidden="true">
-            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
-            <span>Thu</span><span>Fri</span><span>Sat</span>
-          </div>
-          <div class="cal-grid" id="cal-grid"></div>
-        </div>
-      </div>
+        <p class="msg hidden" id="load-msg" role="status"></p>
+      </section>
 
-      <div id="times-wrap" class="hidden">
-        <p class="step-title" id="times-label">2 · Pick a time</p>
+      <section class="pane times-pane" id="times-wrap" aria-labelledby="times-label">
+        <div class="times-head">
+          <h2 class="label" id="times-label">Pick a time</h2>
+          <p class="times-day" id="times-day"></p>
+        </div>
+        <p class="times-hint" id="times-hint">Pick a day and its open times show up here.</p>
         <div id="times-skeleton" class="times-skel hidden" aria-hidden="true">
           <div class="skel skel-chip"></div><div class="skel skel-chip"></div><div class="skel skel-chip"></div>
           <div class="skel skel-chip"></div><div class="skel skel-chip"></div><div class="skel skel-chip"></div>
-          <div class="skel skel-chip"></div><div class="skel skel-chip"></div>
         </div>
-        <div id="times" class="times" aria-live="polite"></div>
-      </div>
+        <div id="times" class="times reveal" aria-live="polite"></div>
+      </section>
 
-      <div id="form-wrap" class="hidden">
-        <p class="step-title">3 · Your details</p>
+      <section class="pane form-pane reveal" id="form-wrap" aria-labelledby="form-title">
+        <button type="button" class="back-btn" id="change-time">‹ Change the time</button>
+        <h2 class="label" id="form-title" tabindex="-1">Your details</h2>
         <form id="form" class="form">
           <label>Name <input type="text" name="name" required autocomplete="name" /></label>
           <label>Email <input type="email" name="email" required autocomplete="email" /></label>
@@ -427,26 +314,24 @@
               <option value="other">Other</option>
             </select>
           </label>
-          <label class="field-other hidden" id="business-type-other-wrap">
-            Describe your business <span style="text-transform:none;letter-spacing:0">(optional)</span>
+          <label class="field-other full hidden" id="business-type-other-wrap">
+            Describe your business <span class="opt">(optional)</span>
             <input type="text" name="businessTypeOther" id="business-type-other" placeholder="e.g. Videography, HVAC, studio" />
           </label>
+          <label class="full">Phone <span class="opt">(optional, if you'd rather we call you)</span> <input type="tel" name="phone" autocomplete="tel" inputmode="tel" /></label>
           <button type="submit" class="btn" id="submit">Confirm booking</button>
-          <p class="msg" id="form-msg"></p>
+          <p class="msg" id="form-msg" role="alert"></p>
         </form>
-      </div>
-
-      <p class="msg hidden" id="load-msg" role="status"></p>
+      </section>
     </div>
 
-    <div id="success" class="done hidden">
-      <p class="label">You're booked</p>
-      <h1 id="success-greeting">See you soon.</h1>
-      <p class="sub" id="success-lead">Check your email for the calendar invite and Meet link.</p>
+    <div id="success" class="done reveal done-reveal hidden">
+      <h1 id="success-greeting" tabindex="-1">See you soon.</h1>
+      <p class="sub" id="success-lead">Check your email for the calendar invite. It has a video link. If you left a phone number, we'll call you instead.</p>
       <dl class="success-summary" id="success-summary" aria-label="Booking summary"></dl>
-      <p style="margin-top:28px"><a href="/">Back to site</a></p>
+      <p style="margin-top:28px"><a href="/">Back to the site</a></p>
     </div>
-  </div>
+  </main>
 
 <script>
 (function () {
@@ -460,7 +345,13 @@
   const calNext = document.getElementById('cal-next');
   const timesSkeleton = document.getElementById('times-skeleton');
   const timesWrap = document.getElementById('times-wrap');
-  const timesLabel = document.getElementById('times-label');
+  const timesDay = document.getElementById('times-day');
+  const timesHint = document.getElementById('times-hint');
+  const chosen = document.getElementById('chosen');
+  const changeTime = document.getElementById('change-time');
+  const formTitle = document.getElementById('form-title');
+  const stacked = matchMedia('(max-width: 1179px)');
+  const fmtShort = () => new Intl.DateTimeFormat('en-US', { timeZone: tz, weekday: 'short', month: 'short', day: 'numeric' });
   const timesEl = document.getElementById('times');
   const formWrap = document.getElementById('form-wrap');
   const form = document.getElementById('form');
@@ -567,15 +458,18 @@
       btn.type = 'button';
       btn.className = 'cal-day';
       btn.textContent = day;
+      btn.setAttribute('aria-label', fmtDayLong.format(Date.parse(`${iso}T12:00:00Z`)));
 
       if (availableSet.has(iso)) {
         btn.classList.add('is-open');
         if (iso === meta.today) btn.classList.add('is-today');
+        btn.setAttribute('aria-pressed', String(iso === selectedDate));
         if (iso === selectedDate) btn.classList.add('is-selected');
         btn.addEventListener('click', () => selectDate(iso));
       } else {
         btn.classList.add('is-muted');
         btn.disabled = true;
+        btn.setAttribute('aria-label', fmtDayLong.format(Date.parse(`${iso}T12:00:00Z`)) + ', not available');
       }
       calGrid.appendChild(btn);
     }
@@ -596,6 +490,7 @@
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'chip' + (selected ? ' is-selected' : '');
+    b.setAttribute('aria-pressed', String(!!selected));
     b.textContent = text;
     b.addEventListener('click', onClick);
     return b;
@@ -633,7 +528,8 @@
   async function selectDate(d) {
     selectedDate = d;
     selectedStart = null;
-    formWrap.classList.add('hidden');
+    booking.classList.remove('has-time');
+    booking.classList.add('has-day');
     renderCalendar();
 
     const p = parseIso(d);
@@ -643,38 +539,62 @@
       renderCalendar();
     }
 
-    timesLabel.textContent = '2 · Pick a time · ' + fmtDayLong.format(Date.parse(`${d}T12:00:00Z`));
-    timesWrap.classList.remove('hidden');
+    timesDay.textContent = fmtShort().format(Date.parse(`${d}T12:00:00Z`));
+    timesHint.classList.add('hidden');
     timesEl.innerHTML = '';
+    if (stacked.matches) {
+      const top = timesWrap.getBoundingClientRect().top;
+      if (top > innerHeight - 120) timesWrap.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    }
     loadMsg.classList.add('hidden');
     setTimesLoading(true);
 
-    const res = await fetch('/api/slots?date=' + encodeURIComponent(d));
+    let res;
+    try {
+      res = await fetch('/api/slots?date=' + encodeURIComponent(d));
+    } catch (err) {
+      res = { ok: false };
+    }
     setTimesLoading(false);
     if (!res.ok) {
-      loadMsg.textContent = 'Could not load times.';
-      loadMsg.classList.remove('hidden');
+      timesNote("We couldn't load times right now. Email hello@freeformworks.com and we'll find a time with you.");
       return;
     }
     const data = await res.json();
     slotsCache = data.slots || [];
     if (!slotsCache.length) {
-      loadMsg.textContent = 'No times left this day. Pick another.';
-      loadMsg.classList.remove('hidden');
+      timesNote('No times left this day. Pick another day.');
       return;
     }
     slotsCache.forEach((s) => {
-      timesEl.appendChild(chip(s.label, false, () => selectTime(s.start)));
+      const c = chip(s.label, false, () => selectTime(s.start));
+      c.setAttribute('aria-label', s.label + ' Central');
+      timesEl.appendChild(c);
     });
+  }
+
+  function timesNote(text) {
+    timesHint.textContent = text;
+    timesHint.classList.remove('hidden');
   }
 
   function selectTime(start) {
     selectedStart = start;
-    formWrap.classList.remove('hidden');
     Array.from(timesEl.children).forEach((c, i) => {
       c.classList.toggle('is-selected', slotsCache[i]?.start === start);
+      c.setAttribute('aria-pressed', String(slotsCache[i]?.start === start));
     });
+    chosen.textContent = formatSlotWhen(start).replace(' CT', ' Central');
+    booking.classList.add('has-time');
+    if (stacked.matches) booking.scrollIntoView({ block: 'start' });
+    formTitle.focus({ preventScroll: stacked.matches });
   }
+
+  changeTime.addEventListener('click', () => {
+    booking.classList.remove('has-time');
+    const sel = timesEl.querySelector('.is-selected');
+    if (sel) sel.focus();
+  });
 
   calPrev.addEventListener('click', () => {
     if (!canGoPrev()) return;
@@ -692,7 +612,7 @@
 
   function formatBusinessTypeLabel(type, other) {
     const label = BUSINESS_TYPE_LABELS[type] || type;
-    if (type === 'other' && other?.trim()) return `${label} — ${other.trim()}`;
+    if (type === 'other' && other?.trim()) return `${label}: ${other.trim()}`;
     return label;
   }
 
@@ -746,39 +666,49 @@
     e.preventDefault();
     if (!selectedStart) return;
     submitBtn.disabled = true;
+    submitBtn.textContent = 'Booking...';
     formMsg.textContent = '';
     formMsg.className = 'msg';
     const fd = new FormData(form);
-    const res = await fetch('/api/book', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        start: selectedStart,
-        name: fd.get('name'),
-        email: fd.get('email'),
-        businessName: fd.get('businessName'),
-        businessType: fd.get('businessType'),
-        businessTypeOther: fd.get('businessTypeOther'),
-      }),
-    });
-    const data = await res.json().catch(() => ({}));
+    let res, data = {};
+    try {
+      res = await fetch('/api/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          start: selectedStart,
+          name: fd.get('name'),
+          email: fd.get('email'),
+          phone: fd.get('phone'),
+          businessName: fd.get('businessName'),
+          businessType: fd.get('businessType'),
+          businessTypeOther: fd.get('businessTypeOther'),
+        }),
+      });
+      data = await res.json().catch(() => ({}));
+    } catch (err) {
+      res = { ok: false };
+      data = { error: "We couldn't reach the calendar. Check your connection and try again, or email hello@freeformworks.com." };
+    }
     if (!res.ok) {
       formMsg.textContent = data.error || 'Something went wrong. Try again or email hello@freeformworks.com.';
       formMsg.className = 'msg is-error';
       submitBtn.disabled = false;
+      submitBtn.textContent = 'Confirm booking';
       return;
     }
     showSuccessSummary(fd);
     pageHead.classList.add('hidden');
     booking.classList.add('hidden');
     success.classList.remove('hidden');
+    successGreeting.focus();
   });
 
   setCalLoading(true);
   loadDates().catch((err) => {
     console.error(err);
     setCalLoading(false);
-    loadMsg.textContent = 'Could not load the calendar. Run vercel dev and refresh, or email hello@freeformworks.com.';
+    loadMsg.textContent = "We couldn't load the calendar. Refresh the page, or email hello@freeformworks.com and we'll find a time.";
     loadMsg.classList.remove('hidden');
   });
 })();
