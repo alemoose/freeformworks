@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Leads · Freeform Works</title>
+<meta name="theme-color" content="#ffffff" />
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="preload" href="assets/fonts/public-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face { font-family: "Big Shoulders Display"; font-style: normal; font-weight: 900; font-display: swap; src: url("assets/fonts/big-shoulders-display-900-latin.woff2") format("woff2"); }
+  @font-face { font-family: "Public Sans"; font-style: normal; font-weight: 100 900; font-display: swap; src: url("assets/fonts/public-sans-latin.woff2") format("woff2"); }
+  @font-face { font-family: "Spline Sans Mono"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("assets/fonts/spline-sans-mono-latin.woff2") format("woff2"); }
+  :root {
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --page: #ffffff;
+    --page-alt: #f3f2ee;
+    --ink: #141414;
+    --ink-soft: #4a4a47;
+    --ink-mute: #6b6b68;
+    --rule: #d9d8d2;
+    --rule-strong: #b9b9b4;
+    --wine: #7c2031;
+    --wine-tint: #f1e6e8;
+    --on-wine: #ffffff;
+    --good: #24563a;
+    --good-tint: #e3efe6;
+    --error: #a3172b;
+    --display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+    --sans: "Public Sans", system-ui, sans-serif;
+    --mono: "Spline Sans Mono", ui-monospace, monospace;
+    --pad-x: clamp(16px, 4vw, 56px);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--page-alt); color: var(--ink); font: 400 16px/1.5 var(--sans); }
+  [hidden] { display: none !important; }
+  :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+  a { color: inherit; text-underline-offset: 3px; }
+  a:hover { color: var(--wine); }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  h1, h2, h3, p { margin: 0; }
+
+  .bar { display: flex; align-items: center; gap: 16px; padding: 14px var(--pad-x); background: var(--page); border-bottom: 1px solid var(--rule); }
+  .bar img { height: 36px; width: auto; display: block; }
+  .bar .title { font: 900 26px/1 var(--display); text-transform: uppercase; }
+  .bar .who { margin-left: auto; font-size: 14px; color: var(--ink-soft); display: flex; align-items: center; gap: 12px; }
+  .link-btn { background: none; border: 0; padding: 8px 0; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+  .link-btn:hover { color: var(--wine); }
+
+  main { max-width: 1180px; margin: 0 auto; padding: 24px var(--pad-x) 80px; }
+
+  /* sign in */
+  .login { max-width: 420px; margin: 8vh auto 0; background: var(--page); border: 1px solid var(--rule); border-radius: 12px; padding: 32px; }
+  .login h1 { font: 900 44px/0.95 var(--display); text-transform: uppercase; }
+  .login p.sub { color: var(--ink-soft); margin: 8px 0 24px; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--rule-strong); border-radius: 8px; overflow: hidden; margin: 6px 0 18px; padding: 0; }
+  .seg legend { font-weight: 700; font-size: 14px; padding: 0; margin-bottom: 6px; float: left; width: 100%; }
+  .seg label { position: relative; text-align: center; padding: 11px 8px; font-weight: 700; cursor: pointer; }
+  .seg label + label { border-left: 1px solid var(--rule-strong); }
+  .seg input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .seg label:has(input:checked) { background: var(--ink); color: var(--page); }
+  .seg label:has(input:focus-visible) { outline: 3px solid var(--wine); outline-offset: -3px; }
+  .field { display: grid; gap: 6px; margin-bottom: 18px; }
+  .field > span { font-weight: 700; font-size: 14px; }
+  .input { width: 100%; border: 1px solid var(--rule-strong); border-radius: 8px; padding: 11px 12px; background: var(--page); }
+  .input:focus { border-color: var(--ink); outline: none; box-shadow: 0 0 0 3px var(--wine-tint); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 18px; border-radius: 8px; border: 1px solid var(--wine); background: var(--wine); color: var(--on-wine); font-weight: 700; transition: transform 160ms var(--ease-out); }
+  .btn:active { transform: scale(0.97); }
+  .btn:disabled { opacity: .55; cursor: progress; }
+  .btn.quiet { background: var(--page); color: var(--ink); border-color: var(--rule-strong); }
+  .btn.quiet:hover { border-color: var(--ink); }
+  .btn.small { min-height: 36px; padding: 6px 12px; font-size: 14px; }
+  .err { color: var(--error); font-weight: 600; margin-top: 12px; min-height: 1.5em; }
+
+  /* setup notices */
+  .setup { background: var(--wine-tint); border: 1px solid var(--wine); border-radius: 10px; padding: 16px 18px; margin-bottom: 20px; }
+  .setup h2 { font: 700 16px/1.3 var(--sans); margin-bottom: 6px; }
+  .setup ul { margin: 0; padding-left: 20px; }
+
+  /* tabs */
+  .tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--ink); margin-bottom: 20px; }
+  .tab { background: none; border: 0; padding: 12px 16px; font: 900 22px/1 var(--display); text-transform: uppercase; color: var(--ink-mute); border-radius: 8px 8px 0 0; }
+  .tab[aria-selected="true"] { background: var(--ink); color: var(--page); }
+  .tab .n { font: 600 13px/1 var(--mono); margin-left: 6px; vertical-align: 2px; }
+
+  /* search form */
+  .search { background: var(--page); border: 1px solid var(--rule); border-radius: 12px; padding: 20px; display: grid; gap: 16px; }
+  .search .row { display: grid; grid-template-columns: minmax(0, 320px) 1fr; gap: 20px; align-items: start; }
+  .kinds { border: 0; padding: 0; margin: 0; min-width: 0; }
+  .kinds legend { font-weight: 700; font-size: 14px; padding: 0; margin-bottom: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { position: relative; display: inline-flex; align-items: center; min-height: 36px; padding: 6px 12px; border: 1px solid var(--rule-strong); border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer; user-select: none; }
+  .chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; margin: 0; }
+  .chip:has(input:checked) { background: var(--ink); border-color: var(--ink); color: var(--page); }
+  .chip:has(input:focus-visible) { outline: 3px solid var(--wine); outline-offset: 2px; }
+  .go { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+  .cost { font-size: 14px; color: var(--ink-soft); }
+  .progress { font: 600 14px/1.4 var(--mono); color: var(--ink-soft); margin: 16px 0 0; min-height: 1.4em; }
+
+  /* filters */
+  .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin: 18px 0 12px; font-size: 14px; }
+  .filters label { display: inline-flex; align-items: center; gap: 8px; }
+  .filters select { border: 1px solid var(--rule-strong); border-radius: 8px; padding: 6px 8px; background: var(--page); }
+  .filters .count { margin-left: auto; color: var(--ink-soft); font-family: var(--mono); }
+
+  /* leads */
+  .list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .lead { background: var(--page); border: 1px solid var(--rule); border-radius: 12px; padding: 16px 18px; display: grid; grid-template-columns: 64px minmax(0, 1fr) minmax(200px, 260px); gap: 16px 20px; align-items: start; }
+  .lead.is-saved { border-left: 4px solid var(--wine); padding-left: 15px; }
+  .score { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 10px; background: var(--page-alt); font: 700 22px/1 var(--mono); }
+  .score.hot { background: var(--wine); color: var(--on-wine); }
+  .score.warm { background: var(--wine-tint); color: var(--wine); }
+  .score.wait { font-size: 13px; color: var(--ink-mute); }
+  .score small { display: block; font: 600 10px/1 var(--mono); text-transform: uppercase; letter-spacing: .04em; margin-top: 2px; opacity: .8; }
+  .lead h3 { font: 700 18px/1.25 var(--sans); }
+  .meta { color: var(--ink-soft); font-size: 14px; margin-top: 2px; }
+  .reasons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; padding: 0; list-style: none; }
+  .reasons li { font-size: 13px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: var(--wine-tint); color: var(--wine); }
+  .reasons li.info { background: var(--page-alt); color: var(--ink-soft); }
+  .reasons li.minus { background: var(--page-alt); color: var(--ink-mute); text-decoration: line-through; text-decoration-thickness: 1px; }
+  .contact { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 10px; font-size: 14px; }
+  .contact a { font-weight: 600; }
+  .contact .none { color: var(--ink-mute); }
+  .side { display: grid; gap: 8px; }
+  .side select { width: 100%; border: 1px solid var(--rule-strong); border-radius: 8px; padding: 8px 10px; background: var(--page); font-weight: 600; }
+  .side select.set { border-color: var(--wine); color: var(--wine); }
+  .side .btns { display: flex; flex-wrap: wrap; gap: 8px; }
+  .stamp { font-size: 12px; color: var(--ink-mute); }
+  .notes { grid-column: 2 / -1; display: grid; gap: 8px; }
+  .notes textarea { width: 100%; min-height: 84px; border: 1px solid var(--rule-strong); border-radius: 8px; padding: 10px 12px; resize: vertical; background: var(--page); }
+  .notes .note-row { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--ink-soft); }
+  .note-preview { grid-column: 2 / -1; font-size: 14px; color: var(--ink-soft); white-space: pre-wrap; border-left: 2px solid var(--rule-strong); padding-left: 10px; }
+  .empty { background: var(--page); border: 1px dashed var(--rule-strong); border-radius: 12px; padding: 28px; text-align: center; color: var(--ink-soft); }
+
+  @media (max-width: 760px) {
+    .search .row { grid-template-columns: 1fr; }
+    .lead { grid-template-columns: 52px minmax(0, 1fr); padding: 14px; }
+    .lead.is-saved { padding-left: 11px; }
+    .score { width: 48px; height: 48px; font-size: 18px; }
+    .side, .notes, .note-preview { grid-column: 1 / -1; }
+    .filters .count { margin-left: 0; width: 100%; }
+    .bar .title { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+</style>
+</head>
+<body>
+<header class="bar">
+  <a href="/"><img src="assets/fw-logo.png" width="50" height="36" alt="Freeform Works home"></a>
+  <span class="title">Leads</span>
+  <div class="who" id="who" hidden><span id="who-name"></span><button class="link-btn" type="button" id="logout">Sign out</button></div>
+</header>
+
+<main>
+  <section class="login" id="login" hidden aria-labelledby="login-title">
+    <h1 id="login-title">Leads</h1>
+    <p class="sub">Only for Agustin and Maria.</p>
+    <form id="login-form">
+      <fieldset class="seg">
+        <legend>Who's this?</legend>
+        <label><input type="radio" name="who" value="Agustin" required> Agustin</label>
+        <label><input type="radio" name="who" value="Maria"> Maria</label>
+      </fieldset>
+      <label class="field"><span>Password</span><input class="input" type="password" name="password" autocomplete="current-password" required></label>
+      <button class="btn" type="submit">Sign in</button>
+      <p class="err" id="login-err" role="alert"></p>
+    </form>
+  </section>
+
+  <section id="app" hidden>
+    <div class="setup" id="setup" hidden>
+      <h2>Two things to finish in Vercel</h2>
+      <ul id="setup-list"></ul>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-find" aria-controls="panel-find" aria-selected="true">Find leads</button>
+      <button class="tab" role="tab" id="tab-saved" aria-controls="panel-saved" aria-selected="false" tabindex="-1">Saved<span class="n" id="saved-n"></span></button>
+    </div>
+
+    <div role="tabpanel" id="panel-find" aria-labelledby="tab-find">
+      <form class="search" id="search">
+        <div class="row">
+          <label class="field" style="margin:0"><span>City</span><input class="input" id="city" name="city" value="Tuscaloosa, AL" required maxlength="80" autocomplete="off"></label>
+          <fieldset class="kinds">
+            <legend>Kinds of business</legend>
+            <div class="chips" id="kinds"></div>
+          </fieldset>
+        </div>
+        <div class="go">
+          <button class="btn" type="submit" id="find">Find leads</button>
+          <span class="cost" id="cost"></span>
+        </div>
+      </form>
+      <p class="progress" id="progress" aria-live="polite"></p>
+
+      <div id="results-wrap" hidden>
+        <div class="filters">
+          <label>Show
+            <select id="f-show">
+              <option value="all">Everyone</option>
+              <option value="nosite">No website, or only social</option>
+              <option value="weak">Weak or broken site</option>
+              <option value="unsaved">Not saved yet</option>
+            </select>
+          </label>
+          <label>Sort
+            <select id="f-sort">
+              <option value="score">Best leads first</option>
+              <option value="reviews">Most reviews</option>
+              <option value="name">A to Z</option>
+            </select>
+          </label>
+          <label><input type="checkbox" id="f-chains" checked> Hide chains</label>
+          <span class="count" id="count"></span>
+        </div>
+        <ul class="list" id="results"></ul>
+      </div>
+    </div>
+
+    <div role="tabpanel" id="panel-saved" aria-labelledby="tab-saved" hidden>
+      <div class="filters">
+        <label>Status
+          <select id="f-status">
+            <option value="">All saved</option>
+          </select>
+        </label>
+        <button class="btn quiet small" type="button" id="refresh">Refresh from Google</button>
+        <span class="count" id="saved-count"></span>
+      </div>
+      <p class="progress" id="saved-progress" aria-live="polite"></p>
+      <ul class="list" id="saved"></ul>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const STATUSES = [
+    ['saved', 'Saved'], ['called', 'Called'], ['visited', 'Walked in'],
+    ['follow-up', 'Follow up'], ['not-a-fit', 'Not a fit'], ['client', 'Client'],
+  ];
+  const STATUS_LABEL = Object.fromEntries(STATUSES);
+  // The kinds of business on our homepage are picked by default.
+  const DEFAULT_KINDS = ['barber', 'photo', 'florist', 'food', 'lawn', 'landscape', 'contractor'];
+
+  const state = { who: null, ready: {}, types: {}, city: '', results: [], saved: new Map(), savedLoaded: false };
+
+  const store = {
+    get(k, fallback) { try { const v = localStorage.getItem('ffl:' + k); return v == null ? fallback : JSON.parse(v); } catch { return fallback; } },
+    set(k, v) { try { localStorage.setItem('ffl:' + k, JSON.stringify(v)); } catch {} },
+  };
+
+  async function api(action, body) {
+    const r = await fetch(`/api/leads?action=${action}`, body === undefined
+      ? { credentials: 'same-origin' }
+      : { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    let data = {};
+    try { data = await r.json(); } catch {}
+    if (r.status === 401 && data.error === 'signed_out') { showLogin(); throw new Error('Signed out. Sign in again.'); }
+    if (!r.ok) throw new Error(data.error || `Request failed (${r.status})`);
+    return data;
+  }
+
+  function el(tag, attrs = {}, ...kids) {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (v == null || v === false) continue;
+      if (k === 'class') n.className = v;
+      else if (k === 'text') n.textContent = v;
+      else if (k.startsWith('on')) n.addEventListener(k.slice(2), v);
+      else n.setAttribute(k, v === true ? '' : v);
+    }
+    for (const kid of kids.flat()) if (kid != null && kid !== false) n.append(kid);
+    return n;
+  }
+
+  const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return u; } };
+  const day = (iso) => { try { return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); } catch { return ''; } };
+
+  /* ---------- sign in ---------- */
+  function showLogin() {
+    $('app').hidden = true; $('who').hidden = true; $('login').hidden = false;
+    const last = store.get('who', null);
+    if (last) { const r = document.querySelector(`input[name="who"][value="${last}"]`); if (r) r.checked = true; }
+    (document.querySelector('input[name="who"]:checked') ? document.querySelector('input[name="password"]') : document.querySelector('input[name="who"]')).focus();
+  }
+
+  $('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    const btn = e.target.querySelector('button');
+    btn.disabled = true; $('login-err').textContent = '';
+    try {
+      await api('login', { who: f.get('who'), password: f.get('password') });
+      store.set('who', f.get('who'));
+      e.target.reset();
+      await start();
+    } catch (err) {
+      $('login-err').textContent = err.message;
+    } finally { btn.disabled = false; }
+  });
+
+  $('logout').addEventListener('click', async () => { try { await api('logout', {}); } catch {} showLogin(); });
+
+  async function start() {
+    let me;
+    try { me = await api('me'); } catch { return; }
+    state.who = me.who; state.ready = me.ready; state.types = me.types;
+    $('login').hidden = true; $('app').hidden = false; $('who').hidden = false;
+    $('who-name').textContent = `Signed in as ${me.who}`;
+    setSavedCount(me.saved);
+    renderSetup();
+    renderKinds();
+  }
+
+  function renderSetup() {
+    const items = [];
+    if (!state.ready.maps) items.push('Add a Google Maps key as GOOGLE_MAPS_API_KEY, so searches work.');
+    if (!state.ready.store) items.push('Connect Upstash Redis (Storage tab) to the project, so saved leads and notes are kept.');
+    $('setup').hidden = !items.length;
+    $('setup').querySelector('h2').textContent = items.length === 1 ? 'One thing to finish in Vercel' : 'Two things to finish in Vercel';
+    $('setup-list').replaceChildren(...items.map((t) => el('li', { text: t })));
+  }
+
+  /* ---------- search ---------- */
+  function renderKinds() {
+    const picked = new Set(store.get('kinds', DEFAULT_KINDS));
+    $('city').value = store.get('city', 'Tuscaloosa, AL');
+    $('kinds').replaceChildren(...Object.entries(state.types).map(([k, label]) =>
+      el('label', { class: 'chip' }, el('input', { type: 'checkbox', name: 'kind', value: k, checked: picked.has(k) }), label)));
+    updateCost();
+  }
+
+  function pickedKinds() { return [...document.querySelectorAll('input[name="kind"]:checked')].map((i) => i.value); }
+
+  function updateCost() {
+    const n = pickedKinds().length;
+    $('cost').textContent = n ? `Up to ${n * 3} Google Maps requests (3 per kind).` : 'Pick at least one kind of business.';
+    $('find').disabled = !n;
+  }
+  $('kinds').addEventListener('change', () => { store.set('kinds', pickedKinds()); updateCost(); });
+
+  $('search').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const city = $('city').value.trim();
+    const types = pickedKinds();
+    if (!city || !types.length) return;
+    store.set('city', city);
+    $('find').disabled = true;
+    $('progress').textContent = `Searching Google Maps for ${types.length} kind${types.length > 1 ? 's' : ''} of business in ${city}…`;
+    try {
+      const data = await api('search', { city, types });
+      state.city = data.city;
+      state.results = data.leads;
+      for (const l of data.leads) if (l.status) state.saved.set(l.id, { ...state.saved.get(l.id), ...l });
+      $('results-wrap').hidden = false;
+      renderResults();
+      await checkWebsites();
+    } catch (err) {
+      $('progress').textContent = err.message;
+    } finally { $('find').disabled = false; updateCost(); }
+  });
+
+  async function checkWebsites() {
+    const todo = state.results.filter((l) => l.pending);
+    const total = state.results.length;
+    let done = 0;
+    if (!todo.length) { $('progress').textContent = `Found ${total} businesses.`; return; }
+    for (let i = 0; i < todo.length; i += 12) {
+      $('progress').textContent = `Found ${total} businesses. Checking their websites: ${done} of ${todo.length}…`;
+      const batch = todo.slice(i, i + 12);
+      try {
+        const { results } = await api('check', { items: batch.map(({ id, name, website, reviews, rating, chain, speed }) => ({ id, name, website, reviews, rating, chain, speed })) });
+        for (const r of results) {
+          const lead = state.results.find((l) => l.id === r.id);
+          if (!lead) continue;
+          Object.assign(lead, { site: r.site, score: r.score, reasons: r.reasons, pending: false });
+          if (lead.status) api('save', { id: lead.id, site: r.site }).catch(() => {});
+        }
+      } catch (err) {
+        batch.forEach((l) => { l.pending = false; });
+        $('progress').textContent = err.message;
+      }
+      done += batch.length;
+      renderResults();
+    }
+    $('progress').textContent = `Found ${total} businesses and checked ${todo.length} websites.`;
+  }
+
+  ['f-show', 'f-sort', 'f-chains'].forEach((id) => {
+    const node = $(id);
+    const saved = store.get(id, null);
+    if (saved != null) { if (node.type === 'checkbox') node.checked = saved; else node.value = saved; }
+    node.addEventListener('change', () => { store.set(id, node.type === 'checkbox' ? node.checked : node.value); renderResults(); });
+  });
+
+  const weak = (l) => l.site && (l.site.kind === 'down' || l.site.kind === 'booking-only'
+    || (l.site.kind === 'site' && (!l.site.phoneReady || !l.site.https || l.site.booking || (typeof l.speed === 'number' && l.speed < 50))));
+
+  function sortLeads(list, how) {
+    const by = {
+      score: (a, b) => b.score - a.score || b.reviews - a.reviews,
+      reviews: (a, b) => b.reviews - a.reviews,
+      name: (a, b) => a.name.localeCompare(b.name),
+    }[how] || ((a, b) => b.score - a.score);
+    return list.sort(by);
+  }
+
+  function renderResults() {
+    const show = $('f-show').value;
+    let list = state.results.slice();
+    if ($('f-chains').checked) list = list.filter((l) => !l.chain);
+    if (show === 'nosite') list = list.filter((l) => !l.website || l.site?.kind === 'social');
+    if (show === 'weak') list = list.filter(weak);
+    if (show === 'unsaved') list = list.filter((l) => !l.status);
+    sortLeads(list, $('f-sort').value);
+    $('count').textContent = `Showing ${list.length} of ${state.results.length}`;
+    $('results').replaceChildren(...(list.length ? list.map(row) : [el('li', { class: 'empty', text: 'Nothing matches these filters.' })]));
+  }
+
+  /* ---------- one lead ---------- */
+  function row(l) {
+    const scoreClass = l.pending ? 'score wait' : l.score >= 60 ? 'score hot' : l.score >= 35 ? 'score warm' : 'score';
+    const statusSel = el('select', { 'aria-label': `Status for ${l.name}`, class: l.status ? 'set' : null },
+      el('option', { value: '', text: l.status ? 'Remove from saved' : 'Not saved' }),
+      ...STATUSES.map(([v, t]) => el('option', { value: v, text: t, selected: l.status === v })));
+    statusSel.addEventListener('change', () => setStatus(l, statusSel.value));
+
+    const notesBox = el('div', { class: 'notes', hidden: true },
+      el('textarea', { 'aria-label': `Notes for ${l.name}`, placeholder: 'Who you talked to, what they use now, when to follow up…' }),
+      el('div', { class: 'note-row' },
+        el('button', { class: 'btn small', type: 'button', text: 'Save notes', onclick: () => saveNotes(l, notesBox) }),
+        el('span', { class: 'note-msg', 'aria-live': 'polite' })));
+    notesBox.querySelector('textarea').value = l.notes || '';
+
+    const canSpeed = l.website && l.site?.kind === 'site' && typeof l.speed !== 'number' && !l.gone;
+    const contact = el('div', { class: 'contact' },
+      l.phone ? el('a', { href: `tel:${l.phone.replace(/[^\d+]/g, '')}`, text: l.phone }) : el('span', { class: 'none', text: 'No phone listed' }),
+      l.website ? el('a', { href: l.website, target: '_blank', rel: 'noopener noreferrer', text: host(l.website) }) : el('span', { class: 'none', text: 'No website' }),
+      l.maps ? el('a', { href: l.maps, target: '_blank', rel: 'noopener noreferrer', text: 'Google Maps' }) : null,
+      l.rating ? el('span', { text: `${l.rating} ★ (${l.reviews})` }) : null);
+
+    const li = el('li', { class: 'lead' + (l.status ? ' is-saved' : ''), 'data-id': l.id },
+      el('div', { class: scoreClass, title: 'Lead score: higher means a better fit' },
+        l.pending ? el('span', { text: '…' }) : el('span', {}, String(l.score), el('small', { text: 'score' }))),
+      el('div', {},
+        el('h3', { text: l.name }),
+        el('p', { class: 'meta', text: [l.category || l.found, l.address].filter(Boolean).join(' · ') }),
+        el('ul', { class: 'reasons', 'aria-label': 'Why' }, ...(l.pending ? [el('li', { class: 'info', text: 'Checking website…' })] : []),
+          ...(l.reasons || []).map((r) => el('li', { class: r.tone === 'plus' ? null : r.tone, text: r.label }))),
+        contact),
+      el('div', { class: 'side' },
+        statusSel,
+        el('div', { class: 'btns' },
+          el('button', { class: 'btn quiet small', type: 'button', 'aria-expanded': 'false', text: l.notes ? 'Edit notes' : 'Add notes',
+            onclick: (e) => { const open = notesBox.hidden; notesBox.hidden = !open; e.currentTarget.setAttribute('aria-expanded', String(open)); if (open) notesBox.querySelector('textarea').focus(); } }),
+          canSpeed ? el('button', { class: 'btn quiet small', type: 'button', text: 'Phone speed test', onclick: (e) => runSpeed(l, e.currentTarget) }) : null),
+        l.status && l.by ? el('p', { class: 'stamp', text: `${STATUS_LABEL[l.status] || 'Saved'} by ${l.by} · ${day(l.updatedAt)}` }) : null),
+      l.notes ? el('p', { class: 'note-preview', text: l.notes }) : null,
+      notesBox);
+    return li;
+  }
+
+  function updateEverywhere(id, patch) {
+    for (const l of state.results) if (l.id === id) Object.assign(l, patch);
+    const s = state.saved.get(id);
+    if (s) Object.assign(s, patch);
+  }
+
+  function rerender() {
+    if (!$('results-wrap').hidden) renderResults();
+    if (state.savedLoaded) renderSaved();
+  }
+
+  function findLead(id) { return state.results.find((l) => l.id === id) || state.saved.get(id); }
+
+  async function setStatus(l, status) {
+    try {
+      if (!status) {
+        await api('remove', { id: l.id });
+        updateEverywhere(l.id, { status: undefined, notes: undefined, by: undefined });
+        state.saved.delete(l.id);
+      } else {
+        const body = { id: l.id, status };
+        if (!l.status) Object.assign(body, { site: l.site, speed: l.speed, search: { city: state.city, found: l.found } });
+        const { lead: rec } = await api('save', body);
+        updateEverywhere(l.id, { status: rec.status, by: rec.by, updatedAt: rec.updatedAt });
+        if (!state.saved.has(l.id)) state.saved.set(l.id, { ...findLead(l.id) });
+      }
+      setSavedCount(state.saved.size);
+    } catch (err) { alert(err.message); }
+    rerender();
+  }
+
+  async function saveNotes(l, box) {
+    const msg = box.querySelector('.note-msg');
+    const notes = box.querySelector('textarea').value.trim();
+    msg.textContent = 'Saving…';
+    try {
+      const body = { id: l.id, notes };
+      if (!l.status) Object.assign(body, { status: 'saved', site: l.site, speed: l.speed, search: { city: state.city, found: l.found } });
+      const { lead: rec } = await api('save', body);
+      updateEverywhere(l.id, { notes: rec.notes, status: rec.status, by: rec.by, updatedAt: rec.updatedAt });
+      if (!state.saved.has(l.id)) state.saved.set(l.id, { ...findLead(l.id) });
+      setSavedCount(state.saved.size);
+      rerender();
+    } catch (err) { msg.textContent = err.message; }
+  }
+
+  async function runSpeed(l, btn) {
+    btn.disabled = true; btn.textContent = 'Testing, about 20 seconds…';
+    try {
+      const { speed, score, reasons } = await api('speed', { lead: l, site: l.site });
+      updateEverywhere(l.id, { speed, score, reasons });
+      rerender();
+    } catch (err) { btn.disabled = false; btn.textContent = 'Try speed test again'; alert(err.message); }
+  }
+
+  /* ---------- saved ---------- */
+  function setSavedCount(n) { $('saved-n').textContent = typeof n === 'number' ? String(n) : ''; }
+
+  STATUSES.forEach(([v, t]) => $('f-status').append(el('option', { value: v, text: t })));
+  $('f-status').addEventListener('change', renderSaved);
+  $('refresh').addEventListener('click', loadSaved);
+
+  async function loadSaved() {
+    $('saved-progress').textContent = 'Loading saved leads from Google Maps…';
+    $('refresh').disabled = true;
+    try {
+      const { leads } = await api('saved');
+      state.saved = new Map(leads.map((l) => [l.id, l]));
+      state.savedLoaded = true;
+      setSavedCount(leads.length);
+      $('saved-progress').textContent = '';
+      renderSaved();
+    } catch (err) { $('saved-progress').textContent = err.message; }
+    finally { $('refresh').disabled = false; }
+  }
+
+  function renderSaved() {
+    const want = $('f-status').value;
+    // Things to act on first: follow-ups, then calls and visits, then new saves; clients and no's last.
+    const order = Object.fromEntries(['follow-up', 'called', 'visited', 'saved', 'client', 'not-a-fit'].map((v, i) => [v, i]));
+    const list = [...state.saved.values()].filter((l) => !want || l.status === want)
+      .sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9) || b.score - a.score);
+    $('saved-count').textContent = `${list.length} lead${list.length === 1 ? '' : 's'}`;
+    $('saved').replaceChildren(...(list.length ? list.map(row)
+      : [el('li', { class: 'empty', text: state.saved.size ? 'No saved leads with this status.' : 'Nothing saved yet. Pick a status or add notes on a lead to save it.' })]));
+  }
+
+  /* ---------- tabs ---------- */
+  const tabs = [$('tab-find'), $('tab-saved')];
+  function selectTab(t) {
+    tabs.forEach((x) => { const on = x === t; x.setAttribute('aria-selected', String(on)); x.tabIndex = on ? 0 : -1; $(x.getAttribute('aria-controls')).hidden = !on; });
+    if (t === $('tab-saved') && !state.savedLoaded) loadSaved();
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => selectTab(t));
+    t.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+      next.focus(); selectTab(next);
+    });
+  });
+
+  start().catch(showLogin);
+})();
+</script>
+</body>
+</html>
