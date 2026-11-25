@@ -38,11 +38,25 @@ Booking notifications:
 
 Booking hours are configured in `lib/booking-config.js` (default Mon–Fri 9–5 CT, 15 min).
 
+## Leads (private page at `/leads`)
+
+A lead finder for Agustin and Maria only. It searches Google Maps for local businesses in a city, checks each one's website (no site, Facebook only, a booking-app page as the whole site, broken, not built for phones, "Not secure", old copyright year), and ranks them with a score and plain reasons. Mark a lead Called, Walked in, Follow up, Not a fit or Client, and add notes; both of you see the same list.
+
+Vercel environment variables:
+- `LEADS_PASSWORD`: shared password, at least 12 characters. The page stays locked until it's set. Changing it signs everyone out.
+- `GOOGLE_MAPS_API_KEY`: a Google Cloud key with **Places API (New)** and **PageSpeed Insights API** enabled. Restrict the key to those two APIs, and set a budget alert.
+- Saving needs **Upstash for Redis** from the Vercel Marketplace (Storage tab, free plan). Connecting it adds `KV_REST_API_URL` and `KV_REST_API_TOKEN`.
+
+Google's terms only allow storing place IDs, so saved leads keep the ID plus our own status, notes, site check and speed score; names, phones and websites are re-fetched from Google when the Saved tab loads. The page sends `noindex` and isn't linked from the site.
+
+Files: `leads.html`, `api/leads.js`, `lib/leads/`.
+
 ## Files
 
 - `index.html` — main site
 - `book.html` — scheduling UI
 - `api/slots.js`, `api/book.js` — availability + create event
+- `leads.html`, `api/leads.js`, `lib/leads/` — private lead finder
 - `lib/` — calendar + slot logic
 - `scripts/google-oauth/` — one-time refresh token setup
 
