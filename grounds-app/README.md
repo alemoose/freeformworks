@@ -39,6 +39,7 @@ For the agency site, from the repository root run `python3 -m http.server 8080`;
 | `GROUNDS_SECRET_KEY` | Required random secret, 32+ characters; stable across workers/restarts. Use a secret manager. Rotation signs out every user. |
 | `DATABASE_URL` | `postgresql+psycopg://...` in production; SQLite default only in development. Keep credentials private. |
 | `GROUNDS_ENV` | Set `production` to enforce PostgreSQL, secure session cookies and HSTS. |
+| `GROUNDS_DATA_KEY` | Encrypts saved Stripe/Square keys and webhook secrets. Generate with `python -c 'from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())'`. Required before an owner can connect Stripe or Square. Losing it means owners must re-enter their keys. |
 | `TEST_DATABASE_URL` | Optional dedicated disposable PostgreSQL test database. **Tests delete all application tables. Never point at production.** |
 
 `.env.example` documents names; the app does not automatically load `.env`. Export variables in your shell or inject them through your hosting provider. Use different secrets and databases for development, tests, staging, and production. Do not commit populated environment files.
@@ -62,6 +63,17 @@ Marketing consent is optional, separate from the request, and stored with a time
 7. Completing a scheduled job atomically changes its status and creates one successor. A schedule lock, conditional update, and unique `(schedule_id, date)` constraint prevent retry/concurrency duplicates on PostgreSQL. Cancellation and editing use the same schedule lock.
 
 Jobs use business-local **date-only** visits, not UTC appointments. The business has an IANA time zone. Recurrence follows the previous scheduled date, even for late completion; overdue successors remain visible. Monthly recurrence preserves the original day anchor (Jan 31 → Feb 28/29 → Mar 31). Owners can edit the next date/frequency or cancel remaining visits. No time-of-day scheduling, route optimization, or external calendar sync is claimed.
+
+## Invoices and payments
+
+Owners get paid through their **own** Stripe or Square account, or by hand (cash, check, Venmo, Cash App, Zelle). Grounds never holds money and adds no fee.
+
+1. **Payments** settings: pick Stripe, Square or by hand. Stripe takes a restricted key (Products, Prices and Payment Links: write; Checkout Sessions: read). Square takes an access token and the location ID that receives the money. Keys and webhook secrets are encrypted with `GROUNDS_DATA_KEY` and never shown again (only the last four characters).
+2. A finished visit appears under **Get paid** on the overview, ready to invoice. An accepted estimate can ask for a **deposit**. Each invoice gets a one-time pay link (Stripe Payment Link limited to one completed checkout, or a Square quick-pay link). Manual invoices show the owner's payment instructions.
+3. Grounds still sends nothing: the invoice page has the link and a message to copy into the owner's own phone or email.
+4. Paid status: a signed webhook (`/webhooks/stripe/<slug>`, `/webhooks/square/<slug>`) marks the invoice paid; signatures are verified (Stripe: 5-minute tolerance; Square: HMAC of URL + body) and lookups are scoped to that business. Without webhooks, **Check payments** asks the provider. Owners can also mark an invoice paid by hand or void it; both close the pay link.
+
+Tests replace the provider HTTP calls (`grounds.payments.transport`), so they never contact Stripe or Square.
 
 ## Tests and migrations
 

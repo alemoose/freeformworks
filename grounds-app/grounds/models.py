@@ -96,6 +96,44 @@ class Job(db.Model):
     __table_args__ = (UniqueConstraint("schedule_id", "date"),)
 
 
+class PaymentAccount(db.Model):
+    """How one business gets paid. Keys are encrypted (see payments.encrypt)."""
+
+    id = db.Column(db.Integer, primary_key=True)
+    business_id = db.Column(db.ForeignKey("business.id"), unique=True, nullable=False)
+    provider = db.Column(db.String(20), nullable=False, default="manual")
+    secret_enc = db.Column(db.Text, nullable=False, default="")
+    secret_hint = db.Column(db.String(8), nullable=False, default="")
+    webhook_secret_enc = db.Column(db.Text, nullable=False, default="")
+    square_location_id = db.Column(db.String(64), nullable=False, default="")
+    sandbox = db.Column(db.Boolean, nullable=False, default=False)
+    instructions = db.Column(db.String(400), nullable=False, default="")
+    updated_at = db.Column(db.DateTime(timezone=True), nullable=False, default=now)
+
+
+class Invoice(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    business_id = db.Column(db.ForeignKey("business.id"), nullable=False, index=True)
+    customer_id = db.Column(db.ForeignKey("customer.id"), nullable=False)
+    customer = db.relationship(Customer)
+    # A job invoice points at the visit; a deposit points at the accepted estimate.
+    job_id = db.Column(db.ForeignKey("job.id"), unique=True)
+    job = db.relationship(Job)
+    estimate_id = db.Column(db.ForeignKey("estimate.id"), unique=True)
+    kind = db.Column(db.String(20), nullable=False)  # job | deposit
+    description = db.Column(db.String(200), nullable=False)
+    amount_cents = db.Column(db.Integer, nullable=False)
+    due_date = db.Column(db.Date, nullable=False)
+    status = db.Column(db.String(20), nullable=False, default="unpaid")  # unpaid | paid | void
+    provider = db.Column(db.String(20), nullable=False)  # stripe | square | manual
+    link_id = db.Column(db.String(120), nullable=False, default="", index=True)
+    order_id = db.Column(db.String(120), nullable=False, default="", index=True)
+    pay_url = db.Column(db.String(500), nullable=False, default="")
+    paid_at = db.Column(db.DateTime(timezone=True))
+    paid_method = db.Column(db.String(30), nullable=False, default="")
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=now)
+
+
 class RateBucket(db.Model):
     key = db.Column(db.String(100), primary_key=True)
     count = db.Column(db.Integer, nullable=False, default=0)
