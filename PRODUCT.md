@@ -57,7 +57,7 @@ Open decisions:
 ## Brand Commitments
 
 - Name: Freeform Works. Location: Tuscaloosa, AL.
-- People: Agustin Lemuz-Juarez (computer science) and Maria Estrada (management information systems), both at the University of Alabama. The site shows majors, not graduation years.
+- People: Agustin Lemuz-Juarez (computer science) and Maria Estrada (management information systems), both at the University of Alabama. On the site their titles are "Software Engineer" (Agustin) and "Digital Operations" (Maria); majors and graduation years are not shown.
 - Voice: friendly, direct, specific, a little personal. Two real people talking to a barber or a florist. Never an agency.
 - Must keep: the native `/book` calendar flow on our own domain.
 
