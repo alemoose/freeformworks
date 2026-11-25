@@ -296,7 +296,6 @@
   }
 
   /* proof */
-  .proof { background: var(--page-alt); }
   .proof-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
   .proof .lede { margin-top: 24px; }
   .specs { margin-top: 32px; border-top: 2px solid var(--ink); max-width: 480px; font-variant-numeric: tabular-nums; }
@@ -385,7 +384,7 @@
   }
 
   /* how it works */
-  .how { background: var(--page-alt); }
+  .offer, .how { background: var(--page-alt); }
   .steps { list-style: none; padding: 0; margin-top: clamp(40px, 5vw, 64px); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); counter-reset: step; }
   .steps li { position: relative; border-top: 6px solid var(--wine); padding-top: 20px; counter-increment: step; }
   .steps .when { display: block; font: 600 15px/1.3 var(--mono); color: var(--wine); margin-bottom: 10px; }
@@ -716,54 +715,6 @@
     </div>
   </section>
 
-  <section class="proof" id="work" aria-labelledby="work-title">
-    <div class="proof-top">
-      <div>
-        <p class="label">Our work</p>
-        <h2 id="work-title">Our first build was for family.</h2>
-        <p class="lede">Agustin's older brother, <strong>Dre Lemuz</strong>, runs Lemoose Productions, a portrait, car and sports photography studio in Tuscaloosa. Agustin built it from scratch.</p>
-        <dl class="specs">
-          <div><dt>Build time</dt><dd>9 days</dd></div>
-          <div><dt>Google speed score, laptop (Nov 2026)</dt><dd>100 / 100</dd></div>
-          <div><dt>Google speed score, phone (Nov 2026)</dt><dd>94 / 100</dd></div>
-        </dl>
-        <a class="textlink" href="https://lemooseproductions.com/" target="_blank" rel="noopener">Visit lemooseproductions.com<span aria-hidden="true"> ↗</span></a>
-      </div>
-      <div class="shots">
-        <a class="shot-link" href="https://lemooseproductions.com/" target="_blank" rel="noopener" aria-label="Open lemooseproductions.com"><picture>
-          <source type="image/webp" srcset="assets/work/lemoose-desktop-640.webp 640w, assets/work/lemoose-desktop-960.webp 960w, assets/work/lemoose-desktop-1440.webp 1440w" sizes="(max-width: 920px) 92vw, 52vw">
-          <img class="desk" src="assets/work/lemoose-desktop-960.webp" width="960" height="600" loading="lazy" decoding="async" alt="The Lemoose Productions homepage on a laptop: a dark red car with LEMOOSE in large dotted letters.">
-        </picture></a>
-        <picture class="phone">
-          <source type="image/webp" srcset="assets/work/lemoose-phone-390.webp 390w, assets/work/lemoose-phone-780.webp 780w" sizes="(max-width: 420px) 34vw, 14vw">
-          <img src="assets/work/lemoose-phone-390.webp" width="390" height="844" loading="lazy" decoding="async" alt="The same homepage on a phone.">
-        </picture>
-      </div>
-    </div>
-
-    <div class="before">
-      <h3>What we did before Freeform.</h3>
-      <div class="before-cols">
-        <div>
-          <h4 class="before-who">Agustin</h4>
-          <ul class="credits">
-            <li><div class="credit-head"><svg class="ci" viewBox="0 0 24 24" aria-hidden="true" style="--i:0"><path pathLength="1" d="M3 6h18v4a2 2 0 0 0 0 4v4H3v-4a2 2 0 0 0 0-4z"/><path class="w" pathLength="1" d="M15 7v10"/></svg><a class="credit-name" href="https://studentseats.com/" target="_blank" rel="noopener">Student Seats<span aria-hidden="true"> ↗</span></a><span class="credit-when">2024–25</span></div><p><strong>Software engineer.</strong> Rebuilt the ticket checkout. More than <span class="num">$2.8M</span> in student ticket sales have gone through it.</p></li>
-            <li><div class="credit-head"><svg class="ci" viewBox="0 0 24 24" aria-hidden="true" style="--i:1"><path pathLength="1" d="M3 20V11l5 3v-3l5 3V5h5v15z"/><path class="w" pathLength="1" d="M2 20h20"/></svg><a class="credit-name" href="https://apc.ua.edu/" target="_blank" rel="noopener">Alabama Productivity Center<span aria-hidden="true"> ↗</span></a><span class="credit-when">2025</span></div><p><strong>IT intern.</strong> Moved the center's website onto new code without taking it offline, and made <span class="num">10 pages</span> work on phones.</p></li>
-            <li><div class="credit-head"><svg class="ci" viewBox="0 0 24 24" aria-hidden="true" style="--i:2"><rect pathLength="1" x="7" y="2.5" width="10" height="19" rx="2.2"/><path class="w" pathLength="1" d="M10.5 18h3"/></svg><span class="credit-name">Autobet</span><span class="credit-when">2025</span></div><p><strong>Founding engineer.</strong> Built the startup's phone app from scratch: <span class="num">45 screens</span>.</p></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="before-who">Maria</h4>
-          <ul class="credits">
-            <li><div class="credit-head"><svg class="ci" viewBox="0 0 24 24" aria-hidden="true" style="--i:0"><circle pathLength="1" cx="12" cy="5.5" r="2.4"/><circle pathLength="1" cx="15.8" cy="9" r="2.4"/><circle pathLength="1" cx="8.2" cy="9" r="2.4"/><circle pathLength="1" cx="12" cy="12.5" r="2.4"/><path class="w" pathLength="1" d="M12 15v6.5M12 19c-2.6 0-4-1.4-4.4-3.2 2.4 0 3.9 1.1 4.4 3.2z"/></svg><span class="credit-name">Amitie Gifts and Florals</span><span class="credit-when">2022–now</span></div><p><strong>Owner.</strong> Started her floral and gift business in Tuscaloosa in <span class="num">2022</span> and still runs it: marketing, inventory, vendors and online orders.</p></li>
-            <li><div class="credit-head"><svg class="ci" viewBox="0 0 24 24" aria-hidden="true" style="--i:1"><path pathLength="1" d="M3 14h18l-2.5 4.5h-13z"/><path pathLength="1" d="M7 14v-4h7v4M10 10V6h2.5v4"/><path class="w" pathLength="1" d="M2 21.5c1.7 0 1.7-1 3.3-1s1.7 1 3.4 1 1.6-1 3.3-1 1.7 1 3.3 1 1.7-1 3.4-1 1.6 1 3.3 1"/></svg><span class="credit-name">Parker Towing</span><span class="credit-when">2026–now</span></div><p><strong>AI initiative intern.</strong> Built a web inventory portal that replaced a spreadsheet. Managers, office staff and boat captains use it to track stock and place orders across ports.</p></li>
-            <li><div class="credit-head"><svg class="ci" viewBox="0 0 24 24" aria-hidden="true" style="--i:2"><rect pathLength="1" x="3" y="7" width="16" height="11" rx="2"/><path pathLength="1" d="M19 10.5h2v4h-2"/><path class="w" pathLength="1" d="M12 8.5 9 13h3l-1 3.5 3.5-5h-3z"/></svg><span class="credit-name">Mercedes-Benz</span><span class="credit-when">2026–now</span></div><p><strong>Logistics co-op.</strong> Plans material flow for a new line that rebuilds batteries for Mercedes electric cars.</p></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section class="offer" id="what" aria-labelledby="what-title">
     <p class="label">What you get</p>
     <div class="offer-head">
@@ -793,6 +744,32 @@
         </div>
       </li>
     </ul>
+  </section>
+
+  <section class="proof" id="work" aria-labelledby="work-title">
+    <div class="proof-top">
+      <div>
+        <p class="label">Our work</p>
+        <h2 id="work-title">Our first build was for family.</h2>
+        <p class="lede">Agustin's older brother, <strong>Dre Lemuz</strong>, runs Lemoose Productions, a portrait, car and sports photography studio in Tuscaloosa. Agustin built it from scratch.</p>
+        <dl class="specs">
+          <div><dt>Build time</dt><dd>9 days</dd></div>
+          <div><dt>Google speed score, laptop (Nov 2026)</dt><dd>100 / 100</dd></div>
+          <div><dt>Google speed score, phone (Nov 2026)</dt><dd>94 / 100</dd></div>
+        </dl>
+        <a class="textlink" href="https://lemooseproductions.com/" target="_blank" rel="noopener">Visit lemooseproductions.com<span aria-hidden="true"> ↗</span></a>
+      </div>
+      <div class="shots">
+        <a class="shot-link" href="https://lemooseproductions.com/" target="_blank" rel="noopener" aria-label="Open lemooseproductions.com"><picture>
+          <source type="image/webp" srcset="assets/work/lemoose-desktop-640.webp 640w, assets/work/lemoose-desktop-960.webp 960w, assets/work/lemoose-desktop-1440.webp 1440w" sizes="(max-width: 920px) 92vw, 52vw">
+          <img class="desk" src="assets/work/lemoose-desktop-960.webp" width="960" height="600" loading="lazy" decoding="async" alt="The Lemoose Productions homepage on a laptop: a dark red car with LEMOOSE in large dotted letters.">
+        </picture></a>
+        <picture class="phone">
+          <source type="image/webp" srcset="assets/work/lemoose-phone-390.webp 390w, assets/work/lemoose-phone-780.webp 780w" sizes="(max-width: 420px) 34vw, 14vw">
+          <img src="assets/work/lemoose-phone-390.webp" width="390" height="844" loading="lazy" decoding="async" alt="The same homepage on a phone.">
+        </picture>
+      </div>
+    </div>
   </section>
 
   <section class="how" id="how" aria-labelledby="how-title">
@@ -882,6 +859,28 @@
       </article>
       <p class="bio-note">We take on every project together, from the first call to the day it goes live.</p>
     </div>
+    </div>
+
+    <div class="before">
+      <h3>What we did before Freeform.</h3>
+      <div class="before-cols">
+        <div>
+          <h4 class="before-who">Agustin</h4>
+          <ul class="credits">
+            <li><div class="credit-head"><svg class="ci" viewBox="0 0 24 24" aria-hidden="true" style="--i:0"><path pathLength="1" d="M3 6h18v4a2 2 0 0 0 0 4v4H3v-4a2 2 0 0 0 0-4z"/><path class="w" pathLength="1" d="M15 7v10"/></svg><a class="credit-name" href="https://studentseats.com/" target="_blank" rel="noopener">Student Seats<span aria-hidden="true"> ↗</span></a><span class="credit-when">2024–25</span></div><p><strong>Software engineer.</strong> Rebuilt the ticket checkout. More than <span class="num">$2.8M</span> in student ticket sales have gone through it.</p></li>
+            <li><div class="credit-head"><svg class="ci" viewBox="0 0 24 24" aria-hidden="true" style="--i:1"><path pathLength="1" d="M3 20V11l5 3v-3l5 3V5h5v15z"/><path class="w" pathLength="1" d="M2 20h20"/></svg><a class="credit-name" href="https://apc.ua.edu/" target="_blank" rel="noopener">Alabama Productivity Center<span aria-hidden="true"> ↗</span></a><span class="credit-when">2025</span></div><p><strong>IT intern.</strong> Moved the center's website onto new code without taking it offline, and made <span class="num">10 pages</span> work on phones.</p></li>
+            <li><div class="credit-head"><svg class="ci" viewBox="0 0 24 24" aria-hidden="true" style="--i:2"><rect pathLength="1" x="7" y="2.5" width="10" height="19" rx="2.2"/><path class="w" pathLength="1" d="M10.5 18h3"/></svg><span class="credit-name">Autobet</span><span class="credit-when">2025</span></div><p><strong>Founding engineer.</strong> Built the startup's phone app from scratch: <span class="num">45 screens</span>.</p></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="before-who">Maria</h4>
+          <ul class="credits">
+            <li><div class="credit-head"><svg class="ci" viewBox="0 0 24 24" aria-hidden="true" style="--i:0"><circle pathLength="1" cx="12" cy="5.5" r="2.4"/><circle pathLength="1" cx="15.8" cy="9" r="2.4"/><circle pathLength="1" cx="8.2" cy="9" r="2.4"/><circle pathLength="1" cx="12" cy="12.5" r="2.4"/><path class="w" pathLength="1" d="M12 15v6.5M12 19c-2.6 0-4-1.4-4.4-3.2 2.4 0 3.9 1.1 4.4 3.2z"/></svg><span class="credit-name">Amitie Gifts and Florals</span><span class="credit-when">2022–now</span></div><p><strong>Owner.</strong> Started her floral and gift business in Tuscaloosa in <span class="num">2022</span> and still runs it: marketing, inventory, vendors and online orders.</p></li>
+            <li><div class="credit-head"><svg class="ci" viewBox="0 0 24 24" aria-hidden="true" style="--i:1"><path pathLength="1" d="M3 14h18l-2.5 4.5h-13z"/><path pathLength="1" d="M7 14v-4h7v4M10 10V6h2.5v4"/><path class="w" pathLength="1" d="M2 21.5c1.7 0 1.7-1 3.3-1s1.7 1 3.4 1 1.6-1 3.3-1 1.7 1 3.3 1 1.7-1 3.4-1 1.6 1 3.3 1"/></svg><span class="credit-name">Parker Towing</span><span class="credit-when">2026–now</span></div><p><strong>AI initiative intern.</strong> Built a web inventory portal that replaced a spreadsheet. Managers, office staff and boat captains use it to track stock and place orders across ports.</p></li>
+            <li><div class="credit-head"><svg class="ci" viewBox="0 0 24 24" aria-hidden="true" style="--i:2"><rect pathLength="1" x="3" y="7" width="16" height="11" rx="2"/><path pathLength="1" d="M19 10.5h2v4h-2"/><path class="w" pathLength="1" d="M12 8.5 9 13h3l-1 3.5 3.5-5h-3z"/></svg><span class="credit-name">Mercedes-Benz</span><span class="credit-when">2026–now</span></div><p><strong>Logistics co-op.</strong> Plans material flow for a new line that rebuilds batteries for Mercedes electric cars.</p></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
