@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://www.freeformworks.com/">
 <title>Freeform Works · Websites for Tuscaloosa shops and crews</title>
 <meta name="description" content="Agustin and Maria build websites, booking and owner dashboards for local shops and trade crews in Tuscaloosa. From $1,200, then $75 a month.">
 <meta name="theme-color" content="#ffffff">
@@ -15,6 +16,7 @@
 <meta property="og:url" content="https://www.freeformworks.com/">
 <link rel="preload" href="assets/fonts/big-shoulders-display-900-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/public-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Freeform Works", "url": "https://www.freeformworks.com/", "email": "hello@freeformworks.com", "description": "Websites, booking on your own domain and owner dashboards for local shops and trade crews in Tuscaloosa, Alabama.", "areaServed": {"@type": "City", "name": "Tuscaloosa", "containedInPlace": {"@type": "State", "name": "Alabama"}}, "address": {"@type": "PostalAddress", "addressLocality": "Tuscaloosa", "addressRegion": "AL", "addressCountry": "US"}, "founder": [{"@type": "Person", "name": "Agustin Lemuz-Juarez"}, {"@type": "Person", "name": "Maria Estrada"}], "logo": "https://www.freeformworks.com/assets/fw-logo.png", "image": "https://www.freeformworks.com/social_logo.png", "makesOffer": [{"@type": "Offer", "name": "Shop plan", "price": "1200", "priceCurrency": "USD", "description": "Website, booking on your own domain, Google profile cleanup and Google search setup, then $75 a month."}, {"@type": "Offer", "name": "Crew plan", "price": "2500", "priceCurrency": "USD", "description": "Everything in the Shop plan plus quote requests, job scheduling and the owner dashboard, then $200 a month."}]}</script>
 <style>
   @font-face { font-family: "Big Shoulders Display"; font-style: normal; font-weight: 900; font-display: swap; src: url("assets/fonts/big-shoulders-display-900-latin.woff2") format("woff2"); }
   @font-face { font-family: "Public Sans"; font-style: normal; font-weight: 100 900; font-display: swap; src: url("assets/fonts/public-sans-latin.woff2") format("woff2"); }
@@ -32,6 +34,16 @@
     --night: #121212;
     --on-night: #f5f5f2;
     --on-night-soft: #b9b9b4;
+    /* supporting tones, named once */
+    --ink-mute: #6b6b68;      /* softened text that still passes 4.5:1 on white */
+    --ink-faint: #8a8a86;     /* icons and chrome only, never body text */
+    --rule-strong: #b9b9b4;   /* drawn lines in icons */
+    --cell: #d1cfc8;          /* placeholder blocks in icons */
+    --cell-soft: #e4e2dc;
+    --wine-bright: #e0566f;   /* wine accents on the dark sections */
+    --wine-tint: #f3dde1;     /* highlight wash */
+    --wine-line: #c9a2aa;     /* wine outline */
+    --night-line: #2a2a2a;    /* rules on the dark sections */
     --paper: #ffffff;
     --edge: clamp(20px, 5vw, 80px);
     --section: clamp(72px, 9vw, 136px);
@@ -99,7 +111,7 @@
   .pricing .label { color: var(--on-wine-soft); }
   .pricing .label::before { background: var(--on-wine); }
   .close .label { color: var(--on-night-soft); grid-column: 1 / -1; }
-  .close .label::before { background: #e0566f; }
+  .close .label::before { background: var(--wine-bright); }
 
   .btn svg { width: 18px; height: 18px; flex: none; }
   .btn-wine { background: var(--wine); color: var(--on-wine); }
@@ -138,7 +150,7 @@
   .pi .ink { stroke: var(--ink); stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .pi .wine { fill: var(--wine); }
   .pi .paper { fill: var(--paper); }
-  .pi .road { stroke: #b9b9b4; stroke-width: 2; stroke-dasharray: 6 5; stroke-linecap: round; }
+  .pi .road { stroke: var(--rule-strong); stroke-width: 2; stroke-dasharray: 6 5; stroke-linecap: round; }
   .pi .sign { transform-box: view-box; transform-origin: 28px 19px; rotate: 8deg; }
   .pi .wheel { transform-box: fill-box; transform-origin: center; }
   /* odometer digits for the one-time roll-in */
@@ -201,13 +213,13 @@
   .dash-dots i { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.12); }
   .dash-dots i:nth-child(2) { background: #febc2e; }
   .dash-dots i:nth-child(3) { background: #28c840; }
-  .dash-nav { display: flex; gap: 10px; color: #8a8a86; }
+  .dash-nav { display: flex; gap: 10px; color: var(--ink-faint); }
   .dash-chrome svg { width: 15px; height: 15px; flex: none; }
   .dash-url { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; gap: 6px; overflow: hidden; white-space: nowrap; font: 400 12.5px/1 var(--body); color: #3c3c3a; background: #f1f1f0; border-radius: 8px; padding: 7px 12px; }
-  .dash-url svg { width: 11px; height: 11px; color: #6b6b68; }
+  .dash-url svg { width: 11px; height: 11px; color: var(--ink-mute); }
   .dash-url span { overflow: hidden; text-overflow: ellipsis; }
-  .dash-reload { color: #8a8a86; }
-  .dash-tag { font: 600 11px/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--wine); border: 1px solid #c9a2aa; border-radius: 4px; padding: 4px 6px; white-space: nowrap; }
+  .dash-reload { color: var(--ink-faint); }
+  .dash-tag { font: 600 11px/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--wine); border: 1px solid var(--wine-line); border-radius: 4px; padding: 4px 6px; white-space: nowrap; }
   .dash-body { padding: 16px; display: grid; gap: 14px; }
   .dash-title { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
   .dash-title b { font: 900 24px/1 var(--display); text-transform: uppercase; }
@@ -230,7 +242,7 @@
   @media (prefers-reduced-motion: no-preference) {
     .dash-rows.slide { transition: transform 520ms var(--ease-out); }
     .dash-rows li.arrive { animation: arrive-glow 1600ms ease-out; }
-    @keyframes arrive-glow { from { background: #f3dde1; } }
+    @keyframes arrive-glow { from { background: var(--wine-tint); } }
     .dash-metrics strong.bump { animation: bump 420ms var(--ease-out); }
     @keyframes bump { 40% { transform: translateY(-3px); } }
   }
@@ -303,7 +315,7 @@
   /* reading tracker: the row at the middle of the screen lights up; a bar marks rows you've passed */
   .offer-list li::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 3px; background: var(--wine); transform: scaleX(0); transform-origin: left; }
   .js .offer-list li h3 { transition: color 300ms ease; }
-  .js .offer-list:has(li.on) li:not(.on) h3 { color: #6b6b68; }
+  .js .offer-list:has(li.on) li:not(.on) h3 { color: var(--ink-mute); }
   .offer-list li.on .offer-num { color: var(--wine); }
   .offer-list li.seen::before { transform: scaleX(1); }
   @media (prefers-reduced-motion: no-preference) {
@@ -312,7 +324,7 @@
   /* small piece icons that run on their own, like the price-row ones */
   .oi { width: 76px; height: 57px; flex: none; overflow: visible; }
   .oi .ink { stroke: var(--ink); stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
-  .oi .soft { stroke: #b9b9b4; stroke-width: 3; stroke-linecap: round; }
+  .oi .soft { stroke: var(--rule-strong); stroke-width: 3; stroke-linecap: round; }
   .oi .wine { fill: var(--wine); }
   .oi .tick { stroke: #fff; stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .oi .grow { transform-box: fill-box; transform-origin: left center; }
@@ -341,7 +353,7 @@
   .si { display: block; width: 76px; height: 57px; margin-bottom: 14px; overflow: visible; }
   .si .ink { stroke: var(--ink); stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .si .wine { fill: var(--wine); }
-  .si .grey { fill: #d1cfc8; }
+  .si .grey { fill: var(--cell); }
   .si .check { stroke: #fff; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .steps h3 { margin-bottom: 12px; }
   .steps h3::before { content: counter(step) ". "; }
@@ -411,10 +423,10 @@
   .ticket ul { list-style: none; padding: 0; }
   /* crew-only lines stay on the ticket; their right column flips between the plans */
   .crew-only > span:first-child { transition: color 300ms ease; }
-  [data-tier="shop"] .crew-only > span:first-child { color: #6b6b68; }
+  [data-tier="shop"] .crew-only > span:first-child { color: var(--ink-mute); }
   .val { display: inline-grid; justify-items: end; overflow: clip; }
   .val > span { grid-area: 1 / 1; white-space: nowrap; }
-  .val .no { color: #6b6b68; }
+  .val .no { color: var(--ink-mute); }
   [data-tier="shop"] .val .yes { translate: 0 110%; }
   [data-tier="trade"] .val .no { translate: 0 -110%; }
   .for { transition: opacity 160ms ease; min-height: calc(2 * 1.55em); display: flex; align-items: center; gap: 14px; }
@@ -428,11 +440,11 @@
   .for.swap { opacity: 0; }
   @media (prefers-reduced-motion: no-preference) {
     .val > span { transition: translate 420ms cubic-bezier(.77, 0, .175, 1); }
-    .crew-only:nth-child(5) .val > span { transition-delay: 70ms; }
-    .crew-only:nth-child(6) .val > span { transition-delay: 140ms; }
+    .crew-only:nth-child(6) .val > span { transition-delay: 70ms; }
+    .crew-only:nth-child(7) .val > span { transition-delay: 140ms; }
     /* while it plays by itself, the active tab fills like a timer */
     .tabs button { position: relative; }
-    .tabs.auto button[aria-pressed="true"]::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: #e0566f; transform-origin: left; animation: tab-timer 5.5s linear both; }
+    .tabs.auto button[aria-pressed="true"]::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: var(--wine-bright); transform-origin: left; animation: tab-timer 5.5s linear both; }
     .tabs.auto.hold button::after { animation-play-state: paused !important; }
     @keyframes tab-timer { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   }
@@ -440,7 +452,7 @@
   .total { font-weight: 600; font-size: 18px; }
   .total .amt { color: var(--wine); padding: 0 4px; margin-right: -4px; border-radius: 3px; }
   .total .amt.flash { animation: flash 700ms ease-out; }
-  @keyframes flash { from { background: #f3dde1; } }
+  @keyframes flash { from { background: var(--wine-tint); } }
   .t-terms { font-size: 14px; margin-top: 8px; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .ticket .btn { width: 100%; margin-top: 18px; min-height: 52px; font-size: 17px; border-radius: 0; }
@@ -468,13 +480,13 @@
   .close-head .lede { grid-column: 1 / -1; }
   .clock { width: clamp(96px, 11vw, 164px); }
   .clock svg { display: block; width: 100%; height: auto; }
-  .clock-face { fill: #1c1c1c; stroke: #8a8a86; stroke-width: 2.5; }
-  .clock-ticks line { stroke: #b9b9b4; stroke-width: 2.5; stroke-linecap: round; }
+  .clock-face { fill: #1c1c1c; stroke: var(--ink-faint); stroke-width: 2.5; }
+  .clock-ticks line { stroke: var(--rule-strong); stroke-width: 2.5; stroke-linecap: round; }
   .clock-sweep { fill: none; stroke: var(--wine); stroke-width: 54; stroke-dasharray: 25 100; }
   .clock-hand { stroke: var(--on-night); stroke-width: 4; stroke-linecap: round; transform-origin: 60px 60px; transform: rotate(90deg); }
   .clock-pin { fill: var(--on-night); }
-  .marquee { margin: clamp(40px, 5vw, 72px) calc(-1 * var(--edge)) 0; border-top: 1px solid #2a2a2a; padding: 18px 0; }
-  .marquee-track { display: flex; gap: 48px; width: max-content; font: 900 clamp(28px, 3vw, 44px)/1 var(--display); text-transform: uppercase; color: #6b6b68; }
+  .marquee { margin: clamp(40px, 5vw, 72px) calc(-1 * var(--edge)) 0; border-top: 1px solid var(--night-line); padding: 18px 0; }
+  .marquee-track { display: flex; gap: 48px; width: max-content; font: 900 clamp(28px, 3vw, 44px)/1 var(--display); text-transform: uppercase; color: var(--ink-mute); }
   .marquee-track span::after { content: "·"; margin-left: 48px; color: var(--wine); }
   @media (prefers-reduced-motion: no-preference) {
     /* the hand sweeps a quarter hour, holds, and starts again */
@@ -503,8 +515,8 @@
   /* live local time and call hours */
   .now { flex-basis: 100%; display: flex; align-items: flex-start; gap: 10px; font: 500 15px/1.4 var(--mono); color: var(--on-night-soft); font-variant-numeric: tabular-nums; }
   .now[hidden] { display: none; }
-  .now-dot { position: relative; margin-top: .4em; width: 9px; height: 9px; border-radius: 50%; background: #6b6b68; flex: none; }
-  .now.open .now-dot { background: #e0566f; }
+  .now-dot { position: relative; margin-top: .4em; width: 9px; height: 9px; border-radius: 50%; background: var(--ink-mute); flex: none; }
+  .now.open .now-dot { background: var(--wine-bright); }
   .now strong { color: var(--on-night); font-weight: 600; }
   @media (prefers-reduced-motion: no-preference) {
     .now.open .now-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: inherit; animation: ping 2.4s var(--ease-out) infinite; }
@@ -512,8 +524,8 @@
   }
   .close a.email { color: var(--on-night); }
   .close :focus-visible { outline-color: var(--on-night); }
-  footer { background: var(--night); color: var(--on-night-soft); border-top: 1px solid #2a2a2a; padding: 24px var(--edge); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; }
-  footer a { color: var(--on-night); }
+  footer { background: var(--night); color: var(--on-night-soft); border-top: 1px solid var(--night-line); padding: 24px var(--edge); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; }
+  footer a { color: var(--on-night); display: inline-block; padding: 10px 2px; }
   .foot-brand { display: inline-flex; align-items: center; gap: 14px; }
   .foot-brand img { height: 36px; width: auto; }
 
@@ -551,6 +563,8 @@
     .js .ticket.waiting { clip-path: inset(0 0 100% 0); translate: 0 -24px; }
     .js .ticket.printed { clip-path: inset(0 0 -40px 0); translate: 0 0; transition: clip-path 700ms var(--ease-out), translate 700ms var(--ease-out); }
   }
+  /* loops hold still while their section is off screen (set by script) */
+  .offscreen *, .offscreen *::before, .offscreen *::after { animation-play-state: paused !important; }
 </style>
 <script>document.documentElement.classList.add('mo-js');setTimeout(()=>document.documentElement.classList.add('mo-safe'),2500)</script>
 <link rel="modulepreload" href="assets/moments/moments.js"><link rel="modulepreload" href="assets/moments/lib.js">
@@ -610,7 +624,7 @@
     <div class="people" aria-label="Who you'll work with">
       <article class="tag">
         <p class="tag-top" aria-hidden="true">Hello, I'm</p>
-        <img class="tag-photo" src="assets/people/agustin-720.webp" width="720" height="900" alt="Agustin Lemuz-Juarez" fetchpriority="high">
+        <img class="tag-photo" src="assets/people/agustin-720.webp" srcset="assets/people/agustin-360.webp 360w, assets/people/agustin-720.webp 720w" sizes="(max-width: 920px) 46vw, 260px" width="720" height="900" alt="Agustin Lemuz-Juarez" fetchpriority="high">
         <div class="tag-body">
           <p class="tag-name">Agustin</p>
           <p class="tag-major">Software Engineer</p>
@@ -618,7 +632,7 @@
       </article>
       <article class="tag">
         <p class="tag-top" aria-hidden="true">Hello, I'm</p>
-        <img class="tag-photo" src="assets/people/maria-800.webp" width="800" height="800" alt="Maria Estrada">
+        <img class="tag-photo" src="assets/people/maria-800.webp" srcset="assets/people/maria-400.webp 400w, assets/people/maria-800.webp 800w" sizes="(max-width: 920px) 46vw, 260px" width="800" height="800" alt="Maria Estrada">
         <div class="tag-body">
           <p class="tag-name">Maria</p>
           <p class="tag-major">Digital Operations</p>
@@ -662,14 +676,14 @@
         <p class="lede">Agustin's older brother, <strong>Dre Lemuz</strong>, runs Lemoose Productions, a portrait, car and sports photography studio in Tuscaloosa. Agustin built it from scratch.</p>
         <dl class="specs">
           <div><dt>Build time</dt><dd>9 days</dd></div>
-          <div><dt>Google speed score, laptop</dt><dd>100 / 100</dd></div>
-          <div><dt>Google speed score, phone</dt><dd>94 / 100</dd></div>
+          <div><dt>Google speed score, laptop (Nov 2026)</dt><dd>100 / 100</dd></div>
+          <div><dt>Google speed score, phone (Nov 2026)</dt><dd>94 / 100</dd></div>
         </dl>
         <a class="textlink" href="https://lemooseproductions.com/" target="_blank" rel="noopener">Visit lemooseproductions.com<span aria-hidden="true"> ↗</span></a>
       </div>
       <div class="shots">
         <a class="shot-link" href="https://lemooseproductions.com/" target="_blank" rel="noopener" aria-label="Open lemooseproductions.com"><picture>
-          <source type="image/webp" srcset="assets/work/lemoose-desktop-960.webp 960w, assets/work/lemoose-desktop-1440.webp 1440w" sizes="(max-width: 920px) 92vw, 52vw">
+          <source type="image/webp" srcset="assets/work/lemoose-desktop-640.webp 640w, assets/work/lemoose-desktop-960.webp 960w, assets/work/lemoose-desktop-1440.webp 1440w" sizes="(max-width: 920px) 92vw, 52vw">
           <img class="desk" src="assets/work/lemoose-desktop-960.webp" width="960" height="600" loading="lazy" decoding="async" alt="The Lemoose Productions homepage on a laptop: a dark red car with LEMOOSE in large dotted letters.">
         </picture></a>
         <picture class="phone">
@@ -712,19 +726,19 @@
       <li>
         <div class="offer-name"><p class="offer-num">01</p><svg class="oi" viewBox="0 0 64 48" aria-hidden="true"><rect class="ink" x="4" y="4" width="56" height="40" rx="4"/><path class="ink" d="M4 13h56"/><circle cx="10" cy="8.5" r="1.6" fill="#141414"/><circle cx="15" cy="8.5" r="1.6" fill="#141414"/><rect class="wine grow" x="11" y="19" width="22" height="8" rx="1.5"/><path class="soft grow" d="M11 33h40"/><path class="soft grow" d="M11 38h28"/></svg><h3>A website that's yours</h3></div>
         <div>
-          <p>Built from scratch on your own domain, and fast on a phone: our first one scores 94 out of 100 on Google's phone test. We also fix your Google profile so your hours and number match.</p>
+          <p>Built from scratch on your own domain, and fast on a phone: our first one scored 94 out of 100 on Google's phone test in November 2026. We fix your Google profile so your hours and number match, and set the site up so Google can find it: a title and description for every page, a sitemap, and Google Search Console.</p>
           <p class="who">Included in <span class="chip">Shop</span><span class="chip">Crew</span></p>
         </div>
       </li>
       <li>
-        <div class="offer-name"><p class="offer-num">02</p><svg class="oi" viewBox="0 0 64 48" aria-hidden="true"><rect class="ink" x="6" y="6" width="52" height="38" rx="4"/><path class="ink" d="M6 15h52M18 2v8M46 2v8"/><g fill="#e4e2dc"><rect x="12" y="20" width="10" height="8" rx="1.5"/><rect x="27" y="20" width="10" height="8" rx="1.5"/><rect x="12" y="32" width="10" height="8" rx="1.5"/><rect x="27" y="32" width="10" height="8" rx="1.5"/><rect x="42" y="32" width="10" height="8" rx="1.5"/></g><rect class="wine slot" x="42" y="20" width="10" height="8" rx="1.5"/><path class="tick" d="M44.5 24l2 2 3.5-4"/></svg><h3>Booking on your own site</h3></div>
+        <div class="offer-name"><p class="offer-num">02</p><svg class="oi" viewBox="0 0 64 48" aria-hidden="true"><rect class="ink" x="6" y="6" width="52" height="38" rx="4"/><path class="ink" d="M6 15h52M18 2v8M46 2v8"/><g style="fill:var(--cell-soft)"><rect x="12" y="20" width="10" height="8" rx="1.5"/><rect x="27" y="20" width="10" height="8" rx="1.5"/><rect x="12" y="32" width="10" height="8" rx="1.5"/><rect x="27" y="32" width="10" height="8" rx="1.5"/><rect x="42" y="32" width="10" height="8" rx="1.5"/></g><rect class="wine slot" x="42" y="20" width="10" height="8" rx="1.5"/><path class="tick" d="M44.5 24l2 2 3.5-4"/></svg><h3>Booking on your own site</h3></div>
         <div>
           <p>Customers pick a time on your website and you both get a calendar invite, with no app listing your competitors next to you. Already on Square, GlossGenius or Vagaro? We'll put that on your site instead. <a class="textlink" href="/book">Try ours</a>.</p>
           <p class="who">Included in <span class="chip">Shop</span><span class="chip">Crew</span></p>
         </div>
       </li>
       <li>
-        <div class="offer-name"><p class="offer-num">03</p><svg class="oi" viewBox="0 0 64 48" aria-hidden="true"><rect class="ink" x="4" y="4" width="56" height="40" rx="4"/><g class="newrow"><circle cx="13" cy="15" r="3" class="wine"/><circle cx="13" cy="15" r="3" class="wine ping"/><path class="ink" style="stroke-width:3" d="M21 15h22"/><rect class="wine" x="46" y="12" width="9" height="6" rx="1.5"/></g><circle cx="13" cy="26" r="3" fill="#b9b9b4"/><path class="soft" d="M21 26h26"/><circle cx="13" cy="36" r="3" fill="#b9b9b4"/><path class="soft" d="M21 36h18"/></svg><h3>One place to see every customer</h3></div>
+        <div class="offer-name"><p class="offer-num">03</p><svg class="oi" viewBox="0 0 64 48" aria-hidden="true"><rect class="ink" x="4" y="4" width="56" height="40" rx="4"/><g class="newrow"><circle cx="13" cy="15" r="3" class="wine"/><circle cx="13" cy="15" r="3" class="wine ping"/><path class="ink" style="stroke-width:3" d="M21 15h22"/><rect class="wine" x="46" y="12" width="9" height="6" rx="1.5"/></g><circle cx="13" cy="26" r="3" style="fill:var(--rule-strong)"/><path class="soft" d="M21 26h26"/><circle cx="13" cy="36" r="3" style="fill:var(--rule-strong)"/><path class="soft" d="M21 36h18"/></svg><h3>One place to see every customer</h3></div>
         <div>
           <p>An owner dashboard for new quote requests, scheduled jobs and who needs a follow-up. Made for crews that run on texts and memory right now.</p>
           <p class="who">Included in <span class="chip">Crew</span></p>
@@ -734,7 +748,7 @@
   </section>
 
   <section class="how" id="how" aria-labelledby="how-title">
-    <p class="label">The process</p>
+    <p class="label">From call to launch</p>
     <h2 id="how-title">How it works.</h2>
     <ol class="steps">
       <li>
@@ -760,7 +774,7 @@
 
   <section class="pricing" id="prices" aria-labelledby="prices-title">
     <div>
-      <p class="label">Prices</p>
+      <p class="label">Published pricing</p>
       <h2 id="prices-title">Here's the whole price.</h2>
       <p class="lede">Pick your kind of business and the ticket updates. What you see is what you pay.</p>
       <ul class="terms">
@@ -787,6 +801,7 @@
           <li class="line"><span>Custom website</span><span>incl.</span></li>
           <li class="line"><span>Booking on your own domain</span><span>incl.</span></li>
           <li class="line"><span>Google profile cleanup</span><span>incl.</span></li>
+          <li class="line"><span>Google search setup</span><span>incl.</span></li>
           <li class="line crew-only"><span>Quote requests</span><span class="val"><span class="yes" aria-hidden="true">incl.</span><span class="no">Crew plan</span></span></li>
           <li class="line crew-only"><span>Job scheduling</span><span class="val"><span class="yes" aria-hidden="true">incl.</span><span class="no">Crew plan</span></span></li>
           <li class="line crew-only"><span>Owner dashboard</span><span class="val"><span class="yes" aria-hidden="true">incl.</span><span class="no">Crew plan</span></span></li>
@@ -804,7 +819,7 @@
   </section>
 
   <section class="about" id="about" aria-labelledby="about-title">
-    <p class="label">Who we are</p>
+    <p class="label">The two of us</p>
     <h2 id="about-title">About us.</h2>
     <div class="about-grid">
     <figure class="together" data-moment="picture-develops"><img src="assets/people/together-960.webp" srcset="assets/people/together-960.webp 960w, assets/people/together-1448.webp 1448w" sizes="(max-width: 920px) 92vw, 60vw" width="1448" height="1086" alt="Maria and Agustin on a sunny sidewalk, both dressed up, Maria taking the selfie" loading="lazy"></figure>
@@ -853,17 +868,17 @@
 </main>
 
 <footer>
-  <span class="foot-brand"><img src="assets/fw-logo-light.png" width="50" height="36" alt="Freeform Works"> Tuscaloosa, AL</span>
+  <span class="foot-brand"><img src="assets/fw-logo-light-100.png" width="50" height="36" alt="Freeform Works"> Tuscaloosa, AL</span>
   <span>© 2026 Agustin Lemuz-Juarez and Maria Estrada · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></span>
 </footer>
 
 <script>
   const tiers = {
     shop: { for: 'For barbers, salons, photographers, florists and restaurants', icons: '<svg viewBox="0 0 24 24" aria-hidden="true"><title>Barbers and salons</title><circle cx="6" cy="6.5" r="2.7"/><circle cx="6" cy="17.5" r="2.7"/><path d="M8.2 8.1 20 18M8.2 15.9 20 6"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><title>Photographers</title><rect x="3" y="7" width="18" height="13" rx="2"/><path d="m8.5 7 1.5-2.5h4L15.5 7"/><circle cx="12" cy="13.5" r="3.4"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><title>Florists</title><circle cx="12" cy="5.5" r="2.4"/><circle cx="15.8" cy="9" r="2.4"/><circle cx="12" cy="12.5" r="2.4"/><circle cx="8.2" cy="9" r="2.4"/><path d="M12 15v6.5M12 19c-2.6 0-4-1.4-4.4-3.2 2.4 0 3.9 1.1 4.4 3.2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><title>Restaurants</title><path d="M6 3v6a2 2 0 0 0 4 0V3M8 3v18M17 3c-2.2 1.8-2.6 6.4-.4 9H17v9"/></svg>',
-            items: ['Custom website', 'Booking on your own domain', 'Google profile cleanup'],
+            items: ['Custom website', 'Booking on your own domain', 'Google profile cleanup', 'Google search setup'],
             setup: '$1,200', monthly: '$75', terms: 'Hosting, edits and updates included.', name: 'Shop plan' },
     trade: { for: 'For lawn care, landscaping and contractors', icons: '<svg viewBox="0 0 24 24" aria-hidden="true"><title>Lawn care</title><path d="M3.5 14.5h12l2.2-3.5M17.7 11 21 3.5"/><circle cx="6.5" cy="18" r="2.4"/><circle cx="14.5" cy="18" r="2.4"/><path d="M3.5 14.5V12h9v2.5"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><title>Landscaping</title><path d="M5 19.5C5 11 10.5 5 19.5 4.5 19 13 13 19 5 19.5z"/><path d="M5 19.5 13 11.5"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><title>Contractors</title><g transform="rotate(-35 12 12)"><rect x="5.5" y="3.5" width="12" height="5" rx="1"/><path d="M17.5 5h2.5M10.5 8.5v12a1.5 1.5 0 0 0 3 0v-12"/></g></svg>',
-             items: ['Custom website', 'Booking on your own domain', 'Google profile cleanup', 'Quote requests', 'Job scheduling', 'Owner dashboard'],
+             items: ['Custom website', 'Booking on your own domain', 'Google profile cleanup', 'Google search setup', 'Quote requests', 'Job scheduling', 'Owner dashboard'],
              setup: '$2,500', monthly: '$200', terms: 'Hosting, edits, updates and dashboard support included.', name: 'Crew plan' }
   };
   const $ = (id) => document.getElementById(id);
@@ -958,6 +973,12 @@
   })();
 </script>
 <script>
+  /* pause every loop in a section while it's off screen, so nothing paints out of sight */
+  (() => {
+    if (!('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => e.target.classList.toggle('offscreen', !e.isIntersecting)), { rootMargin: '120px 0px' });
+    document.querySelectorAll('main > section').forEach((sec) => io.observe(sec));
+  })();
   /* past-work icons draw in once when the list scrolls into view */
   (() => {
     const before = document.querySelector('.before');
