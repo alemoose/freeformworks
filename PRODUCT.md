@@ -37,8 +37,9 @@ Not deliverable yet, so never sold or shown as working:
 - AI intake (an assistant that answers new customers). Do not list it as included in setup or in the care plan until it exists. A demo of it may only appear if it is built and clearly labeled as a demo.
 
 Pricing: published on the site, never "contact us for pricing". Working prices (adopted for now, from `docs/pricing-research.md`):
-- Shops: $1,200 setup, $75/mo (hosting, edits, updates). Website, booking on their own domain, Google profile cleanup.
-- Crews (trades): $2,500 setup, $200/mo (hosting, edits, updates, dashboard support). Everything in the shop plan (website, booking on their own domain, Google profile cleanup) plus quote requests, job scheduling and the owner dashboard.
+- Shops: $1,200 setup, $75/mo (hosting, edits, updates). Website, booking on their own domain, Google profile cleanup, Google search setup.
+- Crews (trades): $2,500 setup, $200/mo (hosting, edits, updates, dashboard support). Everything in the shop plan (website, booking on their own domain, Google profile cleanup, Google search setup) plus quote requests, job scheduling and the owner dashboard.
+- "Google search setup" means: a title and description for every page, Google's business info tags, a sitemap submitted through Google Search Console, and a fast mobile-first build. Never promise rankings, positions or traffic.
 - Plan names on the site are "Shop" and "Crew", nothing else. The receipt's item lists are the single source of truth for what each plan includes.
 
 Terms:
