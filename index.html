@@ -188,9 +188,47 @@
   .tag-facts { list-style: none; padding: 12px 0 0; margin-top: 12px; border-top: 2px dashed var(--rule); font-size: 15px; line-height: 1.45; color: var(--ink-soft); }
 
   /* statement: one word turns over on its own */
-  .statement { padding-top: clamp(56px, 6vw, 96px); padding-bottom: clamp(56px, 6vw, 96px); border-top: 1px solid var(--rule); }
-  .statement-big { font-size: clamp(40px, 5.6vw, 88px); line-height: 1; max-width: 22ch; }
+  .statement { padding-top: clamp(56px, 6vw, 96px); padding-bottom: clamp(56px, 6vw, 96px); border-top: 1px solid var(--rule);
+    display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: center; }
+  .statement-big { font-size: clamp(40px, 4.6vw, 76px); line-height: 1; max-width: 22ch; }
   .statement .lede { margin-top: 20px; max-width: 52ch; }
+
+  /* sample owner dashboard: where the texts and voicemails go instead */
+  .dash { background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; box-shadow: 0 30px 60px rgba(0,0,0,.10), 0 2px 6px rgba(0,0,0,.04); overflow: hidden; font: 400 14px/1.35 var(--body); }
+  .dash-chrome { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--page-alt); border-bottom: 1px solid var(--rule); }
+  .dash-dots { display: flex; gap: 6px; }
+  .dash-dots i { width: 10px; height: 10px; border-radius: 50%; background: #d1cfc8; }
+  .dash-url { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; font: 500 12px/1 var(--mono); color: var(--ink-soft); background: var(--paper); border: 1px solid var(--rule); border-radius: 5px; padding: 6px 10px; }
+  .dash-tag { font: 600 11px/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--wine); border: 1px solid #c9a2aa; border-radius: 4px; padding: 4px 6px; white-space: nowrap; }
+  .dash-body { padding: 16px; display: grid; gap: 14px; }
+  .dash-title { display: flex; justify-content: space-between; align-items: baseline; }
+  .dash-title b { font: 900 24px/1 var(--display); text-transform: uppercase; }
+  .dash-title span { font-size: 13px; color: var(--ink-soft); }
+  .dash-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .dash-metrics div { background: var(--page-alt); border-radius: 6px; padding: 10px 12px; }
+  .dash-metrics span { display: block; font-size: 12px; color: var(--ink-soft); }
+  .dash-metrics strong { display: block; margin-top: 4px; font: 900 30px/1 var(--display); font-variant-numeric: tabular-nums; }
+  .dash-metrics .hot strong { color: var(--wine); }
+  .dash-h { display: flex; justify-content: space-between; font: 600 12px/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-soft); }
+  .dash-list { --row: 52px; height: calc(var(--row) * 4); overflow: hidden; border-top: 1px solid var(--rule); }
+  .dash-rows { list-style: none; margin: 0; padding: 0; }
+  .dash-rows li { height: var(--row); display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px; border-bottom: 1px solid var(--rule); }
+  .dash-rows b { display: block; font-weight: 700; }
+  .dash-rows small { display: block; font-size: 12px; color: var(--ink-soft); }
+  .badge { font: 600 11px/1 var(--mono); text-transform: uppercase; letter-spacing: .05em; padding: 5px 7px; border-radius: 4px; background: var(--page-alt); color: var(--ink-soft); }
+  .badge.new { background: var(--wine); color: var(--on-wine); }
+  .badge.won { background: #e3efe6; color: #24563a; }
+  .dash-next { display: flex; gap: 10px; align-items: center; background: var(--page-alt); border-radius: 6px; padding: 10px 12px; font-size: 13px; }
+  .dash-next svg { width: 18px; height: 18px; color: var(--wine); flex: none; }
+  @media (prefers-reduced-motion: no-preference) {
+    .dash-rows.slide { transition: transform 520ms var(--ease-out); }
+    .dash-rows li.arrive { animation: arrive-glow 1600ms ease-out; }
+    @keyframes arrive-glow { from { background: #f3dde1; } }
+    .dash-metrics strong.bump { animation: bump 420ms var(--ease-out); }
+    @keyframes bump { 40% { transform: translateY(-3px); } }
+  }
+  @media (max-width: 920px) { .statement { grid-template-columns: 1fr; } .dash { max-width: 520px; } }
+  @media (max-width: 420px) { .dash-metrics strong { font-size: 24px; } .dash-url { font-size: 11px; } .dash-dots { display: none; } .dash-chrome { gap: 8px; padding: 10px; } }
   .rot { display: inline-block; height: 1em; overflow: hidden; vertical-align: bottom; color: var(--wine); }
   .rot-track { display: grid; }
   .rot-track > span { display: block; height: 1em; line-height: 1; }
@@ -509,9 +547,30 @@
   </section>
 
   <section class="statement" id="why" aria-labelledby="why-title">
+    <div>
     <p class="label">The problem</p>
     <h2 id="why-title" class="statement-big">Right now your bookings live in your <span class="rot" aria-hidden="true"><span class="rot-track"><span>texts.</span><span>voicemail.</span><span>notebook.</span><span>head.</span><span>texts.</span></span></span><span class="sr">texts, your voicemail, a notebook or your head.</span></h2>
     <p class="lede">We put them on your website and your calendar, with one place to see every customer. You deal with the two of us, start to finish.</p>
+    </div>
+    <div class="dash" role="img" aria-label="Sample owner dashboard with sample data: new quote requests from your website, upcoming visits and estimates waiting for approval, all in one place.">
+      <div class="dash-chrome" aria-hidden="true"><span class="dash-dots"><i></i><i></i><i></i></span><span class="dash-url">dashboard.yourbusiness.com</span><span class="dash-tag">Sample data</span></div>
+      <div class="dash-body" aria-hidden="true">
+        <div class="dash-title"><b>Owner dashboard</b><span>Today</span></div>
+        <div class="dash-metrics">
+          <div class="hot"><span>New requests</span><strong data-dash-new>2</strong></div>
+          <div><span>Upcoming visits</span><strong>6</strong></div>
+          <div><span>Need approval</span><strong>1</strong></div>
+        </div>
+        <div class="dash-h"><span>Quote inbox</span><span>From your website</span></div>
+        <div class="dash-list"><ul class="dash-rows" data-dash-rows>
+          <li><div><b>Dana R.</b><small>Lawn mowing · weekly</small></div><span class="badge new">New</span></li>
+          <li><div><b>Marcus T.</b><small>Leaf cleanup · one time</small></div><span class="badge new">New</span></li>
+          <li><div><b>Priya S.</b><small>Hedge trimming · monthly</small></div><span class="badge">Contacted</span></li>
+          <li><div><b>Lee H.</b><small>Mulch install · one time</small></div><span class="badge won">Won</span></li>
+        </ul></div>
+        <div class="dash-next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span><b>Next visit:</b> tomorrow, 8:00 AM · Lawn mowing, weekly</span></div>
+      </div>
+    </div>
   </section>
 
   <section class="proof" id="work" aria-labelledby="work-title">
@@ -817,6 +876,38 @@
   })();
 </script>
 <script>
+  /* sample dashboard: a new quote request slides into the inbox every few seconds.
+     Holds while hovered or off screen; still under reduced motion. */
+  (() => {
+    const rows = document.querySelector('[data-dash-rows]'), count = document.querySelector('[data-dash-new]');
+    if (!rows || !matchMedia('(prefers-reduced-motion: no-preference)').matches || !('IntersectionObserver' in window)) return;
+    const pool = [['Chris B.', 'Lawn mowing · biweekly'], ['Alicia M.', 'Sod install · one time'], ['Jordan K.', 'Leaf cleanup · one time'], ['Sam W.', 'Lawn mowing · weekly'], ['Renee D.', 'Hedge trimming · monthly'], ['Tony G.', 'Gutter cleanout · one time']];
+    let n = 0, onScreen = false, hover = false;
+    const dash = rows.closest('.dash');
+    new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; }, { threshold: 0.4 }).observe(dash);
+    dash.addEventListener('pointerenter', () => { hover = true; });
+    dash.addEventListener('pointerleave', () => { hover = false; });
+    setInterval(() => {
+      if (!onScreen || hover || document.hidden) return;
+      const [name, job] = pool[n++ % pool.length];
+      const li = document.createElement('li');
+      li.innerHTML = '<div><b></b><small></small></div><span class="badge new">New</span>';
+      li.querySelector('b').textContent = name; li.querySelector('small').textContent = job;
+      /* older "new" requests move along to contacted */
+      const olds = rows.querySelectorAll('.badge.new');
+      if (olds.length >= 2) { olds[olds.length - 1].classList.remove('new'); olds[olds.length - 1].textContent = 'Contacted'; }
+      const rowH = rows.firstElementChild.offsetHeight;
+      rows.classList.remove('slide');
+      rows.prepend(li); li.classList.add('arrive');
+      rows.style.transform = `translateY(-${rowH}px)`;
+      void rows.offsetHeight;
+      rows.classList.add('slide');
+      rows.style.transform = 'translateY(0)';
+      setTimeout(() => { while (rows.children.length > 4) rows.lastElementChild.remove(); }, 560);
+      count.textContent = String(2 + ((n - 1) % pool.length) + 1);
+      count.classList.remove('bump'); void count.offsetWidth; count.classList.add('bump');
+    }, 3600);
+  })();
   /* name tags tilt toward the pointer while it's over them */
   (() => {
     if (!matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) return;
