@@ -4,6 +4,7 @@ import re
 import secrets
 import time
 from datetime import date, datetime, timedelta
+from decimal import Decimal
 from functools import wraps
 from zoneinfo import ZoneInfo
 import click
@@ -33,10 +34,14 @@ from .models import (
     Estimate,
     Schedule,
     Job,
+    Invoice,
+    PaymentAccount,
     RateBucket,
     now,
 )
 from .domain import intake, price, amount, next_visit, FREQUENCIES, SERVICES
+from . import payments
+from .payments import PaymentError
 
 
 def create_app(config=None):
@@ -64,7 +69,7 @@ def create_app(config=None):
     ].startswith("postgresql+psycopg://"):
         raise RuntimeError("Production requires PostgreSQL (postgresql+psycopg://).")
     db.init_app(app)
-    CSRFProtect(app)
+    csrf = CSRFProtect(app)
 
     @app.after_request
     def headers(response):
@@ -106,6 +111,9 @@ def create_app(config=None):
 
     def rows(model):
         return select(model).where(model.business_id == g.owner.business_id)
+
+    def today():
+        return datetime.now(ZoneInfo(g.business.timezone)).date()
 
     def limited(scope, limit, seconds=3600):
         # Atomic database counters work across workers. Trust no client-supplied IP headers.
@@ -206,12 +214,25 @@ def create_app(config=None):
         jobs = db.session.scalars(
             rows(Job).where(Job.status == "scheduled").order_by(Job.date)
         ).all()
+        invoiced = select(Invoice.job_id).where(Invoice.job_id.is_not(None))
+        to_invoice = db.session.scalars(
+            rows(Job)
+            .where(Job.status == "complete", Job.id.not_in(invoiced))
+            .order_by(Job.date.desc())
+            .limit(20)
+        ).all()
+        unpaid = db.session.scalars(
+            rows(Invoice).where(Invoice.status == "unpaid").order_by(Invoice.due_date)
+        ).all()
         return render_template(
             "dashboard.html",
             leads=leads,
             customers=customers,
             estimates=estimates,
             jobs=jobs,
+            to_invoice=to_invoice,
+            unpaid=unpaid,
+            today=today(),
             frequencies=FREQUENCIES,
         )
 
@@ -432,6 +453,309 @@ def create_app(config=None):
                 flash(str(err), "error")
         return render_template("settings.html")
 
+    # ---------- payments: the owner's own Stripe or Square, or manual ----------
+
+    def payment_account(business_id=None):
+        business_id = business_id or g.owner.business_id
+        return db.session.scalar(
+            select(PaymentAccount).where(PaymentAccount.business_id == business_id)
+        ) or PaymentAccount(business_id=business_id, provider="manual")
+
+    def create_link(acct, invoice):
+        """Make the provider pay link for a new invoice. Manual invoices have none."""
+        ref = f"grounds-{invoice.business_id}-{invoice.id}-{secrets.token_hex(4)}"
+        name = f"{g.business.name}: {invoice.description}"
+        if acct.provider == "stripe":
+            return payments.stripe_create_link(
+                payments.decrypt(acct.secret_enc), name, invoice.amount_cents, ref
+            )
+        if acct.provider == "square":
+            return payments.square_create_link(
+                payments.decrypt(acct.secret_enc),
+                acct.square_location_id,
+                acct.sandbox,
+                name,
+                invoice.amount_cents,
+                ref,
+            )
+        return "", "", ""
+
+    def provider_paid(acct, invoice):
+        if invoice.provider == "stripe" and invoice.link_id:
+            return payments.stripe_is_paid(payments.decrypt(acct.secret_enc), invoice.link_id)
+        if invoice.provider == "square" and invoice.order_id:
+            return payments.square_is_paid(
+                payments.decrypt(acct.secret_enc), acct.sandbox, invoice.order_id
+            )
+        return False
+
+    def close_link(acct, invoice):
+        # Best effort: a paid or void invoice's link should stop taking money.
+        try:
+            if invoice.provider == "stripe" and invoice.link_id:
+                payments.stripe_close_link(payments.decrypt(acct.secret_enc), invoice.link_id)
+            elif invoice.provider == "square" and invoice.link_id:
+                payments.square_close_link(
+                    payments.decrypt(acct.secret_enc), acct.sandbox, invoice.link_id
+                )
+        except PaymentError:
+            pass
+
+    def mark_paid(invoice, method):
+        if invoice.status != "unpaid":
+            return False
+        invoice.status, invoice.paid_at, invoice.paid_method = "paid", now(), method
+        return True
+
+    def new_invoice(customer_id, kind, description, form, default_cents, **links):
+        description = form.get("description", description).strip() or description
+        if len(description) > 200:
+            raise ValueError("Keep the description under 200 characters.")
+        cents = int(amount(form.get("amount") or default_cents / 100, Decimal("1")) * 100)
+        days = int(form.get("due_days", "7") or 7)
+        if not 0 <= days <= 90:
+            raise ValueError("Choose a due date within 90 days.")
+        acct = payment_account()
+        invoice = Invoice(
+            business_id=g.owner.business_id,
+            customer_id=customer_id,
+            kind=kind,
+            description=description,
+            amount_cents=cents,
+            due_date=today() + timedelta(days=days),
+            provider=acct.provider,
+            **links,
+        )
+        db.session.add(invoice)
+        db.session.flush()
+        invoice.link_id, invoice.pay_url, invoice.order_id = create_link(acct, invoice)
+        db.session.commit()
+        return invoice
+
+    @app.route("/settings/payments", methods=["GET", "POST"])
+    @private
+    def payment_settings():
+        acct = payment_account()
+        if request.method == "POST":
+            try:
+                provider = request.form.get("provider")
+                if provider not in payments.PROVIDERS:
+                    raise ValueError("Choose Stripe, Square or another way to get paid.")
+                secret = request.form.get("secret", "").strip()
+                hook = request.form.get("webhook_secret", "").strip()
+                location = request.form.get("square_location_id", "").strip()
+                instructions = request.form.get("instructions", "").strip()
+                if len(secret) > 300 or len(hook) > 300 or len(location) > 64 or len(instructions) > 400:
+                    raise ValueError("One of the fields is too long.")
+                if provider == "stripe" and secret and not re.fullmatch(r"(sk|rk)_(live|test)_[A-Za-z0-9]+", secret):
+                    raise ValueError("A Stripe key starts with rk_live_ or sk_live_ (or _test_ while testing).")
+                if secret:
+                    acct.secret_enc, acct.secret_hint = payments.encrypt(secret), secret[-4:]
+                if hook:
+                    acct.webhook_secret_enc = payments.encrypt(hook)
+                if provider != acct.provider and not secret:
+                    acct.secret_enc, acct.secret_hint, acct.webhook_secret_enc = "", "", ""
+                if provider in ("stripe", "square") and not acct.secret_enc:
+                    raise ValueError("Paste the key for your payment account.")
+                if provider == "square" and not location:
+                    raise ValueError("Square needs the location ID that should receive the money.")
+                acct.provider, acct.square_location_id = provider, location
+                acct.sandbox = request.form.get("sandbox") == "yes"
+                acct.instructions, acct.updated_at = instructions, now()
+                db.session.add(acct)
+                db.session.commit()
+                flash("Payment settings saved. Keys are stored encrypted and never shown again.", "success")
+                return redirect(url_for("payment_settings"))
+            except (ValueError, PaymentError) as err:
+                db.session.rollback()
+                flash(str(err), "error")
+        return render_template(
+            "payments.html",
+            acct=acct,
+            stripe_hook=url_for("stripe_webhook", slug=g.business.slug, _external=True),
+            square_hook=url_for("square_webhook", slug=g.business.slug, _external=True),
+        )
+
+    @app.post("/jobs/<int:ident>/invoice")
+    @private
+    def invoice_job(ident):
+        item = own(Job, ident)
+        if item.status != "complete":
+            abort(400, description="Mark the visit complete before invoicing it.")
+        if db.session.scalar(select(Invoice).where(Invoice.job_id == item.id)):
+            flash("This visit already has an invoice.", "error")
+            return redirect(url_for("invoices"))
+        estimate = item.schedule.estimate
+        try:
+            invoice = new_invoice(
+                estimate.lead.customer_id,
+                "job",
+                f"{estimate.lead.service} on {item.date:%b %-d, %Y}",
+                request.form,
+                estimate.total_cents,
+                job_id=item.id,
+            )
+            return redirect(url_for("invoice", ident=invoice.id))
+        except (ValueError, PaymentError, IntegrityError) as err:
+            db.session.rollback()
+            flash(str(err) if not isinstance(err, IntegrityError) else "This visit already has an invoice.", "error")
+            return redirect(url_for("dashboard"))
+
+    @app.post("/estimates/<int:ident>/deposit")
+    @private
+    def deposit(ident):
+        item = own(Estimate, ident)
+        if item.status != "accepted":
+            abort(400, description="Record the customer's acceptance before asking for a deposit.")
+        if db.session.scalar(select(Invoice).where(Invoice.estimate_id == item.id)):
+            flash("This estimate already has a deposit invoice.", "error")
+            return redirect(url_for("lead", ident=item.lead_id))
+        try:
+            invoice = new_invoice(
+                item.lead.customer_id,
+                "deposit",
+                f"Deposit for {item.lead.service.lower()}",
+                request.form,
+                max(100, item.total_cents // 2),
+                estimate_id=item.id,
+            )
+            return redirect(url_for("invoice", ident=invoice.id))
+        except (ValueError, PaymentError, IntegrityError) as err:
+            db.session.rollback()
+            flash(str(err) if not isinstance(err, IntegrityError) else "This estimate already has a deposit invoice.", "error")
+            return redirect(url_for("lead", ident=item.lead_id))
+
+    @app.get("/invoices")
+    @private
+    def invoices():
+        items = db.session.scalars(rows(Invoice).order_by(Invoice.id.desc())).all()
+        return render_template("invoices.html", invoices=items, today=today(), acct=payment_account())
+
+    @app.post("/invoices/check")
+    @private
+    def check_invoices():
+        acct = payment_account()
+        found = 0
+        try:
+            for invoice in db.session.scalars(
+                rows(Invoice)
+                .where(Invoice.status == "unpaid", Invoice.provider.in_(("stripe", "square")))
+                .limit(25)
+            ):
+                if provider_paid(acct, invoice) and mark_paid(invoice, invoice.provider):
+                    found += 1
+            db.session.commit()
+            flash(f"Checked with your payment account. {found} newly paid.", "success")
+        except PaymentError as err:
+            db.session.rollback()
+            flash(str(err), "error")
+        return redirect(url_for("invoices"))
+
+    @app.get("/invoices/<int:ident>")
+    @private
+    def invoice(ident):
+        item = own(Invoice, ident)
+        return render_template("invoice.html", invoice=item, today=today(), acct=payment_account())
+
+    @app.post("/invoices/<int:ident>/check")
+    @private
+    def check_invoice(ident):
+        item = own(Invoice, ident, True)
+        try:
+            if provider_paid(payment_account(), item) and mark_paid(item, item.provider):
+                db.session.commit()
+                flash("Paid. The money is in your payment account.", "success")
+            else:
+                flash("Not paid yet.", "success")
+        except PaymentError as err:
+            flash(str(err), "error")
+        return redirect(url_for("invoice", ident=ident))
+
+    @app.post("/invoices/<int:ident>/paid")
+    @private
+    def invoice_paid(ident):
+        item = own(Invoice, ident, True)
+        method = request.form.get("method", "")
+        if method not in ("cash", "check", "venmo", "cash app", "zelle", "card", "other"):
+            abort(400, description="Choose how the customer paid.")
+        if mark_paid(item, method):
+            close_link(payment_account(), item)
+            db.session.commit()
+            flash("Marked paid.", "success")
+        return redirect(url_for("invoice", ident=ident))
+
+    @app.post("/invoices/<int:ident>/void")
+    @private
+    def invoice_void(ident):
+        item = own(Invoice, ident, True)
+        if item.status == "unpaid":
+            item.status = "void"
+            close_link(payment_account(), item)
+            db.session.commit()
+            flash("Invoice voided. Its pay link no longer takes payments.", "success")
+        return redirect(url_for("invoice", ident=ident))
+
+    def tenant_account(slug):
+        business = db.session.scalar(select(Business).where(Business.slug == slug)) or abort(404)
+        return business, payment_account(business.id)
+
+    @app.post("/webhooks/stripe/<slug>")
+    @csrf.exempt
+    def stripe_webhook(slug):
+        business, acct = tenant_account(slug)
+        request.max_content_length = 262144
+        payload = request.get_data()
+        try:
+            secret = payments.decrypt(acct.webhook_secret_enc)
+        except PaymentError:
+            secret = ""
+        event = payments.stripe_event(payload, request.headers.get("Stripe-Signature"), secret)
+        if event is None:
+            abort(400)
+        obj = (event.get("data") or {}).get("object") or {}
+        if event.get("type") in ("checkout.session.completed", "checkout.session.async_payment_succeeded") and obj.get("payment_status") == "paid":
+            item = db.session.scalar(
+                select(Invoice).where(
+                    Invoice.business_id == business.id,
+                    Invoice.provider == "stripe",
+                    Invoice.link_id == str(obj.get("payment_link") or ""),
+                )
+            )
+            if item and mark_paid(item, "stripe"):
+                db.session.commit()
+        return {"received": True}
+
+    @app.post("/webhooks/square/<slug>")
+    @csrf.exempt
+    def square_webhook(slug):
+        business, acct = tenant_account(slug)
+        request.max_content_length = 262144
+        payload = request.get_data()
+        try:
+            key = payments.decrypt(acct.webhook_secret_enc)
+        except PaymentError:
+            key = ""
+        event = payments.square_event(
+            payload,
+            request.headers.get("x-square-hmacsha256-signature"),
+            key,
+            url_for("square_webhook", slug=slug, _external=True),
+        )
+        if event is None:
+            abort(400)
+        payment = ((event.get("data") or {}).get("object") or {}).get("payment") or {}
+        if event.get("type") in ("payment.created", "payment.updated") and payment.get("status") == "COMPLETED":
+            item = db.session.scalar(
+                select(Invoice).where(
+                    Invoice.business_id == business.id,
+                    Invoice.provider == "square",
+                    Invoice.order_id == str(payment.get("order_id") or ""),
+                )
+            )
+            if item and mark_paid(item, "square"):
+                db.session.commit()
+        return {"received": True}
+
     @app.cli.command("create-owner")
     @click.option("--business", prompt=True)
     @click.option("--slug", prompt=True)
@@ -470,6 +794,10 @@ def create_app(config=None):
             db.session.rollback()
             raise click.ClickException("Email or business slug already exists.")
         click.echo(f"Owner created. Public intake path: /quote/{slug}")
+
+    @app.template_filter("money")
+    def money(cents):
+        return f"${cents / 100:,.2f}"
 
     app.config["DUMMY_HASH"] = generate_password_hash(secrets.token_urlsafe(32))
     return app

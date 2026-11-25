@@ -1,0 +1,36 @@
+{% extends 'base.html' %}{% from 'macros.html' import csrf %}{% block title %}Payments · {{ g.business.name }}{% endblock %}{% block content %}
+<p class="eyebrow">Business settings</p>
+<h1>Get paid your way.</h1>
+<p>Connect the payment account you already use. Customers pay through it, and the money goes straight to you. Grounds never holds your money and adds no fee.</p>
+<form method="post" class="card stack">{{ csrf() }}
+  <fieldset class="stack plain">
+    <legend>How customers pay you</legend>
+    <label class="check"><input type="radio" name="provider" value="stripe" {% if acct.provider=='stripe' %}checked{% endif %}> <span><strong>Stripe</strong><br><small>Each invoice gets a one-time pay link. Paid invoices update on their own.</small></span></label>
+    <label class="check"><input type="radio" name="provider" value="square" {% if acct.provider=='square' %}checked{% endif %}> <span><strong>Square</strong><br><small>Each invoice gets a one-time pay link. Paid invoices update on their own.</small></span></label>
+    <label class="check"><input type="radio" name="provider" value="manual" {% if acct.provider=='manual' %}checked{% endif %}> <span><strong>Cash, check, Venmo, Cash App or Zelle</strong><br><small>Invoices show your payment instructions. You mark them paid.</small></span></label>
+  </fieldset>
+  <label>Stripe or Square key{% if acct.secret_hint %} <small>(saved, ends in {{ acct.secret_hint }}; leave blank to keep it)</small>{% endif %}<input type="password" name="secret" autocomplete="off" maxlength="300"></label>
+  <label>Webhook signing secret (Stripe) or signature key (Square){% if acct.webhook_secret_enc %} <small>(saved; leave blank to keep it)</small>{% endif %}<input type="password" name="webhook_secret" autocomplete="off" maxlength="300"></label>
+  <label>Square location ID <small>(Square only)</small><input name="square_location_id" value="{{ acct.square_location_id }}" maxlength="64"></label>
+  <label class="check"><input type="checkbox" name="sandbox" value="yes" {% if acct.sandbox %}checked{% endif %}> <span>Square sandbox (test mode). Stripe test keys work without this.</span></label>
+  <label>Payment instructions shown on invoices <small>(for example: Venmo @yourbiz · Cash App $yourbiz · Zelle 205-555-0100)</small><textarea name="instructions" rows="2" maxlength="400">{{ acct.instructions }}</textarea></label>
+  <button>Save payment settings</button>
+</form>
+<details class="card">
+  <summary>Setting up Stripe</summary>
+  <ol>
+    <li>In Stripe, open <strong>Developers → API keys → Create restricted key</strong>. Allow <strong>Products: Write, Prices: Write, Payment Links: Write</strong> and <strong>Checkout Sessions: Read</strong>. Paste the key (it starts with <code>rk_live_</code>) above.</li>
+    <li>Open <strong>Developers → Webhooks → Add endpoint</strong> and paste <code>{{ stripe_hook }}</code>. Choose the events <strong>checkout.session.completed</strong> and <strong>checkout.session.async_payment_succeeded</strong>.</li>
+    <li>Copy the endpoint's signing secret (it starts with <code>whsec_</code>) into the webhook field above.</li>
+  </ol>
+</details>
+<details class="card">
+  <summary>Setting up Square</summary>
+  <ol>
+    <li>In the Square Developer Dashboard, open your application's <strong>Credentials</strong> (Production) and copy the access token into the key field above.</li>
+    <li>Open <strong>Locations</strong> and copy the ID of the location that should receive the money.</li>
+    <li>Open <strong>Webhooks → Add subscription</strong>, paste <code>{{ square_hook }}</code>, and choose <strong>payment.created</strong> and <strong>payment.updated</strong>. Copy its signature key into the webhook field above.</li>
+  </ol>
+</details>
+<p>Without the webhook, invoices still work: use <strong>Check payments</strong> on the Invoices page to update them.</p>
+{% endblock %}

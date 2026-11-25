@@ -1,0 +1,23 @@
+{% extends 'base.html' %}{% from 'macros.html' import csrf %}{% block title %}Invoices · {{ g.business.name }}{% endblock %}{% block content %}
+{% set unpaid = invoices|selectattr('status','equalto','unpaid')|list %}
+{% set overdue = unpaid|selectattr('due_date','lt',today)|list %}
+{% set paid = invoices|selectattr('status','equalto','paid')|list %}
+<p class="eyebrow">{{ g.business.name }} / Invoices</p>
+<div class="heading">
+  <h1>Get paid.</h1>
+  {% if acct.provider in ['stripe','square'] %}<form method="post" action="{{ url_for('check_invoices') }}">{{ csrf() }}<button>Check payments</button></form>{% endif %}
+</div>
+<div class="metrics">
+  <article><span>Unpaid</span><strong>{{ (unpaid|sum(attribute='amount_cents'))|money }}</strong></article>
+  <article><span>Overdue</span><strong>{{ overdue|length }}</strong></article>
+  <article><span>Paid</span><strong>{{ (paid|sum(attribute='amount_cents'))|money }}</strong></article>
+  <article><span>Paid through</span><strong class="small">{{ {'stripe':'Stripe','square':'Square','manual':'By hand'}[acct.provider] }}</strong></article>
+</div>
+{% if acct.provider == 'manual' and not acct.instructions %}<div class="notice">Connect Stripe or Square, or add payment instructions, in <a href="{{ url_for('payment_settings') }}">Payments</a>.</div>{% endif %}
+<section>
+  {% for i in invoices %}<a class="row" href="{{ url_for('invoice',ident=i.id) }}">
+    <div><strong>{{ i.customer.name }} · {{ i.amount_cents|money }}</strong><small>#{{ i.id }} · {{ i.description }} · due {{ i.due_date.strftime('%b %-d, %Y') }}</small></div>
+    {% if i.status=='unpaid' and i.due_date < today %}<span class="badge overdue">overdue</span>{% else %}<span class="badge {{ i.status }}">{{ i.status }}</span>{% endif %}
+  </a>{% else %}<div class="empty">No invoices yet. Finish a visit or record an accepted estimate, then create one from the overview.</div>{% endfor %}
+</section>
+{% endblock %}

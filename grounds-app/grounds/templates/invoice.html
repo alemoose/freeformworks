@@ -1,0 +1,35 @@
+{% extends 'base.html' %}{% from 'macros.html' import csrf %}{% block title %}Invoice #{{ invoice.id }} · {{ g.business.name }}{% endblock %}{% block content %}
+<a href="{{ url_for('invoices') }}">← Invoices</a>
+<p class="eyebrow">{{ 'Deposit' if invoice.kind=='deposit' else 'Invoice' }} #{{ invoice.id }}</p>
+<div class="heading">
+  <h1>{{ invoice.amount_cents|money }}</h1>
+  {% if invoice.status=='unpaid' and invoice.due_date < today %}<span class="badge overdue">overdue</span>{% else %}<span class="badge {{ invoice.status }}">{{ invoice.status }}</span>{% endif %}
+</div>
+<div class="card">
+  <p><strong>{{ invoice.customer.name }}</strong> · {{ invoice.customer.phone }}{% if invoice.customer.email %} · {{ invoice.customer.email }}{% endif %}</p>
+  <p>{{ invoice.description }}</p>
+  <p>Due {{ invoice.due_date.strftime('%b %-d, %Y') }}{% if invoice.status=='paid' %} · Paid {{ invoice.paid_at.strftime('%b %-d, %Y') if invoice.paid_at else '' }} by {{ invoice.paid_method }}{% endif %}</p>
+</div>
+{% if invoice.status=='unpaid' %}
+  {% set message = 'Hi ' ~ invoice.customer.name ~ ', here is your ' ~ ('deposit request' if invoice.kind=='deposit' else 'invoice') ~ ' from ' ~ g.business.name ~ ' for ' ~ invoice.description ~ ': ' ~ (invoice.amount_cents|money) ~ ', due ' ~ invoice.due_date.strftime('%b %-d') ~ '.' %}
+  {% if invoice.pay_url %}
+    {% set message = message ~ ' Pay here: ' ~ invoice.pay_url %}
+  {% elif acct.instructions %}
+    {% set message = message ~ ' You can pay by ' ~ acct.instructions %}
+  {% endif %}
+  <section class="card stack">
+    <h2>Send it</h2>
+    {% if invoice.pay_url %}<label>Pay link<input readonly value="{{ invoice.pay_url }}"></label>{% endif %}
+    <label>Message to copy into a text or email<textarea readonly rows="3">{{ message }}</textarea></label>
+    <small>Grounds does not send texts or email. Copy this into your own phone or inbox.</small>
+  </section>
+  <section class="grid">
+    {% if invoice.provider in ['stripe','square'] %}<form class="card stack" method="post" action="{{ url_for('check_invoice',ident=invoice.id) }}">{{ csrf() }}<p>Paid invoices update on their own when the webhook is set up.</p><button>Check payment now</button></form>{% endif %}
+    <form class="card stack" method="post" action="{{ url_for('invoice_paid',ident=invoice.id) }}">{{ csrf() }}
+      <label>Paid another way?<select name="method">{% for m in ['cash','check','venmo','cash app','zelle','card','other'] %}<option value="{{ m }}">{{ m|title }}</option>{% endfor %}</select></label>
+      <button>Mark paid</button>
+    </form>
+  </section>
+  <form method="post" action="{{ url_for('invoice_void',ident=invoice.id) }}">{{ csrf() }}<button class="danger">Void invoice</button></form>
+{% endif %}
+{% endblock %}
