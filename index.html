@@ -130,8 +130,33 @@
   .hero .lede { margin-top: 22px; }
   .hero-prices { margin-top: 22px; max-width: 460px; border-top: 2px solid var(--ink); font-variant-numeric: tabular-nums; }
   .hero-prices div { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
-  .hero-prices dt { font: 900 28px/1 var(--display); text-transform: uppercase; }
-  .hero-prices dd { font-size: 18px; font-weight: 700; text-align: right; }
+  .hero-prices div { align-items: center; }
+  .hero-prices dt { display: flex; align-items: center; gap: 12px; font: 900 28px/1 var(--display); text-transform: uppercase; }
+  .hero-prices dd { font-size: 18px; font-weight: 700; text-align: right; line-height: 1.2; }
+  /* little row icons: a shop with a swinging open sign, a crew truck on the road */
+  .pi { width: 44px; height: 30px; flex: none; overflow: visible; }
+  .pi .ink { stroke: var(--ink); stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .pi .wine { fill: var(--wine); }
+  .pi .paper { fill: var(--paper); }
+  .pi .road { stroke: #b9b9b4; stroke-width: 2; stroke-dasharray: 6 5; stroke-linecap: round; }
+  .pi .sign { transform-box: view-box; transform-origin: 28px 19px; rotate: 8deg; }
+  .pi .wheel { transform-box: fill-box; transform-origin: center; }
+  /* odometer digits for the one-time roll-in */
+  .odo { display: inline-block; vertical-align: top; height: 1.2em; overflow: clip; white-space: pre; }
+  .odo > span { display: block; }
+  @media (prefers-reduced-motion: no-preference) {
+    .pi .sign { animation: sign-swing 2.6s ease-in-out infinite alternate; }
+    .pi .wheel { animation: wheel-spin 0.9s linear infinite; }
+    .pi .road { animation: road-slide 0.9s linear infinite; }
+    .pi .truck-body { animation: truck-bob 0.45s ease-in-out infinite alternate; }
+    @keyframes sign-swing { from { rotate: 10deg; } to { rotate: -10deg; } }
+    @keyframes wheel-spin { to { rotate: 360deg; } }
+    @keyframes road-slide { to { stroke-dashoffset: 11; } }
+    @keyframes truck-bob { to { translate: 0 -0.8px; } }
+    .odo > span { animation: odo-roll 900ms var(--ease-out) both; animation-delay: calc(320ms + var(--i) * 35ms); }
+    @keyframes odo-roll { from { transform: translateY(0); } }
+    .motion-paused .pi .sign, .motion-paused .pi .wheel, .motion-paused .pi .road, .motion-paused .pi .truck-body { animation-play-state: paused !important; }
+  }
   .hero .see { display: inline-block; margin-top: 12px; padding: 4px 0; }
   .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; margin-top: 28px; }
   .fine { margin-top: 16px; font-size: 16px; color: var(--ink-soft); }
@@ -436,9 +461,22 @@
       </script>
       <p class="lede">We're <strong>Agustin and Maria</strong>. We build every site together, so it fits how your business actually runs, with booking on your own domain. Crews also get one place to see every job and customer.</p>
       <dl class="hero-prices">
-        <div><dt>Shops</dt><dd>$1,200, then $75 a month</dd></div>
-        <div><dt>Crews</dt><dd>$2,500, then $200 a month</dd></div>
+        <div><dt>Shops <svg class="pi" viewBox="0 0 44 32" aria-hidden="true"><rect x="4" y="4" width="36" height="4" rx="1" fill="#141414"/><path class="wine" d="M4 8h36v6H4z"/><path class="paper" d="M10 8h6v6h-6zM22 8h6v6h-6zM34 8h6v6h-6z"/><path class="ink" d="M7 14v16h30V14M24 30V20h8v10M11 18h8v6h-8z"/><g class="sign"><path class="ink" style="stroke-width:1.2" d="M26 22l2-3 2 3"/><rect class="wine" x="25" y="22" width="6" height="4" rx=".6"/></g><path class="ink" d="M2 30h40"/></svg></dt><dd>$1,200, then $75 a month</dd></div>
+        <div><dt>Crews <svg class="pi" viewBox="0 0 52 32" aria-hidden="true"><path class="road" d="M0 31h52"/><g class="truck-body"><path class="wine" d="M25 22V9h9l6 6h4a2 2 0 0 1 2 2v5z"/><path class="paper" d="M28 11h5l4 4h-9z"/><path class="ink" d="M4 22v-8h21M3 22h44"/><path class="ink" style="stroke-width:1.6" d="M9 14v-3h7v3"/></g><g class="wheel"><circle cx="13" cy="24" r="4.5" fill="#141414"/><path d="M13 20.5v7" stroke="#fff" stroke-width="1.4"/></g><g class="wheel"><circle cx="38" cy="24" r="4.5" fill="#141414"/><path d="M38 20.5v7" stroke="#fff" stroke-width="1.4"/></g></svg></dt><dd>$2,500, then $200 a month</dd></div>
       </dl>
+      <script>
+        /* prices roll in once like an odometer, then sit still; screen readers get the plain text */
+        if (matchMedia('(prefers-reduced-motion: no-preference)').matches) document.querySelectorAll('.hero-prices dd').forEach((dd) => {
+          const text = dd.textContent;
+          let i = 0;
+          const cols = [...text].map((ch) => {
+            if (!/\d/.test(ch)) return `<span class="odo"><span>${ch}</span></span>`;
+            const d = Number(ch), stack = Array.from({ length: 10 + d + 1 }, (_, n) => n % 10).join('\n');
+            return `<span class="odo"><span style="--i:${i++};transform:translateY(-${(10 + d) * 1.2}em)">${stack}</span></span>`;
+          }).join('');
+          dd.innerHTML = `<span class="sr">${text}</span><span aria-hidden="true">${cols}</span>`;
+        });
+      </script>
       <a class="textlink see" href="#prices">See what each plan includes</a>
       <div class="actions">
         <a class="btn btn-wine" href="/book"><span class="roll"><span>Book a 15-min call</span><span class="alt" aria-hidden="true">Free. Pick a time</span></span>
