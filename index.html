@@ -12,11 +12,18 @@
 <link rel="icon" href="assets/favicon-16.png" sizes="16x16" type="image/png">
 <meta property="og:title" content="Freeform Works · Websites for Tuscaloosa shops and crews">
 <meta property="og:description" content="Websites, booking and owner dashboards for local businesses. From $1,200, then $75 a month.">
-<meta property="og:image" content="https://www.freeformworks.com/social_logo.png">
+<meta property="og:image" content="https://www.freeformworks.com/assets/social-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Freeform Works: websites for Tuscaloosa shops and crews. From $1,200, then $75 a month.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Freeform Works">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.freeformworks.com/assets/social-card.jpg">
 <meta property="og:url" content="https://www.freeformworks.com/">
 <link rel="preload" href="assets/fonts/big-shoulders-display-900-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/public-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Freeform Works", "url": "https://www.freeformworks.com/", "email": "hello@freeformworks.com", "description": "Websites, booking on your own domain and owner dashboards for local shops and trade crews in Tuscaloosa, Alabama.", "areaServed": {"@type": "City", "name": "Tuscaloosa", "containedInPlace": {"@type": "State", "name": "Alabama"}}, "address": {"@type": "PostalAddress", "addressLocality": "Tuscaloosa", "addressRegion": "AL", "addressCountry": "US"}, "founder": [{"@type": "Person", "name": "Agustin Lemuz-Juarez"}, {"@type": "Person", "name": "Maria Estrada"}], "logo": "https://www.freeformworks.com/assets/fw-logo.png", "image": "https://www.freeformworks.com/social_logo.png", "makesOffer": [{"@type": "Offer", "name": "Shop plan", "price": "1200", "priceCurrency": "USD", "description": "Website, booking on your own domain, Google profile cleanup and Google search setup, then $75 a month."}, {"@type": "Offer", "name": "Crew plan", "price": "2500", "priceCurrency": "USD", "description": "Everything in the Shop plan plus quote requests, job scheduling and the owner dashboard, then $200 a month."}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Freeform Works", "url": "https://www.freeformworks.com/", "email": "hello@freeformworks.com", "description": "Websites, booking on your own domain and owner dashboards for local shops and trade crews in Tuscaloosa, Alabama.", "areaServed": {"@type": "City", "name": "Tuscaloosa", "containedInPlace": {"@type": "State", "name": "Alabama"}}, "address": {"@type": "PostalAddress", "addressLocality": "Tuscaloosa", "addressRegion": "AL", "addressCountry": "US"}, "founder": [{"@type": "Person", "name": "Agustin Lemuz-Juarez"}, {"@type": "Person", "name": "Maria Estrada"}], "logo": "https://www.freeformworks.com/assets/fw-logo.png", "image": "https://www.freeformworks.com/assets/social-card.jpg", "makesOffer": [{"@type": "Offer", "name": "Shop plan", "price": "1200", "priceCurrency": "USD", "description": "Website, booking on your own domain, Google profile cleanup and Google search setup, then $75 a month."}, {"@type": "Offer", "name": "Crew plan", "price": "2500", "priceCurrency": "USD", "description": "Everything in the Shop plan plus quote requests, job scheduling and the owner dashboard, then $200 a month."}]}</script>
 <style>
   @font-face { font-family: "Big Shoulders Display"; font-style: normal; font-weight: 900; font-display: swap; src: url("assets/fonts/big-shoulders-display-900-latin.woff2") format("woff2"); }
   @font-face { font-family: "Public Sans"; font-style: normal; font-weight: 100 900; font-display: swap; src: url("assets/fonts/public-sans-latin.woff2") format("woff2"); }
@@ -44,6 +51,18 @@
     --wine-tint: #f3dde1;     /* highlight wash */
     --wine-line: #c9a2aa;     /* wine outline */
     --night-line: #2a2a2a;    /* rules on the dark sections */
+    --night-raised: #1c1c1c;  /* raised surface on the dark sections (clock face) */
+    --screen: #000000;        /* behind screenshots while they load */
+    --good: #24563a;          /* status: good (won, up vs last week); always with a word or arrow */
+    --good-tint: #e3efe6;
+    /* the sample browser window */
+    --chrome: #ffffff;
+    --chrome-line: #e6e6e6;
+    --chrome-field: #f1f1f0;
+    --chrome-text: #3c3c3a;
+    --light-close: #ff5f57;
+    --light-min: #febc2e;
+    --light-max: #28c840;
     --paper: #ffffff;
     --edge: clamp(20px, 5vw, 80px);
     --section: clamp(72px, 9vw, 136px);
@@ -208,14 +227,14 @@
   /* sample owner dashboard: where the texts and voicemails go instead */
   .dash { background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; box-shadow: 0 30px 60px rgba(0,0,0,.10), 0 2px 6px rgba(0,0,0,.04); overflow: hidden; font: 400 14px/1.35 var(--body); }
   /* a real-looking browser window: white toolbar, traffic lights, nav, address field */
-  .dash-chrome { display: flex; align-items: center; gap: 14px; padding: 10px 14px; background: #fff; border-bottom: 1px solid #e6e6e6; }
+  .dash-chrome { display: flex; align-items: center; gap: 14px; padding: 10px 14px; background: var(--chrome); border-bottom: 1px solid var(--chrome-line); }
   .dash-dots { display: flex; gap: 7px; }
-  .dash-dots i { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.12); }
-  .dash-dots i:nth-child(2) { background: #febc2e; }
-  .dash-dots i:nth-child(3) { background: #28c840; }
+  .dash-dots i { width: 11px; height: 11px; border-radius: 50%; background: var(--light-close); box-shadow: inset 0 0 0 .5px rgba(0,0,0,.12); }
+  .dash-dots i:nth-child(2) { background: var(--light-min); }
+  .dash-dots i:nth-child(3) { background: var(--light-max); }
   .dash-nav { display: flex; gap: 10px; color: var(--ink-faint); }
   .dash-chrome svg { width: 15px; height: 15px; flex: none; }
-  .dash-url { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; gap: 6px; overflow: hidden; white-space: nowrap; font: 400 12.5px/1 var(--body); color: #3c3c3a; background: #f1f1f0; border-radius: 8px; padding: 7px 12px; }
+  .dash-url { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; gap: 6px; overflow: hidden; white-space: nowrap; font: 400 12.5px/1 var(--body); color: var(--chrome-text); background: var(--chrome-field); border-radius: 8px; padding: 7px 12px; }
   .dash-url svg { width: 11px; height: 11px; color: var(--ink-mute); }
   .dash-url span { overflow: hidden; text-overflow: ellipsis; }
   .dash-reload { color: var(--ink-faint); }
@@ -231,7 +250,7 @@
   .dash-h { display: flex; justify-content: space-between; font: 600 12px/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-soft); }
   .dash-list { --row: 50px; height: calc(var(--row) * 3); overflow: hidden; border-top: 1px solid var(--rule); }
   .dash-metrics .money strong { color: var(--ink); }
-  .dash-metrics em { display: block; margin-top: 6px; font: 600 11.5px/1.2 var(--body); font-style: normal; color: #24563a; }
+  .dash-metrics em { display: block; margin-top: 6px; font: 600 11.5px/1.2 var(--body); font-style: normal; color: var(--good); }
   .dash-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 10px; }
   .dash-card { border: 1px solid var(--rule); border-radius: 6px; padding: 12px; }
   .dash-card .dash-h { margin-bottom: 12px; }
@@ -251,7 +270,7 @@
   .dash-rows small { display: block; font-size: 12px; color: var(--ink-soft); }
   .badge { font: 600 11px/1 var(--mono); text-transform: uppercase; letter-spacing: .05em; padding: 5px 7px; border-radius: 4px; background: var(--page-alt); color: var(--ink-soft); }
   .badge.new { background: var(--wine); color: var(--on-wine); }
-  .badge.won { background: #e3efe6; color: #24563a; }
+  .badge.won { background: var(--good-tint); color: var(--good); }
   @media (prefers-reduced-motion: no-preference) {
     .dash-rows.slide { transition: transform 520ms var(--ease-out); }
     .js .dash:not(.in) .dash-bars i { transform: scaleY(0); }
@@ -291,10 +310,10 @@
     .shot-link .desk { transition: scale 600ms var(--ease-out); }
     .shot-link:hover .desk { scale: 1.02; }
   }
-  .shots .desk { border: 1px solid var(--rule); box-shadow: 0 20px 44px rgba(0,0,0,.18); background: #000; }
+  .shots .desk { border: 1px solid var(--rule); box-shadow: 0 20px 44px rgba(0,0,0,.18); background: var(--screen); }
   .shots .phone {
     position: absolute; right: -8px; bottom: 0; width: 26%;
-    border: 6px solid var(--ink); border-radius: 22px; overflow: hidden; background: #000;
+    border: 6px solid var(--ink); border-radius: 22px; overflow: hidden; background: var(--screen);
     box-shadow: 0 18px 40px rgba(0,0,0,.28);
   }
   .before { margin-top: clamp(64px, 7vw, 104px); }
@@ -346,7 +365,7 @@
   .oi .ink { stroke: var(--ink); stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .oi .soft { stroke: var(--rule-strong); stroke-width: 3; stroke-linecap: round; }
   .oi .wine { fill: var(--wine); }
-  .oi .tick { stroke: #fff; stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .oi .tick { stroke: var(--paper); stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .oi .grow { transform-box: fill-box; transform-origin: left center; }
   .oi .ping { transform-box: fill-box; transform-origin: center; opacity: 0; }
   @media (prefers-reduced-motion: no-preference) {
@@ -374,7 +393,7 @@
   .si .ink { stroke: var(--ink); stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .si .wine { fill: var(--wine); }
   .si .grey { fill: var(--cell); }
-  .si .check { stroke: #fff; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .si .check { stroke: var(--paper); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .steps h3 { margin-bottom: 12px; }
   .steps h3::before { content: counter(step) ". "; }
   .steps p { max-width: 38ch; }
@@ -500,7 +519,7 @@
   .close-head .lede { grid-column: 1 / -1; }
   .clock { width: clamp(96px, 11vw, 164px); }
   .clock svg { display: block; width: 100%; height: auto; }
-  .clock-face { fill: #1c1c1c; stroke: var(--ink-faint); stroke-width: 2.5; }
+  .clock-face { fill: var(--night-raised); stroke: var(--ink-faint); stroke-width: 2.5; }
   .clock-ticks line { stroke: var(--rule-strong); stroke-width: 2.5; stroke-linecap: round; }
   .clock-sweep { fill: none; stroke: var(--wine); stroke-width: 54; stroke-dasharray: 25 100; }
   .clock-hand { stroke: var(--on-night); stroke-width: 4; stroke-linecap: round; transform-origin: 60px 60px; transform: rotate(90deg); }
@@ -616,8 +635,8 @@
       </script>
       <p class="lede">We're <strong>Agustin and Maria</strong>. We build every site together, so it fits how your business actually runs, with booking on your own domain. Crews also get one place to see every job and customer.</p>
       <dl class="hero-prices">
-        <div><dt>Shops <svg class="pi" viewBox="0 0 44 32" aria-hidden="true"><rect x="4" y="4" width="36" height="4" rx="1" fill="#141414"/><path class="wine" d="M4 8h36v6H4z"/><path class="paper" d="M10 8h6v6h-6zM22 8h6v6h-6zM34 8h6v6h-6z"/><path class="ink" d="M7 14v16h30V14M24 30V20h8v10M11 18h8v6h-8z"/><g class="sign"><path class="ink" style="stroke-width:1.2" d="M26 22l2-3 2 3"/><rect class="wine" x="25" y="22" width="6" height="4" rx=".6"/></g><path class="ink" d="M2 30h40"/></svg></dt><dd>$1,200, then $75 a month</dd></div>
-        <div><dt>Crews <svg class="pi" viewBox="0 0 52 32" aria-hidden="true"><path class="road" d="M0 31h52"/><g class="truck-body"><path class="wine" d="M25 22V9h9l6 6h4a2 2 0 0 1 2 2v5z"/><path class="paper" d="M28 11h5l4 4h-9z"/><path class="ink" d="M4 22v-8h21M3 22h44"/><path class="ink" style="stroke-width:1.6" d="M9 14v-3h7v3"/></g><g class="wheel"><circle cx="13" cy="24" r="4.5" fill="#141414"/><path d="M13 20.5v7" stroke="#fff" stroke-width="1.4"/></g><g class="wheel"><circle cx="38" cy="24" r="4.5" fill="#141414"/><path d="M38 20.5v7" stroke="#fff" stroke-width="1.4"/></g></svg></dt><dd>$2,500, then $200 a month</dd></div>
+        <div><dt>Shops <svg class="pi" viewBox="0 0 44 32" aria-hidden="true"><rect x="4" y="4" width="36" height="4" rx="1" style="fill:var(--ink)"/><path class="wine" d="M4 8h36v6H4z"/><path class="paper" d="M10 8h6v6h-6zM22 8h6v6h-6zM34 8h6v6h-6z"/><path class="ink" d="M7 14v16h30V14M24 30V20h8v10M11 18h8v6h-8z"/><g class="sign"><path class="ink" style="stroke-width:1.2" d="M26 22l2-3 2 3"/><rect class="wine" x="25" y="22" width="6" height="4" rx=".6"/></g><path class="ink" d="M2 30h40"/></svg></dt><dd>$1,200, then $75 a month</dd></div>
+        <div><dt>Crews <svg class="pi" viewBox="0 0 52 32" aria-hidden="true"><path class="road" d="M0 31h52"/><g class="truck-body"><path class="wine" d="M25 22V9h9l6 6h4a2 2 0 0 1 2 2v5z"/><path class="paper" d="M28 11h5l4 4h-9z"/><path class="ink" d="M4 22v-8h21M3 22h44"/><path class="ink" style="stroke-width:1.6" d="M9 14v-3h7v3"/></g><g class="wheel"><circle cx="13" cy="24" r="4.5" style="fill:var(--ink)"/><path d="M13 20.5v7" style="stroke:var(--paper)" stroke-width="1.4"/></g><g class="wheel"><circle cx="38" cy="24" r="4.5" style="fill:var(--ink)"/><path d="M38 20.5v7" style="stroke:var(--paper)" stroke-width="1.4"/></g></svg></dt><dd>$2,500, then $200 a month</dd></div>
       </dl>
       <script>
         /* prices roll in once like an odometer, then sit still; screen readers get the plain text */
@@ -641,7 +660,7 @@
       <p class="fine" data-next-slot>Free call. Weekdays, 1 to 5 PM Central.</p>
     </div>
 
-    <div class="people" aria-label="Who you'll work with">
+    <div class="people" aria-label="Who you'll work with" data-nosnippet>
       <article class="tag">
         <p class="tag-top" aria-hidden="true">Hello, I'm</p>
         <img class="tag-photo" src="assets/people/agustin-720.webp" srcset="assets/people/agustin-360.webp 360w, assets/people/agustin-720.webp 720w" sizes="(max-width: 920px) 46vw, 260px" width="720" height="900" alt="Agustin Lemuz-Juarez" fetchpriority="high">
@@ -753,7 +772,7 @@
     </div>
     <ul class="offer-list">
       <li>
-        <div class="offer-name"><p class="offer-num">01</p><svg class="oi" viewBox="0 0 64 48" aria-hidden="true"><rect class="ink" x="4" y="4" width="56" height="40" rx="4"/><path class="ink" d="M4 13h56"/><circle cx="10" cy="8.5" r="1.6" fill="#141414"/><circle cx="15" cy="8.5" r="1.6" fill="#141414"/><rect class="wine grow" x="11" y="19" width="22" height="8" rx="1.5"/><path class="soft grow" d="M11 33h40"/><path class="soft grow" d="M11 38h28"/></svg><h3>A website that's yours</h3></div>
+        <div class="offer-name"><p class="offer-num">01</p><svg class="oi" viewBox="0 0 64 48" aria-hidden="true"><rect class="ink" x="4" y="4" width="56" height="40" rx="4"/><path class="ink" d="M4 13h56"/><circle cx="10" cy="8.5" r="1.6" style="fill:var(--ink)"/><circle cx="15" cy="8.5" r="1.6" style="fill:var(--ink)"/><rect class="wine grow" x="11" y="19" width="22" height="8" rx="1.5"/><path class="soft grow" d="M11 33h40"/><path class="soft grow" d="M11 38h28"/></svg><h3>A website that's yours</h3></div>
         <div>
           <p>Built from scratch on your own domain, and fast on a phone: our first one scored 94 out of 100 on Google's phone test in November 2026. We fix your Google profile so your hours and number match, and set the site up so Google can find it: a title and description for every page, a sitemap, and Google Search Console.</p>
           <p class="who">Included in <span class="chip">Shop</span><span class="chip">Crew</span></p>
@@ -781,13 +800,13 @@
     <h2 id="how-title">How it works.</h2>
     <ol class="steps">
       <li>
-        <svg class="si" viewBox="0 0 64 48" aria-hidden="true"><g class="act ring"><rect class="ink" x="8" y="8" width="20" height="36" rx="4"/><path class="ink" d="M15 38h6"/></g><g class="act bubble"><path class="wine" d="M34 6h22a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H42l-6 5v-5h-2a4 4 0 0 1-4-4V10a4 4 0 0 1 4-4z"/><circle cx="39" cy="15" r="1.8" fill="#fff"/><circle cx="45" cy="15" r="1.8" fill="#fff"/><circle cx="51" cy="15" r="1.8" fill="#fff"/></g></svg>
+        <svg class="si" viewBox="0 0 64 48" aria-hidden="true"><g class="act ring"><rect class="ink" x="8" y="8" width="20" height="36" rx="4"/><path class="ink" d="M15 38h6"/></g><g class="act bubble"><path class="wine" d="M34 6h22a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H42l-6 5v-5h-2a4 4 0 0 1-4-4V10a4 4 0 0 1 4-4z"/><circle cx="39" cy="15" r="1.8" style="fill:var(--paper)"/><circle cx="45" cy="15" r="1.8" style="fill:var(--paper)"/><circle cx="51" cy="15" r="1.8" style="fill:var(--paper)"/></g></svg>
         <span class="when">15 minutes, free</span>
         <h3>We talk</h3>
         <p>Tell us what your business does and what's annoying you. We tell you which plan fits and exactly what it costs.</p>
       </li>
       <li>
-        <svg class="si" viewBox="0 0 64 48" aria-hidden="true"><rect class="ink" x="4" y="4" width="56" height="40" rx="4"/><path class="ink" d="M4 13h56"/><circle cx="10" cy="8.5" r="1.6" fill="#141414"/><circle cx="15" cy="8.5" r="1.6" fill="#141414"/><rect class="act b1 wine" x="10" y="18" width="44" height="8" rx="1.5"/><rect class="act b2 grey" x="10" y="29" width="20" height="10" rx="1.5"/><rect class="act b3 grey" x="34" y="29" width="20" height="10" rx="1.5"/></svg>
+        <svg class="si" viewBox="0 0 64 48" aria-hidden="true"><rect class="ink" x="4" y="4" width="56" height="40" rx="4"/><path class="ink" d="M4 13h56"/><circle cx="10" cy="8.5" r="1.6" style="fill:var(--ink)"/><circle cx="15" cy="8.5" r="1.6" style="fill:var(--ink)"/><rect class="act b1 wine" x="10" y="18" width="44" height="8" rx="1.5"/><rect class="act b2 grey" x="10" y="29" width="20" height="10" rx="1.5"/><rect class="act b3 grey" x="34" y="29" width="20" height="10" rx="1.5"/></svg>
         <span class="when">About 2 weeks</span>
         <h3>We build it</h3>
         <p>We write the site, set up booking and connect your domain. You get a preview link before anything goes live.</p>
@@ -852,7 +871,7 @@
     <h2 id="about-title">About us.</h2>
     <div class="about-grid">
     <figure class="together" data-moment="picture-develops"><img src="assets/people/together-960.webp" srcset="assets/people/together-960.webp 960w, assets/people/together-1448.webp 1448w" sizes="(max-width: 920px) 92vw, 60vw" width="1448" height="1086" alt="Maria and Agustin on a sunny sidewalk, both dressed up, Maria taking the selfie" loading="lazy"></figure>
-    <div class="bios">
+    <div class="bios" data-nosnippet>
       <article class="bio">
         <h3>Agustin Lemuz-Juarez</h3>
         <p>Grew up in Montgomery and loves puzzles. A slow website or a messy booking setup is just another one to solve.</p>
@@ -969,7 +988,7 @@
 
   const widths = [2,1,3,1,1,2,1,3,2,1,1,1,3,1,2,2,1,1,3,1,2,1,1,2,3,1,1,2,1,3,1,1,2,1,2,3,1,1,2,1];
   let x = 0, bars = '';
-  widths.forEach((w, i) => { if (i % 2 === 0) bars += `<rect x="${x}" y="0" width="${w * 1.6}" height="40" fill="#141414"/>`; x += w * 1.6 + 1; });
+  widths.forEach((w, i) => { if (i % 2 === 0) bars += `<rect x="${x}" y="0" width="${w * 1.6}" height="40" style="fill:var(--ink)"/>`; x += w * 1.6 + 1; });
   $('barcode').setAttribute('viewBox', `0 0 ${x} 40`);
   $('barcode').innerHTML = bars;
 
