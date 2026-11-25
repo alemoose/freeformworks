@@ -273,10 +273,45 @@
   /* what you get */
   .offer-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: end; }
   .offer-list { list-style: none; padding: 0; margin-top: clamp(40px, 5vw, 64px); border-top: 2px solid var(--ink); }
-  .offer-list li { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(20px, 4vw, 64px); padding: clamp(28px, 3vw, 40px) 0; border-bottom: 1px solid var(--rule); }
+  .offer-list li { position: relative; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(20px, 4vw, 64px); padding: clamp(28px, 3vw, 40px) 0; border-bottom: 1px solid var(--rule); }
   .offer-list p { max-width: 52ch; }
   .offer-list p + p { margin-top: 12px; }
-  .who { font-size: 15px; color: var(--ink-soft); }
+  .offer-name { display: grid; grid-template-columns: auto 1fr; column-gap: 18px; align-items: center; align-content: start; }
+  .offer-num { grid-column: 1 / -1; font: 600 14px/1 var(--mono); letter-spacing: .08em; color: var(--ink-soft); margin-bottom: 14px; transition: color 300ms ease; }
+  .who { display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--ink-soft); }
+  .chip { font: 600 12px/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; padding: 5px 8px; border-radius: 4px; border: 1.5px solid var(--ink); color: var(--ink); }
+  /* reading tracker: the row at the middle of the screen lights up; a bar marks rows you've passed */
+  .offer-list li::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 3px; background: var(--wine); transform: scaleX(0); transform-origin: left; }
+  .js .offer-list li h3 { transition: color 300ms ease; }
+  .js .offer-list:has(li.on) li:not(.on) h3 { color: #6b6b68; }
+  .offer-list li.on .offer-num { color: var(--wine); }
+  .offer-list li.seen::before { transform: scaleX(1); }
+  @media (prefers-reduced-motion: no-preference) {
+    .offer-list li::before { transition: transform 700ms var(--ease-out); }
+  }
+  /* small piece icons that run on their own, like the price-row ones */
+  .oi { width: 76px; height: 57px; flex: none; overflow: visible; }
+  .oi .ink { stroke: var(--ink); stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .oi .soft { stroke: #b9b9b4; stroke-width: 3; stroke-linecap: round; }
+  .oi .wine { fill: var(--wine); }
+  .oi .tick { stroke: #fff; stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .oi .grow { transform-box: fill-box; transform-origin: left center; }
+  .oi .ping { transform-box: fill-box; transform-origin: center; opacity: 0; }
+  @media (prefers-reduced-motion: no-preference) {
+    .oi .grow { animation: build 4s var(--ease-out) infinite; }
+    .oi .grow:nth-of-type(2) { animation-delay: 180ms; }
+    .oi .grow:nth-of-type(3) { animation-delay: 360ms; }
+    @keyframes build { 0%, 8% { transform: scaleX(0); } 30%, 88% { transform: scaleX(1); } 100% { transform: scaleX(0); } }
+    .oi .slot { animation: slot 3.6s ease-in-out infinite; }
+    @keyframes slot { 0%, 15% { opacity: 0; } 25%, 85% { opacity: 1; } 100% { opacity: 0; } }
+    .oi .tick { stroke-dasharray: 12; animation: tick 3.6s ease-in-out infinite; }
+    @keyframes tick { 0%, 28% { stroke-dashoffset: 12; } 40%, 85% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+    .oi .ping { animation: oping 2.4s var(--ease-out) infinite; }
+    @keyframes oping { 0% { transform: scale(1); opacity: .6; } 70%, 100% { transform: scale(3); opacity: 0; } }
+    .oi .newrow { animation: newrow 4.8s var(--ease-out) infinite; }
+    @keyframes newrow { 0%, 10% { transform: translateY(-6px); opacity: 0; } 22%, 90% { transform: translateY(0); opacity: 1; } 100% { opacity: 0; } }
+    @media (hover: hover) { .offer-list li:hover .oi * { animation-play-state: paused !important; } }
+  }
 
   /* how it works */
   .how { background: var(--page-alt); }
@@ -442,7 +477,7 @@
     .bar nav a:not(.book) { display: none; }
     .people { max-width: 560px; }
     .ticket-wrap { max-width: 460px; }
-    .offer-list li { grid-template-columns: 1fr; gap: 12px; }
+    .offer-list li { grid-template-columns: 1fr; gap: 16px; }
     .steps { grid-template-columns: 1fr; gap: 32px; }
     .about-grid { grid-template-columns: 1fr; }
   }
@@ -630,25 +665,24 @@
     </div>
     <ul class="offer-list">
       <li>
-        <h3>A website that's yours</h3>
+        <div class="offer-name"><p class="offer-num">01</p><svg class="oi" viewBox="0 0 64 48" aria-hidden="true"><rect class="ink" x="4" y="4" width="56" height="40" rx="4"/><path class="ink" d="M4 13h56"/><circle cx="10" cy="8.5" r="1.6" fill="#141414"/><circle cx="15" cy="8.5" r="1.6" fill="#141414"/><rect class="wine grow" x="11" y="19" width="22" height="8" rx="1.5"/><path class="soft grow" d="M11 33h40"/><path class="soft grow" d="M11 38h28"/></svg><h3>A website that's yours</h3></div>
         <div>
-          <p>Built from scratch for your business, on your own domain, and fast on a phone (our first one scores 94 out of 100 on Google's phone test). We also clean up your Google profile so the hours and phone number match.</p>
-          <p class="who">Shop and crew plans.</p>
+          <p>Built from scratch on your own domain, and fast on a phone: our first one scores 94 out of 100 on Google's phone test. We also fix your Google profile so your hours and number match.</p>
+          <p class="who">Included in <span class="chip">Shop</span><span class="chip">Crew</span></p>
         </div>
       </li>
       <li>
-        <h3>Booking on your own site</h3>
+        <div class="offer-name"><p class="offer-num">02</p><svg class="oi" viewBox="0 0 64 48" aria-hidden="true"><rect class="ink" x="6" y="6" width="52" height="38" rx="4"/><path class="ink" d="M6 15h52M18 2v8M46 2v8"/><g fill="#e4e2dc"><rect x="12" y="20" width="10" height="8" rx="1.5"/><rect x="27" y="20" width="10" height="8" rx="1.5"/><rect x="12" y="32" width="10" height="8" rx="1.5"/><rect x="27" y="32" width="10" height="8" rx="1.5"/><rect x="42" y="32" width="10" height="8" rx="1.5"/></g><rect class="wine slot" x="42" y="20" width="10" height="8" rx="1.5"/><path class="tick" d="M44.5 24l2 2 3.5-4"/></svg><h3>Booking on your own site</h3></div>
         <div>
-          <p>Customers pick a time on your website and you both get a calendar invite. No app that lists your competitors next to you. Already on Square, GlossGenius or Vagaro? We can put that on your site instead.</p>
-          <p>The booking page on this site is the same thing. <a class="textlink" href="/book">Try ours</a>.</p>
-          <p class="who">Shop and crew plans.</p>
+          <p>Customers pick a time on your website and you both get a calendar invite, with no app listing your competitors next to you. Already on Square, GlossGenius or Vagaro? We'll put that on your site instead. <a class="textlink" href="/book">Try ours</a>.</p>
+          <p class="who">Included in <span class="chip">Shop</span><span class="chip">Crew</span></p>
         </div>
       </li>
       <li>
-        <h3>One place to see every customer</h3>
+        <div class="offer-name"><p class="offer-num">03</p><svg class="oi" viewBox="0 0 64 48" aria-hidden="true"><rect class="ink" x="4" y="4" width="56" height="40" rx="4"/><g class="newrow"><circle cx="13" cy="15" r="3" class="wine"/><circle cx="13" cy="15" r="3" class="wine ping"/><path class="ink" style="stroke-width:3" d="M21 15h22"/><rect class="wine" x="46" y="12" width="9" height="6" rx="1.5"/></g><circle cx="13" cy="26" r="3" fill="#b9b9b4"/><path class="soft" d="M21 26h26"/><circle cx="13" cy="36" r="3" fill="#b9b9b4"/><path class="soft" d="M21 36h18"/></svg><h3>One place to see every customer</h3></div>
         <div>
           <p>An owner dashboard for new quote requests, scheduled jobs and who needs a follow-up. Made for crews that run on texts and memory right now.</p>
-          <p class="who">Crew plan.</p>
+          <p class="who">Included in <span class="chip">Crew</span></p>
         </div>
       </li>
     </ul>
@@ -876,6 +910,18 @@
   })();
 </script>
 <script>
+  /* reading tracker for "What we build": the row crossing the middle of the screen is "on";
+     rows you've reached keep their bar filled. Switches per row, never scrubs with the scroll. */
+  (() => {
+    const rows = document.querySelectorAll('.offer-list li');
+    if (!rows.length || !('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { rows.forEach((r) => r.classList.toggle('on', r === e.target)); e.target.classList.add('seen'); } });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    rows.forEach((r) => io.observe(r));
+    /* leaving the section clears the highlight so nothing stays dimmed */
+    new IntersectionObserver(([e]) => { if (!e.isIntersecting) rows.forEach((r) => r.classList.remove('on')); }, { threshold: 0 }).observe(document.querySelector('.offer-list'));
+  })();
   /* sample dashboard: a new quote request slides into the inbox every few seconds.
      Holds while hovered or off screen; still under reduced motion. */
   (() => {
