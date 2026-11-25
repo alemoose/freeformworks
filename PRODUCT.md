@@ -34,16 +34,22 @@ Deliverable to a client today:
 - Owner dashboard. Agustin can stand one up for a client in 12 hours or less.
 
 Not deliverable yet, so never sold or shown as working:
+- Invoicing and payments in the Crew dashboard (planned: invoices with a pay link through the client's own Stripe or Square account, deposits on accepted quotes, paid status on the dashboard; other payment apps marked paid by hand). Money always goes straight to the client's own account; we never hold it. Not on the site until it ships.
+- The shop "chair dashboard" (cuts per barber, booked value, walk-in log, Booksy plus walk-ins in one count). Booksy has no open API, so its bookings would come from forwarded booking emails or a report export. Only ever described as a labeled beta until it ships.
 - AI intake (an assistant that answers new customers). Do not list it as included in setup or in the care plan until it exists. A demo of it may only appear if it is built and clearly labeled as a demo.
 
-Pricing: published on the site, never "contact us for pricing". Working prices (adopted for now, from `docs/pricing-research.md`):
+Pricing: published on the site, never "contact us for pricing". Working prices (adopted Nov 2026 after the competitor research in `reports/Shop and Crew pricing.md`, kept outside the repo):
+- Solo: $500 setup, $49/mo (hosting, edits, updates). For one person with one bookable calendar (booth renters, solo stylists, pet groomers, photographers). A 1 to 3 page website, booking for one calendar on their own domain, Google profile cleanup, Google search setup. If a Solo client opens a shop, their Solo setup fee counts toward Shop's.
 - Shops: $1,200 setup, $75/mo (hosting, edits, updates). Website, booking on their own domain, Google profile cleanup, Google search setup.
 - Crews (trades): $2,500 setup, $200/mo (hosting, edits, updates, dashboard support). Everything in the shop plan (website, booking on their own domain, Google profile cleanup, Google search setup) plus quote requests, job scheduling and the owner dashboard.
 - "Google search setup" means: a title and description for every page, Google's business info tags, a sitemap submitted through Google Search Console, and a fast mobile-first build. Never promise rankings, positions or traffic.
-- Plan names on the site are "Shop" and "Crew", nothing else. The receipt's item lists are the single source of truth for what each plan includes.
+- Payment options: Shop can be $0 down at $175/mo for 12 months, then $75/mo (a 12-month plan; the site files transfer once the setup balance is paid). Crew's setup is paid half at kickoff and half at launch; no $0-down Crew. Any plan can be paid yearly at two months free.
+- One price per business, never per chair or per person.
+- Founding clients: the first five Shop clients and first three Crew clients get half off setup ($600 / $1,250), never a discount on the monthly. In return: a Google review, a short named testimonial, and permission to show the work. Dallas gets its own founding group at launch.
+- Plan names on the site are "Solo", "Shop" and "Crew", nothing else. The receipt's item lists are the single source of truth for what each plan includes.
 
 Terms:
-- Monthly plans are cancel anytime. No minimum term.
+- Monthly plans are cancel anytime. No minimum term, except the $0-down Shop option, which is a 12-month plan.
 - The client owns their domain. We buy it for them when it costs under $100; above that, the client buys it and we set it up.
 - Who owns the site code if a client cancels is undecided. Do not promise "you own your site" until it is settled.
 
