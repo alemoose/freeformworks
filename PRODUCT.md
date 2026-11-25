@@ -18,7 +18,7 @@ Freeform Works is a two-person web studio. We build a small business a custom we
 
 ## Positioning
 
-Two real people, named and pictured, with published prices. They take on every project together: Agustin brings computer science and shipped software, María brings management information systems and the experience of starting and running her own business, Amitie Florals in Montgomery. The site never splits the work into "one builds, the other fits"; they both use what they know on every project. The big agency in town hides pricing ("$10K minimum"). Published pricing alone is not unique: Tuscaloosa Web Designer leads with "the price on the page" (five-page sites from $2,450, month to month, you own your files). What nobody local shows is the two people you'll work with, the booking and owner dashboard behind the site, and a lower starting price.
+Two real people, named and pictured, with published prices. They take on every project together: Agustin brings computer science and shipped software, María brings management information systems, the experience of running her own business (Amitie Gifts and Florals in Tuscaloosa, since 2022), and an inventory portal she built that replaced a spreadsheet at Parker Towing. The site never splits the work into "one builds, the other fits"; they both use what they know on every project. The big agency in town hides pricing ("$10K minimum"). Published pricing alone is not unique: Tuscaloosa Web Designer leads with "the price on the page" (five-page sites from $2,450, month to month, you own your files). What nobody local shows is the two people you'll work with, the booking and owner dashboard behind the site, and a lower starting price.
 
 ## Operating Context
 
@@ -81,7 +81,13 @@ Real and usable:
 - The `/book` page itself, as a working example of booking on your own domain.
 
 Pending, do not publish until confirmed:
-- Everything about María: how her name is shown, her bio, her photo. She approves it first. Known so far: María Estrada, MIS major, founded Amitie Florals in Montgomery, AL, a real florist business she ran before college and stepped back from when she started school. It has no website, so it is her owner experience, never a case study of ours. Agustin reports she is fine with naming it. Not shown on the site until María approves: a Mercedes-Benz co-op and work at Parker Towing, where she may have built AI-assisted dashboards on top of older systems (unconfirmed; she describes it). Employers get "experience at" wording only, never logos or anything implying they endorse Freeform. Say nothing about Parker Towing's vendors.
+- María's facts come from her resume (Nov 2026), shared by Agustin: Maria Estrada, B.S. Management Information Systems (minor Spanish), University of Alabama, May 2027.
+  - Amitie Gifts and Florals LLC, Tuscaloosa: owner since July 2022, still operating. Marketing, inventory, vendor relations, online orders, scheduling and inventory systems. It has no website, so it is her owner experience, never a case study of ours.
+  - Parker Towing Company, Tuscaloosa: AI Initiative Intern, May 2026 to present. Built a web-based grocery inventory portal for port operations (React, SQL) that replaced a manual spreadsheet; used by managers, office staff and captains across ports. Say nothing about Parker Towing's vendors.
+  - Mercedes-Benz U.S. International, Vance: Logistics Co-op, Aug 2026 to present. Logistics planning and material flow for an EV battery remanufacturing line.
+  - Also on the resume, not used on the site: EY Role Bridge AI project (student team lead, Feb to Mar 2026), Vertex Labs / Carhartt WIP consulting project (Mar to May 2026).
+  - Employers get "experience at" wording only, never logos or anything implying they endorse Freeform.
+  - Her resume spells her name "Maria"; the site uses "María". Confirm with her which she prefers.
 - Photos of Agustin and María: real photos only, no AI headshots. Placeholder slots until provided.
 
 Absent, must not be fabricated:
