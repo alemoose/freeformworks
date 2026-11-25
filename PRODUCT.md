@@ -53,7 +53,7 @@ Technical:
 
 Open decisions:
 - Final prices (working prices above may change) and site-code ownership on cancel.
-- Decided: Freeform Grounds is no longer a separate product. Its public page and its $99 / $249 plans are gone. The `grounds-app/` code stays as the owner dashboard delivered with the Crew plan. A clearly labeled demo screenshot of it can go in the "One place to see every customer" section once a demo account exists. The homepage's "The problem" section shows an HTML mockup of it, labeled "Sample data", with sample first-name-and-initial customers; it mirrors the real dashboard (quote inbox with new / contacted / won, new requests, upcoming visits, need approval) and never claims real clients or numbers.
+- Decided: Freeform Grounds is no longer a separate product. Its public page and its $99 / $249 plans are gone. The `grounds-app/` code stays as the owner dashboard delivered with the Crew plan. A clearly labeled demo screenshot of it can go in the "One place to see every customer" section once a demo account exists. The homepage's "The problem" section shows an HTML mockup of it, labeled "Sample data", with sample first-name-and-initial customers; it shows booked revenue this week with a by-day bar chart, jobs by service, new requests, upcoming visits and the quote inbox (new / contacted / won), and never claims real clients or numbers. The quote inbox, requests, visits and estimates exist in `grounds-app/` today; the revenue and by-service charts are what a client's dashboard would add when built, so they are never described on the site as already shipping.
 
 ## Brand Commitments
 

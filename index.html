@@ -229,7 +229,22 @@
   .dash-metrics strong { display: block; margin-top: 4px; font: 900 30px/1 var(--display); font-variant-numeric: tabular-nums; }
   .dash-metrics .hot strong { color: var(--wine); }
   .dash-h { display: flex; justify-content: space-between; font: 600 12px/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-soft); }
-  .dash-list { --row: 52px; height: calc(var(--row) * 4); overflow: hidden; border-top: 1px solid var(--rule); }
+  .dash-list { --row: 50px; height: calc(var(--row) * 3); overflow: hidden; border-top: 1px solid var(--rule); }
+  .dash-metrics .money strong { color: var(--ink); }
+  .dash-metrics em { display: block; margin-top: 6px; font: 600 11.5px/1.2 var(--body); font-style: normal; color: #24563a; }
+  .dash-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 10px; }
+  .dash-card { border: 1px solid var(--rule); border-radius: 6px; padding: 12px; }
+  .dash-card .dash-h { margin-bottom: 12px; }
+  /* booked by day: one series, one hue, rounded tops on the baseline, label on the peak only */
+  .dash-bars { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; align-items: end; height: 92px; margin-top: 26px; border-bottom: 1px solid var(--rule-strong); }
+  .dash-bars i { position: relative; display: block; height: calc(var(--h) * 100%); background: var(--wine); border-radius: 4px 4px 0 0; transform-origin: bottom; }
+  .dash-bars i.peak::before { content: attr(data-v); position: absolute; bottom: calc(100% + 5px); left: 50%; transform: translateX(-50%); font: 600 11px/1 var(--mono); color: var(--ink); white-space: nowrap; }
+  .dash-days { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-top: 6px; text-align: center; font: 600 11px/1 var(--mono); color: var(--ink-mute); }
+  /* jobs by service: sorted bars, value in text ink */
+  .dash-svc { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; font-size: 12.5px; }
+  .dash-svc li { display: grid; grid-template-columns: 1fr auto; gap: 4px 8px; align-items: center; }
+  .dash-svc li i { grid-column: 1 / -1; display: block; height: 6px; width: calc(var(--v) * 100%); background: var(--wine); border-radius: 0 3px 3px 0; transform-origin: left; }
+  .dash-svc b { font: 700 12.5px/1 var(--body); font-variant-numeric: tabular-nums; }
   .dash-rows { list-style: none; margin: 0; padding: 0; }
   .dash-rows li { height: var(--row); display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px; border-bottom: 1px solid var(--rule); }
   .dash-rows b { display: block; font-weight: 700; }
@@ -237,16 +252,21 @@
   .badge { font: 600 11px/1 var(--mono); text-transform: uppercase; letter-spacing: .05em; padding: 5px 7px; border-radius: 4px; background: var(--page-alt); color: var(--ink-soft); }
   .badge.new { background: var(--wine); color: var(--on-wine); }
   .badge.won { background: #e3efe6; color: #24563a; }
-  .dash-next { display: flex; gap: 10px; align-items: center; background: var(--page-alt); border-radius: 6px; padding: 10px 12px; font-size: 13px; }
-  .dash-next svg { width: 18px; height: 18px; color: var(--wine); flex: none; }
   @media (prefers-reduced-motion: no-preference) {
     .dash-rows.slide { transition: transform 520ms var(--ease-out); }
+    .js .dash:not(.in) .dash-bars i { transform: scaleY(0); }
+    .js .dash:not(.in) .dash-svc li i { transform: scaleX(0); }
+    .dash.in .dash-bars i { transition: transform 700ms var(--ease-out); transition-delay: calc(var(--d) * 60ms); }
+    .dash.in .dash-svc li i { transition: transform 700ms var(--ease-out); transition-delay: calc(300ms + var(--d) * 60ms); }
+    .js .dash:not(.in) .dash-bars i.peak::before { opacity: 0; }
+    .dash.in .dash-bars i.peak::before { transition: opacity 300ms ease 650ms; }
     .dash-rows li.arrive { animation: arrive-glow 1600ms ease-out; }
     @keyframes arrive-glow { from { background: var(--wine-tint); } }
     .dash-metrics strong.bump { animation: bump 420ms var(--ease-out); }
     @keyframes bump { 40% { transform: translateY(-3px); } }
   }
   @media (max-width: 920px) { .statement { grid-template-columns: 1fr; } .dash { max-width: 520px; } }
+  @media (max-width: 480px) { .dash-grid { grid-template-columns: 1fr; } .dash-metrics { gap: 6px; } .dash-metrics div { padding: 8px 9px; } .dash-metrics span { font-size: 11px; } }
   @media (max-width: 420px) { .dash-metrics strong { font-size: 24px; } .dash-url { font-size: 11px; } .dash-nav, .dash-reload { display: none; } .dash-chrome { gap: 10px; padding: 10px; } }
   .rot { display: inline-block; height: 1em; overflow: hidden; vertical-align: bottom; color: var(--wine); }
   .rot-track { display: grid; }
@@ -647,23 +667,32 @@
     <h2 id="why-title" class="statement-big">Right now your bookings live in your <span class="rot" aria-hidden="true"><span class="rot-track"><span>texts.</span><span>voicemail.</span><span>notebook.</span><span>head.</span><span>texts.</span></span></span><span class="sr">texts, your voicemail, a notebook or your head.</span></h2>
     <p class="lede">We put them on your website and your calendar, with one place to see every customer. You deal with the two of us, start to finish.</p>
     </div>
-    <div class="dash" role="img" aria-label="Sample owner dashboard with sample data: new quote requests from your website, upcoming visits and estimates waiting for approval, all in one place.">
+    <div class="dash" role="img" aria-label="Sample owner dashboard with sample data: $4,280 booked this week, a chart of bookings by day, jobs by service, and new quote requests from your website arriving in one inbox.">
       <div class="dash-chrome" aria-hidden="true"><span class="dash-dots"><i></i><i></i><i></i></span><span class="dash-nav"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3 5 8l5 5"/></svg><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="opacity:.45"><path d="m6 3 5 5-5 5"/></svg></span><span class="dash-url"><svg viewBox="0 0 12 12" fill="currentColor"><path d="M3.5 5V3.6a2.5 2.5 0 0 1 5 0V5h.5a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1 0h3V3.6a1.5 1.5 0 0 0-3 0z"/></svg><span>dashboard.yourbusiness.com</span></span><svg class="dash-reload" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2.5v3h-3"/></svg></div>
       <div class="dash-body" aria-hidden="true">
         <div class="dash-title"><b>Owner dashboard</b><span class="dash-tag">Sample data</span></div>
         <div class="dash-metrics">
+          <div class="money"><span>Booked this week</span><strong>$4,280</strong><em>&#8593; 18% vs last week</em></div>
           <div class="hot"><span>New requests</span><strong data-dash-new>2</strong></div>
           <div><span>Upcoming visits</span><strong>6</strong></div>
-          <div><span>Need approval</span><strong>1</strong></div>
+        </div>
+        <div class="dash-grid">
+          <div class="dash-card">
+            <div class="dash-h"><span>Booked by day</span><span>This week</span></div>
+            <div class="dash-bars"><i style="--h:0.36;--d:0"></i><i style="--h:0.58;--d:1"></i><i style="--h:0.50;--d:2"></i><i style="--h:0.85;--d:3"></i><i style="--h:0.71;--d:4"></i><i style="--h:1.00;--d:5" class="peak" data-v="$1,070"></i></div>
+            <div class="dash-days"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-h"><span>Jobs by service</span><span>Month</span></div>
+            <ul class="dash-svc"><li><span>Lawn mowing</span><b>14</b><i style="--v:1.00;--d:0"></i></li><li><span>Leaf cleanup</span><b>6</b><i style="--v:0.43;--d:1"></i></li><li><span>Hedge trimming</span><b>4</b><i style="--v:0.29;--d:2"></i></li><li><span>Mulch install</span><b>2</b><i style="--v:0.14;--d:3"></i></li></ul>
+          </div>
         </div>
         <div class="dash-h"><span>Quote inbox</span><span>From your website</span></div>
         <div class="dash-list"><ul class="dash-rows" data-dash-rows>
           <li><div><b>Dana R.</b><small>Lawn mowing · weekly</small></div><span class="badge new">New</span></li>
           <li><div><b>Marcus T.</b><small>Leaf cleanup · one time</small></div><span class="badge new">New</span></li>
-          <li><div><b>Priya S.</b><small>Hedge trimming · monthly</small></div><span class="badge">Contacted</span></li>
-          <li><div><b>Lee H.</b><small>Mulch install · one time</small></div><span class="badge won">Won</span></li>
+          <li><div><b>Priya S.</b><small>Hedge trimming · monthly</small></div><span class="badge won">Won</span></li>
         </ul></div>
-        <div class="dash-next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span><b>Next visit:</b> tomorrow, 8:00 AM · Lawn mowing, weekly</span></div>
       </div>
     </div>
   </section>
@@ -1005,7 +1034,7 @@
     const pool = [['Chris B.', 'Lawn mowing · biweekly'], ['Alicia M.', 'Sod install · one time'], ['Jordan K.', 'Leaf cleanup · one time'], ['Sam W.', 'Lawn mowing · weekly'], ['Renee D.', 'Hedge trimming · monthly'], ['Tony G.', 'Gutter cleanout · one time']];
     let n = 0, onScreen = false, hover = false;
     const dash = rows.closest('.dash');
-    new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; }, { threshold: 0.4 }).observe(dash);
+    new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; if (onScreen) dash.classList.add('in'); }, { threshold: 0.4 }).observe(dash);
     dash.addEventListener('pointerenter', () => { hover = true; });
     dash.addEventListener('pointerleave', () => { hover = false; });
     setInterval(() => {
@@ -1024,7 +1053,7 @@
       void rows.offsetHeight;
       rows.classList.add('slide');
       rows.style.transform = 'translateY(0)';
-      setTimeout(() => { while (rows.children.length > 4) rows.lastElementChild.remove(); }, 560);
+      setTimeout(() => { while (rows.children.length > 3) rows.lastElementChild.remove(); }, 560);
       count.textContent = String(2 + ((n - 1) % pool.length) + 1);
       count.classList.remove('bump'); void count.offsetWidth; count.classList.add('bump');
     }, 3600);
