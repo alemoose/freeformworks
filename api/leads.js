@@ -11,6 +11,9 @@ const TYPES = {
   barber: 'barber shop',
   salon: 'hair salon',
   nails: 'nail salon',
+  lash: 'lash and brow studio',
+  tattoo: 'tattoo shop',
+  pets: 'pet groomer',
   photo: 'photographer',
   florist: 'florist',
   food: 'restaurant',
@@ -20,6 +23,12 @@ const TYPES = {
   handyman: 'handyman',
   detail: 'auto detailing',
   cleaning: 'house cleaning service',
+  pressure: 'pressure washing service',
+  plumber: 'plumber',
+  electric: 'electrician',
+  hvac: 'HVAC contractor',
+  roofer: 'roofing contractor',
+  mechanic: 'mobile mechanic',
 };
 
 async function mapLimit(items, limit, fn) {
