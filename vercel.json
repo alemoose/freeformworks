@@ -26,6 +26,11 @@
       "permanent": true
     },
     {
+      "source": "/sample.html",
+      "destination": "/sample",
+      "permanent": true
+    },
+    {
       "source": "/leads.html",
       "destination": "/leads",
       "permanent": true
@@ -57,6 +62,10 @@
     {
       "source": "/terms",
       "destination": "/terms.html"
+    },
+    {
+      "source": "/sample",
+      "destination": "/sample.html"
     },
     {
       "source": "/leads",
