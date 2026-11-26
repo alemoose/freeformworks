@@ -40,8 +40,8 @@ Not deliverable yet, so never sold or shown as working:
 
 Pricing: published on the site, never "contact us for pricing". Working prices (adopted Nov 2026 after the competitor research in `reports/Shop and Crew pricing.md`, kept outside the repo):
 - Solo: $500 setup, $49/mo (hosting, edits, updates). For one person with one bookable calendar (booth renters, solo stylists, pet groomers, photographers). A 1 to 3 page website, booking for one calendar on their own domain, Google profile cleanup, Google search setup. If a Solo client opens a shop, their Solo setup fee counts toward Shop's.
-- Shops: $1,200 setup, $75/mo (hosting, edits, updates). Website, booking on their own domain, Google profile cleanup, Google search setup.
-- Crews (trades): $2,500 setup, $200/mo (hosting, edits, updates, dashboard support). Everything in the shop plan (website, booking on their own domain, Google profile cleanup, Google search setup) plus quote requests, job scheduling and the owner dashboard.
+- Shops: $1,200 setup, $75/mo (hosting, edits, updates). Website of up to 5 pages, booking for every chair on their own domain, Google profile cleanup, Google search setup.
+- Crews (trades): $2,500 setup, $200/mo (hosting, edits, updates, dashboard support). A website of up to 5 pages and booking for the whole team. Everything in the shop plan (website, booking on their own domain, Google profile cleanup, Google search setup) plus quote requests, job scheduling and the owner dashboard.
 - "Google search setup" means: a title and description for every page, Google's business info tags, a sitemap submitted through Google Search Console, and a fast mobile-first build. Never promise rankings, positions or traffic.
 - Payment options: Shop can be $0 down at $175/mo for 12 months, then $75/mo (a 12-month plan; the site files transfer once the setup balance is paid). Crew's setup is paid half at kickoff and half at launch; no $0-down Crew. Any plan can be paid yearly at two months free.
 - One price per business, never per chair or per person.
